@@ -22,3 +22,5 @@ The framework already includes schedulability tests for multiple algorithms:
 * SCAIR: Lea Schonberger, Wen-Hung Huang, Georg von der Brüggen, Kuan-Hsun Chen, and Jian-Jia Chen. Schedulability analysis and priority assignment for segmented self-suspending tasks. In RTCSA 2018.
 * PASS: Wen-Hung Huang, Jian-Jia Chen, Husheng Zhou, and Cong Liu. PASS: Priority assignment of real-time tasks with dynamic suspending behavior under fixed-priority scheduling. In DAC 2015.
 
+# Framework Usage
+![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/framework_gui-1.jpg)
