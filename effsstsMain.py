@@ -9,12 +9,15 @@ from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad
 from effsstsPlot import effsstsPlot
 import os
 import datetime
+import pickle
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
+gTasksetpath = ''
 gRuntest = True
 gPlotdata = True
 gPlotall = True
+gSavetasks = True
 gTotBucket = 100
 gTasksinBkt = 10
 gUStart = 0
@@ -33,11 +36,14 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(11, 11, 925, 101))
+        self.groupBox_2.setGeometry(QtCore.QRect(11, 11, 925, 131))
         self.groupBox_2.setObjectName("groupBox_2")
         self.prefixdatapath = QtWidgets.QLineEdit(self.groupBox_2)
         self.prefixdatapath.setGeometry(QtCore.QRect(131, 60, 391, 20))
         self.prefixdatapath.setObjectName("prefixdatapath")
+        self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_2)
+        self.tasksetdatapath.setGeometry(QtCore.QRect(160, 100, 400, 20))
+        self.tasksetdatapath.setObjectName("tasksetdatapath")
         self.seed = QtWidgets.QLineEdit(self.groupBox_2)
         self.seed.setGeometry(QtCore.QRect(601, 60, 40, 20))
         self.seed.setObjectName("seed")
@@ -53,15 +59,23 @@ class Ui_MainWindow(object):
         self.plotall.setGeometry(QtCore.QRect(202, 23, 70, 17))
         self.plotall.setChecked(True)
         self.plotall.setObjectName("plotall")
+        self.savetasks = QtWidgets.QCheckBox(self.groupBox_2)
+        self.savetasks.setGeometry(QtCore.QRect(282, 23, 250, 17))
+        self.savetasks.setChecked(True)
+        self.savetasks.setObjectName("savetaskset")
+
         self.label_5 = QtWidgets.QLabel(self.groupBox_2)
         self.label_5.setGeometry(QtCore.QRect(12, 60, 150, 16))
         self.label_5.setObjectName("label_5")
+        self.loadtasks_title = QtWidgets.QLabel(self.groupBox_2)
+        self.loadtasks_title.setGeometry(QtCore.QRect(12, 100, 150, 16))
+        self.loadtasks_title.setObjectName("loadtasks_title")
         #khchen
         self.label_seed = QtWidgets.QLabel(self.groupBox_2)
         self.label_seed.setGeometry(QtCore.QRect(560, 60, 43, 16))
         self.label_seed.setObjectName("label_seed")
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_3.setGeometry(QtCore.QRect(10, 120, 925, 81))
+        self.groupBox_3.setGeometry(QtCore.QRect(10, 150, 925, 81))
         self.groupBox_3.setObjectName("groupBox_3")
         self.label_6 = QtWidgets.QLabel(self.groupBox_3)
         self.label_6.setGeometry(QtCore.QRect(15, 23, 220, 18))
@@ -131,14 +145,14 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         self.run = QtWidgets.QPushButton(self.centralwidget)
         self.run.setToolTip('Button to run the settings')
-        self.run.setGeometry(QtCore.QRect(860, 415, 75, 23))
+        self.run.setGeometry(QtCore.QRect(860, 445, 75, 23))
         self.run.setObjectName("run")
         self.exit = QtWidgets.QPushButton(self.centralwidget)
         self.exit.setToolTip('Exit the framework')
-        self.exit.setGeometry(QtCore.QRect(770, 415, 75, 23))
+        self.exit.setGeometry(QtCore.QRect(770, 445, 75, 23))
         self.exit.setObjectName("exit")
         self.groupBox_7 = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
-        self.groupBox_7.setGeometry(QtCore.QRect(10, 210, 925, 203))
+        self.groupBox_7.setGeometry(QtCore.QRect(10, 240, 925, 203))
         self.groupBox_7.setObjectName("groupBox_7")
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupBox_7) #General
         self.groupBox_6.setGeometry(QtCore.QRect(745, 20, 81, 175))
@@ -294,6 +308,7 @@ class Ui_MainWindow(object):
             global gMinsstype
             global gMaxsstype
             global gPlotall
+            global gSavetasks
 
             del gSchemes[:]
             setSchemes()
@@ -311,6 +326,7 @@ class Ui_MainWindow(object):
 
         def setSchemes():
             global gPrefixdata
+            global gTasksetpath
             global gRuntest
             global gPlotdata
             global gTotBucket
@@ -323,13 +339,16 @@ class Ui_MainWindow(object):
             global gMinsstype
             global gMaxsstype
             global gPlotall
+            global gSavetasks
             global gSeed
 
             ###GENERAL###
             gRuntest = self.runtests.isChecked()
             gPlotdata = self.plotdata.isChecked()
             gPlotall = self.plotall.isChecked()
+            gSavetasks = self.savetasks.isChecked()
             gPrefixdata = self.prefixdatapath.text()
+            gTasksetpath = self.tasksetdatapath.text()
             if self.seed.text() != '':
                 gSeed = self.seed.text()
 
@@ -424,7 +443,8 @@ class Ui_MainWindow(object):
                 if len(gSchemes) != 0:
                     try:
                         MainWindow.statusBar().showMessage('Testing the given configurations...')
-                        schedulabilityTest()
+                        tasksets_util = tasksetConfiguration()
+                        schedulabilityTest(tasksets_util)
                         MainWindow.statusBar().showMessage('Finish')
                     except Exception as e:
                         MainWindow.statusBar().showMessage(str(e))
@@ -434,26 +454,79 @@ class Ui_MainWindow(object):
             if gPlotdata:
                 if len(gSchemes) != 0:
                     try:
-    		        effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gMinsstype, gMaxsstype, gSSofftypes, gUStart, gUEnd, gUStep, gTasksinBkt)
+                        effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gMinsstype, gMaxsstype, gSSofftypes, gUStart, gUEnd, gUStep, gTasksinBkt)
                     except Exception as e:
                         MainWindow.statusBar().showMessage(str(e))
                 else:
                     MainWindow.statusBar().showMessage('There is no plot to draw.')
 
             #MainWindow.statusBar().showMessage('Ready')
-        def schedulabilityTest():
+
+
+	def tasksetConfiguration():
+            global gTotBucket
+            global gTasksinBkt
+            global gUStep
+            global gMaxsstype
+            global gMinsstype
+            global gSSofftypes
+
+            tasksets_difutil = []
+            print(gSavetasks)
+            if gSavetasks == True:
+                x = np.arange(0, int(100 / gUStep) + 1)
+                y = np.zeros(int(100 / gUStep) + 1)
+                ifskip = False
+                for u in xrange(0, len(y), 1):
+                    tasksets = []
+                    for i in xrange(0, gTotBucket, 1):
+                        percentageU = u * gUStep / 100
+                        tasks = tgPath.taskGeneration_p(gTasksinBkt, percentageU, gMinsstype, gMaxsstype, vRatio=1,
+                                                        seed=gSeed, numLog=int(2), numsegs=gSSofftypes)
+                        sortedTasks = sorted(tasks, key=lambda item: item['period'])
+
+                        tasksets.append(sortedTasks)
+                    tasksets_difutil.append(tasksets)
+                file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
+                            '_Minss_' + str(gMinsstype) + '_Maxss_' + str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
+                with open('./genTasksets/'+file_name, 'wb') as f:
+                    pickle.dump(tasksets_difutil, f)
+            else:
+                print(len(gTasksetpath))
+                if len(gTasksetpath) != 0:
+                    file_name = gTasksetpath
+                    print(file_name)
+                    with open('./genTasksets/'+file_name, 'rb') as f:
+                        tasksets_difutil = pickle.load(f)
+                    info = file_name.split('_')
+                    print(len(info))
+                    print(info)
+                    gTotBucket = int(info[1])
+                    gTasksinBkt = int(info[3])
+                    gUStep = int(info[5])
+                    gMinsstype = float(info[7])
+                    gMaxsstype = float(info[9])
+                    gSSofftypes = int(info[11])
+
+            return tasksets_difutil
+
+
+
+        def schedulabilityTest(Tasksets_util):
             sspropotions = ['10']
             periodlogs = ['2']
             for ischeme in gSchemes:
-                x = np.arange(0, int(100/gUStep)+1)
-                y = np.zeros(int(100/gUStep)+1)
+                x = np.arange(0, int(100 / gUStep) + 1)
+                y = np.zeros(int(100 / gUStep) + 1)
                 ifskip = False
-                for u in xrange(0, len(y), 1):
-                    print "Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", u*gUStep, "SSLength:", str(gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes
+                for count, tasksets in enumerate(Tasksets_util): # iterate through taskset
+                    u = count-1
+                    print "Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", u * gUStep, "SSLength:", str(
+                        gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes
                     if u == 0:
                         y[u] = 1
                         continue
-                    if u*gUStep == 100:
+                    if u * gUStep == 100:
                         y[u] = 0
                         continue
                     numfail = 0
@@ -462,11 +535,7 @@ class Ui_MainWindow(object):
                         y[u] = 0
                         continue
 
-                    for i in xrange(0, gTotBucket, 1):
-                        percentageU = u*gUStep/100
-                        tasks = tgPath.taskGeneration_p(gTasksinBkt, percentageU, gMinsstype, gMaxsstype, vRatio=1, seed=gSeed, numLog=int(2), numsegs=gSSofftypes)
-                        sortedTasks=sorted(tasks, key=lambda item:item['period'])
-
+                    for n, tasks in enumerate(tasksets):  # iterate for each taskset
                         if ischeme == 'SCEDF':
                             if SCEDF.SC_EDF(tasks) == False:
                                 numfail += 1
@@ -496,40 +565,45 @@ class Ui_MainWindow(object):
                                 numfail += 1
                         elif ischeme == 'SCAIR-RM':
                             if rad.scair_dm(tasks) == False:
-                                numfail+=1
+                                numfail += 1
                         elif ischeme == 'SCAIR-OPA':
-                            if rad.Audsley(sortedTasks,ischeme) == False:
-                                numfail+=1
-                        #khchen
+                            if rad.Audsley(tasks, ischeme) == False: # sorted tasks
+                                numfail += 1
+                        # khchen
                         elif ischeme == 'Combo-SJSB':
-                            if combo.sjsb(sortedTasks) == False:
-                                numfail+=1
+                            if combo.sjsb(tasks) == False: # sorted tasks
+                                numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'
 
-                    acceptanceRatio = 1-(numfail/gTotBucket)
+                    acceptanceRatio = 1 - (numfail / gTotBucket)
                     print "acceptanceRatio:", acceptanceRatio
                     y[u] = acceptanceRatio
                     if acceptanceRatio == 0:
                         ifskip = True
 
                 plotPath = gPrefixdata + '/' + str(gMinsstype) + '-' + str(gMaxsstype) + '/' + str(gSSofftypes) + '/'
-                plotfile = gPrefixdata + '/' + str(gMinsstype) + '-' + str(gMaxsstype) + '/' + str(gSSofftypes) + '/' + ischeme
+                plotfile = gPrefixdata + '/' + str(gMinsstype) + '-' + str(gMaxsstype) + '/' + str(
+                    gSSofftypes) + '/' + ischeme
 
                 if not os.path.exists(plotPath):
                     os.makedirs(plotPath)
 
                 np.save(plotfile, np.array([x, y]))
 
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Evaluation Framework for Self-Suspending Task Systems"))
         self.groupBox_2.setTitle(_translate("MainWindow", "General"))
         self.prefixdatapath.setText(_translate("MainWindow", "effsstsPlot/Data"))
+        self.tasksetdatapath.setText(_translate("MainWindow", ""))
         self.runtests.setText(_translate("MainWindow", "Run Tests"))
         self.plotdata.setText(_translate("MainWindow", "Plot Data"))
         self.plotall.setText(_translate("MainWindow", "Plot All"))
+        self.savetasks.setText(_translate("MainWindow", "Generate and Save Tasksets"))
         self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
+        self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
         #khchen
         self.label_seed.setText(_translate("MainWindow", "Seed:"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Configurations"))
