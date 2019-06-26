@@ -530,8 +530,7 @@ class Ui_MainWindow(object):
                 x = np.arange(0, int(100 / gUStep) + 1)
                 y = np.zeros(int(100 / gUStep) + 1)
                 ifskip = False
-                for count, tasksets in enumerate(Tasksets_util): # iterate through taskset
-                    u = count-1
+                for u, tasksets in enumerate(Tasksets_util, start = 0): # iterate through taskset
                     print "Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", u * gUStep, "SSLength:", str(
                         gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes
                     if u == 0:
@@ -546,7 +545,7 @@ class Ui_MainWindow(object):
                         y[u] = 0
                         continue
 
-                    for n, tasks in enumerate(tasksets):  # iterate for each taskset
+                    for tasks in tasksets:  # iterate for each taskset
                         if ischeme == 'SCEDF':
                             if SCEDF.SC_EDF(tasks) == False:
                                 numfail += 1
