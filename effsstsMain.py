@@ -17,7 +17,8 @@ gTasksetpath = ''
 gRuntest = True
 gPlotdata = True
 gPlotall = True
-gSavetasks = True
+gSavetasks = False
+gLoadtasks = False
 gTotBucket = 100
 gTasksinBkt = 10
 gUStart = 0
@@ -61,8 +62,12 @@ class Ui_MainWindow(object):
         self.plotall.setObjectName("plotall")
         self.savetasks = QtWidgets.QCheckBox(self.groupBox_2)
         self.savetasks.setGeometry(QtCore.QRect(282, 23, 250, 17))
-        self.savetasks.setChecked(True)
+        self.savetasks.setChecked(False)
         self.savetasks.setObjectName("savetaskset")
+        self.loadtasks = QtWidgets.QCheckBox(self.groupBox_2)
+        self.loadtasks.setGeometry(QtCore.QRect(500, 23, 250, 17))
+        self.loadtasks.setChecked(False)
+        self.loadtasks.setObjectName("loadtaskset")
 
         self.label_5 = QtWidgets.QLabel(self.groupBox_2)
         self.label_5.setGeometry(QtCore.QRect(12, 60, 150, 16))
@@ -309,6 +314,7 @@ class Ui_MainWindow(object):
             global gMaxsstype
             global gPlotall
             global gSavetasks
+            global gLoadtasks
 
             del gSchemes[:]
             setSchemes()
@@ -340,6 +346,7 @@ class Ui_MainWindow(object):
             global gMaxsstype
             global gPlotall
             global gSavetasks
+            global gLoadtasks
             global gSeed
 
             ###GENERAL###
@@ -347,6 +354,7 @@ class Ui_MainWindow(object):
             gPlotdata = self.plotdata.isChecked()
             gPlotall = self.plotall.isChecked()
             gSavetasks = self.savetasks.isChecked()
+            gLoadtasks = self.loadtasks.isChecked()
             gPrefixdata = self.prefixdatapath.text()
             gTasksetpath = self.tasksetdatapath.text()
             if self.seed.text() != '':
@@ -472,8 +480,7 @@ class Ui_MainWindow(object):
             global gSSofftypes
 
             tasksets_difutil = []
-            print(gSavetasks)
-            if gSavetasks == True:
+            if gSavetasks == True :
                 x = np.arange(0, int(100 / gUStep) + 1)
                 y = np.zeros(int(100 / gUStep) + 1)
                 ifskip = False
@@ -487,27 +494,31 @@ class Ui_MainWindow(object):
 
                         tasksets.append(sortedTasks)
                     tasksets_difutil.append(tasksets)
-                file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
-                            '_Minss_' + str(gMinsstype) + '_Maxss_' + str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
+                file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' \
+                            + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
+                            '_Minss_' + str(gMinsstype) + '_Maxss_' + \
+                            str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
                 with open('./genTasksets/'+file_name, 'wb') as f:
                     pickle.dump(tasksets_difutil, f)
-            else:
-                print(len(gTasksetpath))
+            elif gLoadtasks == True:
                 if len(gTasksetpath) != 0:
                     file_name = gTasksetpath
-                    print(file_name)
                     with open('./genTasksets/'+file_name, 'rb') as f:
                         tasksets_difutil = pickle.load(f)
                     info = file_name.split('_')
-                    print(len(info))
-                    print(info)
                     gTotBucket = int(info[1])
                     gTasksinBkt = int(info[3])
                     gUStep = int(info[5])
                     gMinsstype = float(info[7])
                     gMaxsstype = float(info[9])
                     gSSofftypes = int(info[11])
-
+                else: # Take the setting in UI to generate filename, if file name is not set
+                    file_name = 'TspCon_' + str(gTotBucket) + '_TpTs_' \
+                                + str(gTasksinBkt) + '_Utilst_' + str(gUStep) + \
+                                '_Minss_' + str(gMinsstype) + '_Maxss_' + str(gMaxsstype) \
+                                + '_Seg_' + str(gSSofftypes)+'_.pkl'
+                    with open('./genTasksets/'+file_name, 'rb') as f:
+                        tasksets_difutil = pickle.load(f)
             return tasksets_difutil
 
 
@@ -602,6 +613,7 @@ class Ui_MainWindow(object):
         self.plotdata.setText(_translate("MainWindow", "Plot Data"))
         self.plotall.setText(_translate("MainWindow", "Plot All"))
         self.savetasks.setText(_translate("MainWindow", "Generate and Save Tasksets"))
+        self.loadtasks.setText(_translate("MainWindow", "Load Tasksets"))
         self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
         self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
         #khchen
