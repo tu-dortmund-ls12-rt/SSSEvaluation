@@ -33,7 +33,7 @@ gNumberofruns = 1
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 700)
+        MainWindow.resize(970, 500)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.prefixdatapath.setGeometry(QtCore.QRect(131, 60, 391, 20))
         self.prefixdatapath.setObjectName("prefixdatapath")
         self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_2)
-        self.tasksetdatapath.setGeometry(QtCore.QRect(160, 100, 400, 20))
+        self.tasksetdatapath.setGeometry(QtCore.QRect(150, 100, 400, 20))
         self.tasksetdatapath.setObjectName("tasksetdatapath")
         self.seed = QtWidgets.QLineEdit(self.groupBox_2)
         self.seed.setGeometry(QtCore.QRect(601, 60, 40, 20))
@@ -166,6 +166,11 @@ class Ui_MainWindow(object):
         self.nc.setGeometry(QtCore.QRect(10, 25, 47, 17))
         self.nc.setObjectName("nc")
         self.nc.setToolTip('Necessary Condition')
+        self.rtss = QtWidgets.QCheckBox(self.groupBox_6)
+        self.rtss.setGeometry(QtCore.QRect(10, 45, 60, 17))
+        self.rtss.setObjectName("rtss")
+        self.rtss.setToolTip('Real-Time Systems Symposium')
+
         self.groupBox = QtWidgets.QGroupBox(self.groupBox_7)  #FRD Hybrid
         self.groupBox.setGeometry(QtCore.QRect(235, 21, 211, 175))
         self.groupBox.setObjectName("groupBox")
@@ -422,6 +427,8 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('NC')
+            if self.rtss.isChecked():
+                gSchemes.append('RTSS')
             if self.passopa.isChecked():
                 gSchemes.append('PASS-OPA')
             if self.scedf.isChecked():
@@ -481,9 +488,7 @@ class Ui_MainWindow(object):
 
             tasksets_difutil = []
             if gSavetasks == True :
-                x = np.arange(0, int(100 / gUStep) + 1)
                 y = np.zeros(int(100 / gUStep) + 1)
-                ifskip = False
                 for u in xrange(0, len(y), 1):
                     tasksets = []
                     for i in xrange(0, gTotBucket, 1):
@@ -512,7 +517,7 @@ class Ui_MainWindow(object):
                     gMinsstype = float(info[7])
                     gMaxsstype = float(info[9])
                     gSSofftypes = int(info[11])
-                else: # Take the setting in UI to generate filename, if file name is not set
+                else:  # Take the setting in UI to generate filename, if file name is not set
                     file_name = 'TspCon_' + str(gTotBucket) + '_TpTs_' \
                                 + str(gTasksinBkt) + '_Utilst_' + str(gUStep) + \
                                 '_Minss_' + str(gMinsstype) + '_Maxss_' + str(gMaxsstype) \
@@ -530,7 +535,7 @@ class Ui_MainWindow(object):
                 x = np.arange(0, int(100 / gUStep) + 1)
                 y = np.zeros(int(100 / gUStep) + 1)
                 ifskip = False
-                for u, tasksets in enumerate(Tasksets_util, start = 0): # iterate through taskset
+                for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
                     print "Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", u * gUStep, "SSLength:", str(
                         gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes
                     if u == 0:
@@ -577,11 +582,11 @@ class Ui_MainWindow(object):
                             if rad.scair_dm(tasks) == False:
                                 numfail += 1
                         elif ischeme == 'SCAIR-OPA':
-                            if rad.Audsley(tasks, ischeme) == False: # sorted tasks
+                            if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
                                 numfail += 1
                         # khchen
                         elif ischeme == 'Combo-SJSB':
-                            if combo.sjsb(tasks) == False: # sorted tasks
+                            if combo.sjsb(tasks) == False:  # sorted tasks
                                 numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'
@@ -631,6 +636,7 @@ class Ui_MainWindow(object):
         self.groupBox_7.setTitle(_translate("MainWindow", "Schedulability tests"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
+        self.rtss.setText(_translate("MainWindow", "RTSS"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
         self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
