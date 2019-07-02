@@ -5,11 +5,11 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt
 from effsstsPlot import effsstsPlot
 import os
 import datetime
-import pickle
+import cPickle as pickle
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -17,8 +17,7 @@ gTasksetpath = ''
 gRuntest = True
 gPlotdata = True
 gPlotall = True
-gSavetasks = False
-gLoadtasks = False
+gTaskChoice = ''
 gTotBucket = 100
 gTasksinBkt = 10
 gUStart = 0
@@ -32,6 +31,7 @@ gNumberofruns = 1
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        choice_list = ['Generate Tasksets', 'Generate and Save Tasksets', 'Load Tasksets']
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(970, 500)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -42,9 +42,6 @@ class Ui_MainWindow(object):
         self.prefixdatapath = QtWidgets.QLineEdit(self.groupBox_2)
         self.prefixdatapath.setGeometry(QtCore.QRect(131, 60, 391, 20))
         self.prefixdatapath.setObjectName("prefixdatapath")
-        self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_2)
-        self.tasksetdatapath.setGeometry(QtCore.QRect(150, 100, 400, 20))
-        self.tasksetdatapath.setObjectName("tasksetdatapath")
         self.seed = QtWidgets.QLineEdit(self.groupBox_2)
         self.seed.setGeometry(QtCore.QRect(601, 60, 40, 20))
         self.seed.setObjectName("seed")
@@ -60,21 +57,25 @@ class Ui_MainWindow(object):
         self.plotall.setGeometry(QtCore.QRect(202, 23, 70, 17))
         self.plotall.setChecked(True)
         self.plotall.setObjectName("plotall")
-        self.savetasks = QtWidgets.QCheckBox(self.groupBox_2)
-        self.savetasks.setGeometry(QtCore.QRect(282, 23, 250, 17))
-        self.savetasks.setChecked(False)
-        self.savetasks.setObjectName("savetaskset")
-        self.loadtasks = QtWidgets.QCheckBox(self.groupBox_2)
-        self.loadtasks.setGeometry(QtCore.QRect(500, 23, 250, 17))
-        self.loadtasks.setChecked(False)
-        self.loadtasks.setObjectName("loadtaskset")
+        self.combobox_input = QtWidgets.QComboBox(self.groupBox_2)
+        self.combobox_input.setGeometry(QtCore.QRect(12, 100, 215, 17))
+        self.combobox_input.setObjectName("combobox_input")
+        self.combobox_input.addItems(choice_list)
+        self.combobox_input.currentIndexChanged.connect(lambda: selectionchange(self.combobox_input))
 
+
+        self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_2)
+        self.tasksetdatapath.setGeometry(QtCore.QRect(375, 100, 480, 20))
+        self.tasksetdatapath.setObjectName("tasksetdatapath")
+        self.tasksetdatapath.hide()
+        self.loadtasks_title = QtWidgets.QLabel(self.groupBox_2)
+        self.loadtasks_title.setGeometry(QtCore.QRect(235, 100, 150, 16))
+        self.loadtasks_title.setObjectName("loadtasks_title")
+        self.loadtasks_title.hide()
         self.label_5 = QtWidgets.QLabel(self.groupBox_2)
         self.label_5.setGeometry(QtCore.QRect(12, 60, 150, 16))
         self.label_5.setObjectName("label_5")
-        self.loadtasks_title = QtWidgets.QLabel(self.groupBox_2)
-        self.loadtasks_title.setGeometry(QtCore.QRect(12, 100, 150, 16))
-        self.loadtasks_title.setObjectName("loadtasks_title")
+
         #khchen
         self.label_seed = QtWidgets.QLabel(self.groupBox_2)
         self.label_seed.setGeometry(QtCore.QRect(560, 60, 43, 16))
@@ -166,10 +167,6 @@ class Ui_MainWindow(object):
         self.nc.setGeometry(QtCore.QRect(10, 25, 47, 17))
         self.nc.setObjectName("nc")
         self.nc.setToolTip('Necessary Condition')
-        self.rtss = QtWidgets.QCheckBox(self.groupBox_6)
-        self.rtss.setGeometry(QtCore.QRect(10, 45, 60, 17))
-        self.rtss.setObjectName("rtss")
-        self.rtss.setToolTip('Real-Time Systems Symposium')
 
         self.groupBox = QtWidgets.QGroupBox(self.groupBox_7)  #FRD Hybrid
         self.groupBox.setGeometry(QtCore.QRect(235, 21, 211, 175))
@@ -210,6 +207,7 @@ class Ui_MainWindow(object):
         self.pathpbminddnd.setGeometry(QtCore.QRect(7, 100, 148, 17))
         self.pathpbminddnd.setObjectName("pathpbminddnd")
         self.pathpbminddnd.setToolTip('Pattern-Clairvoyant Proportional Deadline with A Bias')
+
         self.groupBox_4 = QtWidgets.QGroupBox(self.groupBox_7) #Segmented
         self.groupBox_4.setGeometry(QtCore.QRect(455, 21, 131, 175))
         self.groupBox_4.setObjectName("groupBox_4")
@@ -229,6 +227,11 @@ class Ui_MainWindow(object):
         self.scairopa.setGeometry(QtCore.QRect(10, 50, 99, 17))
         self.scairopa.setObjectName("scairopa")
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
+        self.rtss = QtWidgets.QCheckBox(self.groupBox_4)
+        self.rtss.setGeometry(QtCore.QRect(10, 125, 60, 17))
+        self.rtss.setObjectName("rtss")
+        self.rtss.setToolTip('Real-Time Systems Symposium')
+
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_7) #FRD Segmented
         self.groupBox_5.setGeometry(QtCore.QRect(12, 21, 216, 175))
         self.groupBox_5.setObjectName("groupBox_5")
@@ -304,6 +307,8 @@ class Ui_MainWindow(object):
         self.actionAbout_Framework = QtWidgets.QAction(MainWindow)
         self.actionAbout_Framework.setObjectName("actionAbout_Framework")
 
+
+
         def clickMethod(self):
             global gPrefixdata
             global gRuntest
@@ -318,13 +323,21 @@ class Ui_MainWindow(object):
             global gMinsstype
             global gMaxsstype
             global gPlotall
-            global gSavetasks
-            global gLoadtasks
+            global gTaskChoice
 
             del gSchemes[:]
             setSchemes()
 
             #print gSchemes
+
+
+        def selectionchange(com_b):
+            if com_b.currentText() == 'Load Tasksets':
+                self.loadtasks_title.show()
+                self.tasksetdatapath.show()
+            else:
+                self.loadtasks_title.hide()
+                self.tasksetdatapath.hide()
 
         def clickexit(self):
             app.quit()
@@ -350,16 +363,14 @@ class Ui_MainWindow(object):
             global gMinsstype
             global gMaxsstype
             global gPlotall
-            global gSavetasks
-            global gLoadtasks
             global gSeed
+            global gTaskChoice
 
             ###GENERAL###
             gRuntest = self.runtests.isChecked()
             gPlotdata = self.plotdata.isChecked()
             gPlotall = self.plotall.isChecked()
-            gSavetasks = self.savetasks.isChecked()
-            gLoadtasks = self.loadtasks.isChecked()
+            gTaskChoice = self.combobox_input.currentText()
             gPrefixdata = self.prefixdatapath.text()
             gTasksetpath = self.tasksetdatapath.text()
             if self.seed.text() != '':
@@ -478,7 +489,7 @@ class Ui_MainWindow(object):
             #MainWindow.statusBar().showMessage('Ready')
 
 
-	def tasksetConfiguration():
+        def tasksetConfiguration():
             global gTotBucket
             global gTasksinBkt
             global gUStep
@@ -487,7 +498,7 @@ class Ui_MainWindow(object):
             global gSSofftypes
 
             tasksets_difutil = []
-            if gSavetasks == True :
+            if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
                 y = np.zeros(int(100 / gUStep) + 1)
                 for u in xrange(0, len(y), 1):
                     tasksets = []
@@ -496,27 +507,29 @@ class Ui_MainWindow(object):
                         tasks = tgPath.taskGeneration_p(gTasksinBkt, percentageU, gMinsstype, gMaxsstype, vRatio=1,
                                                         seed=gSeed, numLog=int(2), numsegs=gSSofftypes)
                         sortedTasks = sorted(tasks, key=lambda item: item['period'])
-
                         tasksets.append(sortedTasks)
                     tasksets_difutil.append(tasksets)
-                file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' \
-                            + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
-                            '_Minss_' + str(gMinsstype) + '_Maxss_' + \
-                            str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
-                with open('./genTasksets/'+file_name, 'wb') as f:
-                    pickle.dump(tasksets_difutil, f)
-            elif gLoadtasks == True:
-                if len(gTasksetpath) != 0:
-                    file_name = gTasksetpath
-                    with open('./genTasksets/'+file_name, 'rb') as f:
-                        tasksets_difutil = pickle.load(f)
-                    info = file_name.split('_')
-                    gTotBucket = int(info[1])
-                    gTasksinBkt = int(info[3])
-                    gUStep = int(info[5])
-                    gMinsstype = float(info[7])
-                    gMaxsstype = float(info[9])
-                    gSSofftypes = int(info[11])
+                if gTaskChoice == 'Generate and Save Tasksets':
+                    file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' \
+                                + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
+                                '_Minss_' + str(gMinsstype) + '_Maxss_' + \
+                                str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
+
+                    with open('./genTasksets/'+file_name, 'wb') as f:
+                        pickle.dump(tasksets_difutil, f)
+            elif gTaskChoice == 'Load Tasksets':
+                # if len(gTasksetpath) != 0:
+                file_name = gTasksetpath
+                with open('./genTasksets/'+file_name, 'rb') as f:
+                    tasksets_difutil = pickle.load(f)
+                info = file_name.split('_')
+                gTotBucket = int(info[1])
+                gTasksinBkt = int(info[3])
+                gUStep = int(info[5])
+                gMinsstype = float(info[7])
+                gMaxsstype = float(info[9])
+                gSSofftypes = int(info[11])
+                '''
                 else:  # Take the setting in UI to generate filename, if file name is not set
                     file_name = 'TspCon_' + str(gTotBucket) + '_TpTs_' \
                                 + str(gTasksinBkt) + '_Utilst_' + str(gUStep) + \
@@ -524,6 +537,7 @@ class Ui_MainWindow(object):
                                 + '_Seg_' + str(gSSofftypes)+'_.pkl'
                     with open('./genTasksets/'+file_name, 'rb') as f:
                         tasksets_difutil = pickle.load(f)
+                '''
             return tasksets_difutil
 
 
@@ -584,7 +598,13 @@ class Ui_MainWindow(object):
                         elif ischeme == 'SCAIR-OPA':
                             if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
                                 numfail += 1
+                        elif ischeme == 'RTSS':
+                            if rt.rtss(tasks) == False:
+                                numfail += 1
                         # khchen
+                        elif ischeme == 'Combo-SJSB':
+                            if combo.sjsb(tasks) == False:  # sorted tasks
+                                numfail += 1
                         elif ischeme == 'Combo-SJSB':
                             if combo.sjsb(tasks) == False:  # sorted tasks
                                 numfail += 1
@@ -612,12 +632,10 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Evaluation Framework for Self-Suspending Task Systems"))
         self.groupBox_2.setTitle(_translate("MainWindow", "General"))
         self.prefixdatapath.setText(_translate("MainWindow", "effsstsPlot/Data"))
-        self.tasksetdatapath.setText(_translate("MainWindow", ""))
+        self.tasksetdatapath.setText(_translate("MainWindow", "TspCon_100_TpTs_10_Utilst_5_Minss_0.01_Maxss_0.1_Seg_2_.pkl"))
         self.runtests.setText(_translate("MainWindow", "Run Tests"))
         self.plotdata.setText(_translate("MainWindow", "Plot Data"))
         self.plotall.setText(_translate("MainWindow", "Plot All"))
-        self.savetasks.setText(_translate("MainWindow", "Generate and Save Tasksets"))
-        self.loadtasks.setText(_translate("MainWindow", "Load Tasksets"))
         self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
         self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
         #khchen
