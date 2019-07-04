@@ -468,8 +468,8 @@ class Ui_MainWindow(object):
                 #khchen
                 if len(gSchemes) != 0:
                     try:
-                        MainWindow.statusBar().showMessage('Testing the given configurations...')
                         tasksets_util = tasksetConfiguration()
+                        MainWindow.statusBar().showMessage('Testing the given configurations...')
                         schedulabilityTest(tasksets_util)
                         MainWindow.statusBar().showMessage('Finish')
                     except Exception as e:
@@ -509,26 +509,30 @@ class Ui_MainWindow(object):
                         sortedTasks = sorted(tasks, key=lambda item: item['period'])
                         tasksets.append(sortedTasks)
                     tasksets_difutil.append(tasksets)
+
                 if gTaskChoice == 'Generate and Save Tasksets':
                     file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' \
                                 + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
                                 '_Minss_' + str(gMinsstype) + '_Maxss_' + \
                                 str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
-
+                    MainWindow.statusBar().showMessage('File saved as: ' + file_name)
+                    info = [gTotBucket, gTasksinBkt, gUStep, gMinsstype, gMaxsstype, gSSofftypes]
                     with open('./genTasksets/'+file_name, 'wb') as f:
-                        pickle.dump(tasksets_difutil, f)
+                        pickle.dump([tasksets_difutil,info] , f)
+
             elif gTaskChoice == 'Load Tasksets':
                 # if len(gTasksetpath) != 0:
                 file_name = gTasksetpath
                 with open('./genTasksets/'+file_name, 'rb') as f:
-                    tasksets_difutil = pickle.load(f)
-                info = file_name.split('_')
-                gTotBucket = int(info[1])
-                gTasksinBkt = int(info[3])
-                gUStep = int(info[5])
-                gMinsstype = float(info[7])
-                gMaxsstype = float(info[9])
-                gSSofftypes = int(info[11])
+                     data = pickle.load(f)
+                tasksets_difutil = data[0]
+                info = data[1]
+                gTotBucket = int(info[0])
+                gTasksinBkt = int(info[1])
+                gUStep = int(info[2])
+                gMinsstype = float(info[3])
+                gMaxsstype = float(info[4])
+                gSSofftypes = int(info[5])
                 '''
                 else:  # Take the setting in UI to generate filename, if file name is not set
                     file_name = 'TspCon_' + str(gTotBucket) + '_TpTs_' \
