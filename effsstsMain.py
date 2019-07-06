@@ -227,10 +227,10 @@ class Ui_MainWindow(object):
         self.scairopa.setGeometry(QtCore.QRect(10, 50, 99, 17))
         self.scairopa.setObjectName("scairopa")
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
-        self.rtss = QtWidgets.QCheckBox(self.groupBox_4)
-        self.rtss.setGeometry(QtCore.QRect(10, 125, 60, 17))
-        self.rtss.setObjectName("rtss")
-        self.rtss.setToolTip('Real-Time Systems Symposium')
+        self.biondi = QtWidgets.QCheckBox(self.groupBox_4)
+        self.biondi.setGeometry(QtCore.QRect(10, 125, 60, 17))
+        self.biondi.setObjectName("Alessandros Method")
+        self.biondi.setToolTip('Alessandros Method. Biondi proposed in Real-Time Systems Symposium 2016')
 
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_7) #FRD Segmented
         self.groupBox_5.setGeometry(QtCore.QRect(12, 21, 216, 175))
@@ -440,7 +440,7 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('NC')
-            if self.rtss.isChecked():
+            if self.biondi.isChecked():
                 gSchemes.append('Biondi')
             if self.passopa.isChecked():
                 gSchemes.append('PASS-OPA')
@@ -605,7 +605,7 @@ class Ui_MainWindow(object):
                             if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
                                 numfail += 1
                         elif ischeme == 'Biondi':
-                            if rt.rtss(tasks) == False:
+                            if rt.Biondi(tasks) == False:
                                 numfail += 1
                         # khchen
                         elif ischeme == 'Combo-SJSB':
@@ -660,7 +660,7 @@ class Ui_MainWindow(object):
         self.groupBox_7.setTitle(_translate("MainWindow", "Schedulability tests"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
-        self.rtss.setText(_translate("MainWindow", "Biondi"))
+        self.biondi.setText(_translate("MainWindow", "Biondi"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
         self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
