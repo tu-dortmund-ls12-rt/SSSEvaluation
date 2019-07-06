@@ -234,8 +234,8 @@ class Ui_MainWindow(object):
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
         self.rtss = QtWidgets.QCheckBox(self.groupBox_4)
         self.rtss.setGeometry(QtCore.QRect(10, 125, 60, 17))
-        self.rtss.setObjectName("rtss")
-        self.rtss.setToolTip('Real-Time Systems Symposium')
+        self.rtss.setObjectName("Biondi")
+        self.rtss.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
 
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_7) #FRD Segmented
         self.groupBox_5.setGeometry(QtCore.QRect(12, 21, 216, 175))
@@ -773,7 +773,7 @@ class Ui_MainWindow(object):
                             if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
                                 numfail += 1
                         elif ischeme == 'Biondi':
-                            if rt.rtss(tasks) == False:
+                            if rt.Biondi(tasks) == False:
                                 numfail += 1
                         # khchen
                         elif ischeme == 'Combo-SJSB':
@@ -829,7 +829,7 @@ class Ui_MainWindow(object):
         self.groupBox_multiplot.setTitle(_translate("MainWindow", "Multiple plots"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
-        self.rtss.setText(_translate("MainWindow", "Biondi"))
+        self.rtss.setText(_translate("MainWindow", "Alessandros Method"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
         self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
