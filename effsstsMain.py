@@ -675,6 +675,13 @@ class Ui_MainWindow(object):
             global gSeed
 
             tasksets_difutil = []
+
+            if self.seed.text() != '':
+                gSeed = self.seed.text()
+            else:
+                gSeed = datetime.datetime.now()
+            random.seed(gSeed)
+
             if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
                 y = np.zeros(int(100 / gUStep) + 1)
                 for u in xrange(0, len(y), 1):
@@ -748,7 +755,7 @@ class Ui_MainWindow(object):
                         elif ischeme == 'PASS-OPA':
                             if Audsley.Audsley(tasks) == False:
                                 numfail += 1
-                        elif ischeme == 'MIP':
+                        elif ischeme == 'SEIFDA-MILP':
                             if mipx.mip(tasks) == False:
                                 numfail += 1
                         elif ischeme.split('-')[0] == 'SEIFDA':
