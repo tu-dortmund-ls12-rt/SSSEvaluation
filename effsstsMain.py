@@ -166,7 +166,7 @@ class Ui_MainWindow(object):
         self.groupBox_7.setGeometry(QtCore.QRect(10, 240, 925, 203))
         self.groupBox_7.setObjectName("groupBox_7")
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupBox_7) #General
-        self.groupBox_6.setGeometry(QtCore.QRect(745, 20, 81, 175))
+        self.groupBox_6.setGeometry(QtCore.QRect(795, 20, 81, 175))
         self.groupBox_6.setObjectName("groupBox_6")
         self.nc = QtWidgets.QCheckBox(self.groupBox_6)
         self.nc.setGeometry(QtCore.QRect(10, 25, 47, 17))
@@ -214,7 +214,7 @@ class Ui_MainWindow(object):
         self.pathpbminddnd.setToolTip('Pattern-Clairvoyant Proportional Deadline with A Bias')
 
         self.groupBox_4 = QtWidgets.QGroupBox(self.groupBox_7) #Segmented
-        self.groupBox_4.setGeometry(QtCore.QRect(455, 21, 131, 175))
+        self.groupBox_4.setGeometry(QtCore.QRect(455, 21, 181, 175))
         self.groupBox_4.setObjectName("groupBox_4")
         self.scedf = QtWidgets.QCheckBox(self.groupBox_4)
         self.scedf.setGeometry(QtCore.QRect(10, 75, 75, 17))
@@ -232,10 +232,10 @@ class Ui_MainWindow(object):
         self.scairopa.setGeometry(QtCore.QRect(10, 50, 99, 17))
         self.scairopa.setObjectName("scairopa")
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
-        self.rtss = QtWidgets.QCheckBox(self.groupBox_4)
-        self.rtss.setGeometry(QtCore.QRect(10, 125, 60, 17))
-        self.rtss.setObjectName("Biondi")
-        self.rtss.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
+        self.biondi = QtWidgets.QCheckBox(self.groupBox_4)
+        self.biondi.setGeometry(QtCore.QRect(10, 125, 160, 17))
+        self.biondi.setObjectName("Biondi")
+        self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
 
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_7) #FRD Segmented
         self.groupBox_5.setGeometry(QtCore.QRect(12, 21, 216, 175))
@@ -280,7 +280,7 @@ class Ui_MainWindow(object):
         self.eda.setObjectName("eda")
         self.eda.setToolTip('Equal relative Deadline Assignment (EDA)') #Dynamic
         self.groupBox_8 = QtWidgets.QGroupBox(self.groupBox_7)
-        self.groupBox_8.setGeometry(QtCore.QRect(595, 20, 141, 175))
+        self.groupBox_8.setGeometry(QtCore.QRect(645, 20, 141, 175))
         self.groupBox_8.setObjectName("groupBox_8")
         self.passopa = QtWidgets.QCheckBox(self.groupBox_8)
         self.passopa.setGeometry(QtCore.QRect(10, 25, 103, 17))
@@ -558,7 +558,6 @@ class Ui_MainWindow(object):
             elif gmultiplot == 'Suspension Length':
                 garwrap = [self.slengthminvalue_p1.value(), self.slengthminvalue_p2.value(), self.slengthminvalue_p3.value(),
                            self.slengthmaxvalue_p1.value(), self.slengthmaxvalue_p2.value(), self.slengthmaxvalue_p3.value()]
-            print gmultiplot, garwrap
             gmpCheck = self.mp_check.isChecked()
 
             #khchen init error window and fill in the concept later
@@ -613,7 +612,7 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('NC')
-            if self.rtss.isChecked():
+            if self.biondi.isChecked():
                 gSchemes.append('Biondi')
             if self.passopa.isChecked():
                 gSchemes.append('PASS-OPA')
@@ -836,7 +835,7 @@ class Ui_MainWindow(object):
         self.groupBox_multiplot.setTitle(_translate("MainWindow", "Multiple plots"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
-        self.rtss.setText(_translate("MainWindow", "Alessandros Method"))
+        self.biondi.setText(_translate("MainWindow", "Alessandros Method"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
         self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))

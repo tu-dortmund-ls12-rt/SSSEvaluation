@@ -16,7 +16,7 @@ def tasks_out(tasks):
                 list_t.append(task[key])
         list_tasks.append(list_t)
     ar_t = np.asarray(list_tasks)
-    np.savetxt('./RTSS2016/py_input.txt', ar_t, delimiter=',', fmt='%s')
+    np.savetxt('./rtss2016/py_input.txt', ar_t, delimiter=',', fmt='%s')
 
 def str_2_bool(s):
     if s == 'True':
@@ -27,7 +27,7 @@ def str_2_bool(s):
 def Biondi(tasks):
     tasks_out(tasks)
     #time.sleep(1)
-    subprocess.call('./RTSS2016/RTSS_FRED')
+    subprocess.call('./rtss2016/RTSS_FRED')
 
     with open('rt_result.txt', 'r') as file:
         an = file.read()
