@@ -28,12 +28,17 @@ gSchemes = []
 gMinsstype = 0.01
 gMaxsstype = 0.1
 gNumberofruns = 1
+garwrap = []
+
+gmultiplot = ''
+gmpCheck = False
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         choice_list = ['Generate Tasksets', 'Generate and Save Tasksets', 'Load Tasksets']
+        choice_plot = ['Tasks per set', 'Number of Segments', 'Suspension Length']
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(970, 500)
+        MainWindow.resize(970, 640)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
@@ -151,11 +156,11 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         self.run = QtWidgets.QPushButton(self.centralwidget)
         self.run.setToolTip('Button to run the settings')
-        self.run.setGeometry(QtCore.QRect(860, 445, 75, 23))
+        self.run.setGeometry(QtCore.QRect(860, 570, 75, 23))
         self.run.setObjectName("run")
         self.exit = QtWidgets.QPushButton(self.centralwidget)
         self.exit.setToolTip('Exit the framework')
-        self.exit.setGeometry(QtCore.QRect(770, 445, 75, 23))
+        self.exit.setGeometry(QtCore.QRect(770, 570, 75, 23))
         self.exit.setObjectName("exit")
         self.groupBox_7 = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
         self.groupBox_7.setGeometry(QtCore.QRect(10, 240, 925, 203))
@@ -281,6 +286,116 @@ class Ui_MainWindow(object):
         self.passopa.setGeometry(QtCore.QRect(10, 25, 103, 17))
         self.passopa.setObjectName("passopa")
         self.passopa.setToolTip('Priority Assignment algorithm for Self-Suspending Systems - Optimal-Priority Assignment')
+
+        self.groupBox_multiplot = QtWidgets.QGroupBox(self.centralwidget)  # multi plot
+        self.groupBox_multiplot.setGeometry(QtCore.QRect(10, 446, 925, 120))
+        self.groupBox_multiplot.setObjectName("groupBox_multiplot")
+        self.combobox_plot = QtWidgets.QComboBox(self.groupBox_multiplot)
+        self.combobox_plot.setGeometry(QtCore.QRect(150, 58, 240, 25))
+        self.combobox_plot.setObjectName("combobox_plot")
+        self.combobox_plot.addItems(choice_plot)
+        self.combobox_plot.currentIndexChanged.connect(lambda: selectionchange_plot(self.combobox_plot))
+
+        self.label_mp = QtWidgets.QLabel(self.groupBox_multiplot)
+        self.label_mp.setGeometry(QtCore.QRect(400, 58, 70, 20))
+        self.label_mp.setObjectName("label_mp")
+        self.label_mp_control = QtWidgets.QLabel(self.groupBox_multiplot)
+        self.label_mp_control.setGeometry(QtCore.QRect(12, 58, 130, 20))
+        self.label_mp_control.setObjectName("label_mp")
+
+        self.tasksperset_p1 = QtWidgets.QSpinBox(self.groupBox_multiplot)
+        self.tasksperset_p1.setGeometry(QtCore.QRect(460, 58, 50, 20))
+        self.tasksperset_p1.setMaximum(100)
+        self.tasksperset_p1.setProperty("value", 10)
+        self.tasksperset_p1.setObjectName("tasksperset")
+        self.tasksperset_p2 = QtWidgets.QSpinBox(self.groupBox_multiplot)
+        self.tasksperset_p2.setGeometry(QtCore.QRect(520, 58, 50, 20))
+        self.tasksperset_p2.setMaximum(100)
+        self.tasksperset_p2.setProperty("value", 10)
+        self.tasksperset_p2.setObjectName("tasksperset")
+        self.tasksperset_p3 = QtWidgets.QSpinBox(self.groupBox_multiplot)
+        self.tasksperset_p3.setGeometry(QtCore.QRect(580, 58, 50, 20))
+        self.tasksperset_p3.setMaximum(100)
+        self.tasksperset_p3.setProperty("value", 10)
+        self.tasksperset_p3.setObjectName("tasksperset")
+
+        self.numberofsegs_p1 = QtWidgets.QSpinBox(self.groupBox_multiplot)
+        self.numberofsegs_p1.setGeometry(QtCore.QRect(460, 58, 50, 20))
+        self.numberofsegs_p1.setMaximum(100)
+        self.numberofsegs_p1.setProperty("value", 2)
+        self.numberofsegs_p1.setObjectName("numberofsegs")
+        self.numberofsegs_p2 = QtWidgets.QSpinBox(self.groupBox_multiplot)
+        self.numberofsegs_p2.setGeometry(QtCore.QRect(520, 58, 50, 20))
+        self.numberofsegs_p2.setMaximum(100)
+        self.numberofsegs_p2.setProperty("value", 2)
+        self.numberofsegs_p2.setObjectName("numberofsegs")
+        self.numberofsegs_p3 = QtWidgets.QSpinBox(self.groupBox_multiplot)
+        self.numberofsegs_p3.setGeometry(QtCore.QRect(580, 58, 50, 20))
+        self.numberofsegs_p3.setMaximum(100)
+        self.numberofsegs_p3.setProperty("value", 2)
+        self.numberofsegs_p3.setObjectName("numberofsegs")
+
+        self.slengthmaxvalue_p1 = QtWidgets.QDoubleSpinBox(self.groupBox_multiplot)
+        self.slengthmaxvalue_p1.setGeometry(QtCore.QRect(485, 58, 55, 20))
+        self.slengthmaxvalue_p1.setMaximum(1.0)
+        self.slengthmaxvalue_p1.setSingleStep(0.01)
+        self.slengthmaxvalue_p1.setProperty("value", 0.1)
+        self.slengthmaxvalue_p1.setObjectName("slengthmaxvalue")
+        self.slengthmaxvalue_p2 = QtWidgets.QDoubleSpinBox(self.groupBox_multiplot)
+        self.slengthmaxvalue_p2.setGeometry(QtCore.QRect(545, 58, 55, 20))
+        self.slengthmaxvalue_p2.setMaximum(1.0)
+        self.slengthmaxvalue_p2.setSingleStep(0.01)
+        self.slengthmaxvalue_p2.setProperty("value", 0.1)
+        self.slengthmaxvalue_p2.setObjectName("slengthmaxvalue")
+        self.slengthmaxvalue_p3 = QtWidgets.QDoubleSpinBox(self.groupBox_multiplot)
+        self.slengthmaxvalue_p3.setGeometry(QtCore.QRect(605, 58, 55, 20))
+        self.slengthmaxvalue_p3.setMaximum(1.0)
+        self.slengthmaxvalue_p3.setSingleStep(0.01)
+        self.slengthmaxvalue_p3.setProperty("value", 0.1)
+        self.slengthmaxvalue_p3.setObjectName("slengthmaxvalue")
+        self.label_mp_max = QtWidgets.QLabel(self.groupBox_multiplot)
+        self.label_mp_max.setGeometry(QtCore.QRect(400, 58, 140, 20))
+        self.label_mp_max.setObjectName("label_mp_max")
+        self.label_mp_min = QtWidgets.QLabel(self.groupBox_multiplot)
+        self.label_mp_min.setGeometry(QtCore.QRect(400, 88, 140, 20))
+        self.label_mp_min.setObjectName("label_mp_max")
+        self.label_mp_max.hide()
+        self.label_mp_min.hide()
+
+        self.slengthminvalue_p1 = QtWidgets.QDoubleSpinBox(self.groupBox_multiplot)
+        self.slengthminvalue_p1.setGeometry(QtCore.QRect(485, 88, 55, 20))
+        self.slengthminvalue_p1.setMaximum(1.0)
+        self.slengthminvalue_p1.setSingleStep(0.01)
+        self.slengthminvalue_p1.setProperty("value", 0.01)
+        self.slengthminvalue_p1.setObjectName("slengthminvalue")
+        self.slengthminvalue_p2 = QtWidgets.QDoubleSpinBox(self.groupBox_multiplot)
+        self.slengthminvalue_p2.setGeometry(QtCore.QRect(545, 88, 55, 20))
+        self.slengthminvalue_p2.setMaximum(1.0)
+        self.slengthminvalue_p2.setSingleStep(0.01)
+        self.slengthminvalue_p2.setProperty("value", 0.01)
+        self.slengthminvalue_p2.setObjectName("slengthminvalue")
+        self.slengthminvalue_p3 = QtWidgets.QDoubleSpinBox(self.groupBox_multiplot)
+        self.slengthminvalue_p3.setGeometry(QtCore.QRect(605, 88, 55, 20))
+        self.slengthminvalue_p3.setMaximum(1.0)
+        self.slengthminvalue_p3.setSingleStep(0.01)
+        self.slengthminvalue_p3.setProperty("value", 0.01)
+        self.slengthminvalue_p3.setObjectName("slengthminvalue")
+        for i in range(1, 4):
+            slmax = 'slengthmaxvalue_p' + str(i)
+            slmin = 'slengthminvalue_p' + str(i)
+            numseg = 'numberofsegs_p' + str(i)
+            a = getattr(self, slmax)
+            b = getattr(self, slmin)
+            c = getattr(self, numseg)
+            a.hide()
+            b.hide()
+            c.hide()
+
+        self.mp_check = QtWidgets.QCheckBox(self.groupBox_multiplot)
+        self.mp_check.setGeometry(QtCore.QRect(12, 28, 150, 20))
+        self.mp_check.setObjectName("mp_check")
+        self.mp_check.setToolTip('Multiple Plot')
+
         #khchen
         self.combosjsb = QtWidgets.QCheckBox(self.groupBox_8)
         self.combosjsb.setGeometry(QtCore.QRect(10, 50, 113, 17))
@@ -324,6 +439,7 @@ class Ui_MainWindow(object):
             global gMaxsstype
             global gPlotall
             global gTaskChoice
+            global gmpCheck
 
             del gSchemes[:]
             setSchemes()
@@ -338,6 +454,46 @@ class Ui_MainWindow(object):
             else:
                 self.loadtasks_title.hide()
                 self.tasksetdatapath.hide()
+
+
+        def selectionchange_plot( com_b):
+            if com_b.currentText() =='Suspension Length':
+                self.label_mp_max.show()
+                self.label_mp_min.show()
+                self.label_mp.hide()
+            else:
+                self.label_mp_max.hide()
+                self.label_mp_min.hide()
+                self.label_mp.show()
+
+            for i in range(1, 4):
+                slmax = 'slengthmaxvalue_p' + str(i)
+                slmin = 'slengthminvalue_p' + str(i)
+                numseg = 'numberofsegs_p' + str(i)
+                numtasks = 'tasksperset_p' + str(i)
+
+                aslmax = getattr(self, slmax)
+                aslmin = getattr(self, slmin)
+                anums = getattr(self, numseg)
+                anumt = getattr(self, numtasks)
+                if com_b.currentText() == 'Tasks per set':
+                    aslmax.hide()
+                    aslmin.hide()
+                    anums.hide()
+                    anumt.show()
+                elif com_b.currentText() == 'Number of Segments':
+                    aslmax.hide()
+                    aslmin.hide()
+                    anums.show()
+                    anumt.hide()
+                elif com_b.currentText() == 'Suspension Length':
+                    aslmax.show()
+                    aslmin.show()
+                    anums.hide()
+                    anumt.hide()
+
+
+
 
         def clickexit(self):
             app.quit()
@@ -365,12 +521,17 @@ class Ui_MainWindow(object):
             global gPlotall
             global gSeed
             global gTaskChoice
+            global garwrap
+
+            global gmultiplot
+            global gmpCheck
 
             ###GENERAL###
             gRuntest = self.runtests.isChecked()
             gPlotdata = self.plotdata.isChecked()
             gPlotall = self.plotall.isChecked()
             gTaskChoice = self.combobox_input.currentText()
+
             gPrefixdata = self.prefixdatapath.text()
             gTasksetpath = self.tasksetdatapath.text()
             if self.seed.text() != '':
@@ -385,6 +546,18 @@ class Ui_MainWindow(object):
             gSSofftypes = self.numberofsegs.value()
             gMinsstype = self.slengthminvalue.value()
             gMaxsstype = self.slengthmaxvalue.value()
+
+            ###MultiPlot###
+            gmultiplot = self.combobox_plot.currentText()
+            if gmultiplot == 'Tasks per set':
+                garwrap = [self.tasksperset_p1.value(), self.tasksperset_p2.value(), self.tasksperset_p3.value()]
+            elif gmultiplot == 'Number of Segments':
+                garwrap = [self.numberofsegs_p1.value(), self.numberofsegs_p2.value(), self.numberofsegs_p3.value()]
+            elif gmultiplot == 'Suspension Length':
+                garwrap = [self.slengthminvalue_p1.value(), self.slengthminvalue_p2.value(), self.slengthminvalue_p3.value(),
+                           self.slengthmaxvalue_p1.value(), self.slengthmaxvalue_p2.value(), self.slengthmaxvalue_p3.value()]
+            print gmultiplot, garwrap
+            gmpCheck = self.mp_check.isChecked()
 
             #khchen init error window and fill in the concept later
             error_msg = QtWidgets.QMessageBox()
@@ -468,8 +641,8 @@ class Ui_MainWindow(object):
                 #khchen
                 if len(gSchemes) != 0:
                     try:
-                        MainWindow.statusBar().showMessage('Testing the given configurations...')
                         tasksets_util = tasksetConfiguration()
+                        MainWindow.statusBar().showMessage('Testing the given configurations...')
                         schedulabilityTest(tasksets_util)
                         MainWindow.statusBar().showMessage('Finish')
                     except Exception as e:
@@ -480,7 +653,8 @@ class Ui_MainWindow(object):
             if gPlotdata:
                 if len(gSchemes) != 0:
                     try:
-                        effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gMinsstype, gMaxsstype, gSSofftypes, gUStart, gUEnd, gUStep, gTasksinBkt)
+                        effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gMinsstype, gMaxsstype, gSSofftypes,
+                                                   gUStart, gUEnd, gUStep, gTasksinBkt, gmpCheck, gmultiplot, garwrap)
                     except Exception as e:
                         MainWindow.statusBar().showMessage(str(e))
                 else:
@@ -496,6 +670,7 @@ class Ui_MainWindow(object):
             global gMaxsstype
             global gMinsstype
             global gSSofftypes
+            global gSeed
 
             tasksets_difutil = []
             if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
@@ -509,35 +684,32 @@ class Ui_MainWindow(object):
                         sortedTasks = sorted(tasks, key=lambda item: item['period'])
                         tasksets.append(sortedTasks)
                     tasksets_difutil.append(tasksets)
+
                 if gTaskChoice == 'Generate and Save Tasksets':
                     file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' \
                                 + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
                                 '_Minss_' + str(gMinsstype) + '_Maxss_' + \
                                 str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
-
+                    MainWindow.statusBar().showMessage('File saved as: ' + file_name)
+                    info = [gTotBucket, gTasksinBkt, gUStep, gMinsstype, gMaxsstype, gSSofftypes, gSeed ]
                     with open('./genTasksets/'+file_name, 'wb') as f:
-                        pickle.dump(tasksets_difutil, f)
+                        pickle.dump([tasksets_difutil,info] , f)
+
             elif gTaskChoice == 'Load Tasksets':
                 # if len(gTasksetpath) != 0:
                 file_name = gTasksetpath
                 with open('./genTasksets/'+file_name, 'rb') as f:
-                    tasksets_difutil = pickle.load(f)
-                info = file_name.split('_')
-                gTotBucket = int(info[1])
-                gTasksinBkt = int(info[3])
-                gUStep = int(info[5])
-                gMinsstype = float(info[7])
-                gMaxsstype = float(info[9])
-                gSSofftypes = int(info[11])
-                '''
-                else:  # Take the setting in UI to generate filename, if file name is not set
-                    file_name = 'TspCon_' + str(gTotBucket) + '_TpTs_' \
-                                + str(gTasksinBkt) + '_Utilst_' + str(gUStep) + \
-                                '_Minss_' + str(gMinsstype) + '_Maxss_' + str(gMaxsstype) \
-                                + '_Seg_' + str(gSSofftypes)+'_.pkl'
-                    with open('./genTasksets/'+file_name, 'rb') as f:
-                        tasksets_difutil = pickle.load(f)
-                '''
+                     data = pickle.load(f)
+                tasksets_difutil = data[0]
+                info = data[1]
+                gTotBucket = int(info[0])
+                gTasksinBkt = int(info[1])
+                gUStep = int(info[2])
+                gMinsstype = float(info[3])
+                gMaxsstype = float(info[4])
+                gSSofftypes = int(info[5])
+                gSeed = info[6]
+
             return tasksets_difutil
 
 
@@ -619,7 +791,7 @@ class Ui_MainWindow(object):
 
                 plotPath = gPrefixdata + '/' + str(gMinsstype) + '-' + str(gMaxsstype) + '/' + str(gSSofftypes) + '/'
                 plotfile = gPrefixdata + '/' + str(gMinsstype) + '-' + str(gMaxsstype) + '/' + str(
-                    gSSofftypes) + '/' + ischeme
+                    gSSofftypes) + '/' + ischeme + str(gTasksinBkt)
 
                 if not os.path.exists(plotPath):
                     os.makedirs(plotPath)
@@ -652,6 +824,7 @@ class Ui_MainWindow(object):
         self.run.setText(_translate("MainWindow", "Run"))
         self.exit.setText(_translate("MainWindow", "Exit"))
         self.groupBox_7.setTitle(_translate("MainWindow", "Schedulability tests"))
+        self.groupBox_multiplot.setTitle(_translate("MainWindow", "Multiple plots"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
         self.rtss.setText(_translate("MainWindow", "RTSS"))
@@ -674,6 +847,11 @@ class Ui_MainWindow(object):
         self.seifdapbmind.setText(_translate("MainWindow", "SEIFDA-PBminD-"))
         self.eda.setText(_translate("MainWindow", "EDA"))
         self.groupBox_8.setTitle(_translate("MainWindow", "Dynamic"))
+        self.label_mp.setText(_translate("MainWindow", "Values:"))
+        self.label_mp_control.setText(_translate("MainWindow", "Control Parameter:"))
+        self.label_mp_min.setText(_translate("MainWindow", "Min Values:"))
+        self.label_mp_max.setText(_translate("MainWindow", "Max Values:"))
+        self.mp_check.setText(_translate("MainWindow", "Multiple Plots"))
         self.passopa.setText(_translate("MainWindow", "PASS-OPA"))
         self.actionOpen.setText(_translate("MainWindow", "Open"))
         self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
