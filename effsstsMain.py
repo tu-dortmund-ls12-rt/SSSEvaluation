@@ -519,13 +519,13 @@ class Ui_MainWindow(object):
                                 str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
                     MainWindow.statusBar().showMessage('File saved as: ' + file_name)
                     info = [gTotBucket, gTasksinBkt, gUStep, gMinsstype, gMaxsstype, gSSofftypes]
-                    with open('./genTasksets/'+file_name, 'wb') as f:
+                    with open('genTasksets/'+file_name, 'wb') as f:
                         pickle.dump([tasksets_difutil,info] , f)
 
             elif gTaskChoice == 'Load Tasksets':
                 # if len(gTasksetpath) != 0:
                 file_name = gTasksetpath
-                with open('./genTasksets/'+file_name, 'rb') as f:
+                with open('genTasksets/'+file_name, 'rb') as f:
                      data = pickle.load(f)
                 tasksets_difutil = data[0]
                 info = data[1]
