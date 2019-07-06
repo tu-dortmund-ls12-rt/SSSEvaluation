@@ -156,15 +156,11 @@ def init():
 	PSet=[]
 
 def taskGeneration_p(numTasks,uTotal,minsslength,maxsslength,Pmin=100,numLog=1,vRatio=1,seed=1,numsegs=2,minSratio=1,numpaths=2,scalef=0.8):
-	init()
+    init()
     random.seed(datetime.datetime.now())
-
-	UUniFast(numTasks,uTotal)
-
-	CSet_generate(Pmin,numLog)
-
-	SSS_seg_gen(vRatio,minsslength,maxsslength,numsegs,minSratio,numpaths,scalef)
-
-	return PSet
+    UUniFast(numTasks,uTotal)
+    CSet_generate(Pmin,numLog)
+    SSS_seg_gen(vRatio,minsslength,maxsslength,numsegs,minSratio,numpaths,scalef)
+    return PSet
 
 

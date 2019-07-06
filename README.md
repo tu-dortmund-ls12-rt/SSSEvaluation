@@ -9,7 +9,8 @@ We consider three Self-Suspending Task models:
 2. The dynamic model, where the self-suspension behaviour is described by two upper bounds on the total worst-case execution time (WCET) and the total suspension time. It assumes that a task can suspend itself an infinity amount of times as long as the upper bound on the total suspension time is respected.
 3. The hybrid models, that provide different tradeoffs between the overly flexible dynamic model and the overly restrictive segmented model, assuming different levels of information in addition to the bounds on WCET and suspension time, i.e., at least the number of suspensions.
 
-We also want to include MILP solvers like http://retis.sssup.it/~a.biondi/ae/FRED/ in the near future.
+We have included Alessandros Method. Biondi (RTSS 2016) like http://retis.sssup.it/~a.biondi/ae/FRED/.
+The modifed version is compress as a tar file named as RTSS-modifed.tar. Please follow the original instructions to install relative libraries, modify the Makefile path and build the executable binary.
 
 # Framework Introduction
 
