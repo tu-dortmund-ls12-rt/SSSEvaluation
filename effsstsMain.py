@@ -375,7 +375,7 @@ class Ui_MainWindow(object):
             gTasksetpath = self.tasksetdatapath.text()
             if self.seed.text() != '':
                 gSeed = self.seed.text()
-            else
+            else:
                 gSeed = 9999
 
             ###CONFIGURATION###
