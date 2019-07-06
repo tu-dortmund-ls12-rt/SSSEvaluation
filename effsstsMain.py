@@ -375,6 +375,8 @@ class Ui_MainWindow(object):
             gTasksetpath = self.tasksetdatapath.text()
             if self.seed.text() != '':
                 gSeed = self.seed.text()
+            else
+                gSeed = 9999
 
             ###CONFIGURATION###
             gTotBucket = self.tasksetsperconfig.value()
@@ -578,7 +580,7 @@ class Ui_MainWindow(object):
                         elif ischeme == 'PASS-OPA':
                             if Audsley.Audsley(tasks) == False:
                                 numfail += 1
-                        elif ischeme == 'MIP':
+                        elif ischeme == 'SEIFDA-MILP':
                             if mipx.mip(tasks) == False:
                                 numfail += 1
                         elif ischeme.split('-')[0] == 'SEIFDA':
