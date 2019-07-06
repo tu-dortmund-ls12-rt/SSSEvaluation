@@ -441,7 +441,7 @@ class Ui_MainWindow(object):
                 else:
                     gSchemes.append('NC')
             if self.rtss.isChecked():
-                gSchemes.append('RTSS')
+                gSchemes.append('Biondi')
             if self.passopa.isChecked():
                 gSchemes.append('PASS-OPA')
             if self.scedf.isChecked():
@@ -604,7 +604,7 @@ class Ui_MainWindow(object):
                         elif ischeme == 'SCAIR-OPA':
                             if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
                                 numfail += 1
-                        elif ischeme == 'RTSS':
+                        elif ischeme == 'Biondi':
                             if rt.rtss(tasks) == False:
                                 numfail += 1
                         # khchen
@@ -660,7 +660,7 @@ class Ui_MainWindow(object):
         self.groupBox_7.setTitle(_translate("MainWindow", "Schedulability tests"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
-        self.rtss.setText(_translate("MainWindow", "RTSS"))
+        self.rtss.setText(_translate("MainWindow", "Biondi"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
         self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
