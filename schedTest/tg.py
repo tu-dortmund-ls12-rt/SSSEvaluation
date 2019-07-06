@@ -2,7 +2,6 @@ from __future__ import division
 import random
 import math
 import sys
-import datetime
 
 USet=[]
 PSet=[]
@@ -84,7 +83,7 @@ def init():
 
 def taskGeneration_p(numTasks,uTotal,Pmin=10,numLog=2,vRatio=1,sstype="M",seed=1,offtype="R"):
     #if seed = 9999:
-    random.seed(datetime.datetime.now())
+    random.seed(seed)
 	init()
 	minCtune=0.1
 	maxCtune=0.6

@@ -3,7 +3,7 @@ import random
 import math
 import sys, getopt
 import json
-
+import datetime
 
 USet=[]
 PSet=[]
@@ -156,8 +156,8 @@ def init():
 	PSet=[]
 
 def taskGeneration_p(numTasks,uTotal,minsslength,maxsslength,Pmin=100,numLog=1,vRatio=1,seed=1,numsegs=2,minSratio=1,numpaths=2,scalef=0.8):
-	random.seed(seed)
 	init()
+    random.seed(datetime.datetime.now())
 
 	UUniFast(numTasks,uTotal)
 
