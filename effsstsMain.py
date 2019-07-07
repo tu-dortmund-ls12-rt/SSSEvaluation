@@ -539,7 +539,7 @@ class Ui_MainWindow(object):
             else:
                 gSeed = 9999
 
-                ###CONFIGURATION###
+            ###CONFIGURATION###
             gTotBucket = self.tasksetsperconfig.value()
             gTasksinBkt = self.tasksperset.value()
             gUStart = self.utilstart.value()
@@ -835,7 +835,7 @@ class Ui_MainWindow(object):
         self.groupBox_multiplot.setTitle(_translate("MainWindow", "Multiple plots"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
-        self.biondi.setText(_translate("MainWindow", "Alessandros Method"))
+        self.biondi.setText(_translate("MainWindow", "Biondi RTSS 16"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
         self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
