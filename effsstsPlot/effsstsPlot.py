@@ -130,14 +130,19 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
     for ischeme in schemes:
         ifile = prefix+"/"+str(minsstype)+"-"+str(maxsstype)+"/"+str(ssofftypes)+"/"+ischeme+str(numberoftasks)+".npy"
         data = np.load(ifile)
-        x = data[0][0::1]*ustep
+        #x = data[0][0::1]*ustep
+        x = data[0][0::1]
         y = data[1][0::1]
-        us = int(math.ceil(ustart/ustep))
-        ue = int(math.floor(uend/ustep))
+        print "YYYYY"
         print x
         print y
-        x=x[us:ue+1]
-        y=y[us:ue+1]
+        #us = int(math.ceil(ustart/ustep))
+        #ue = int(math.floor(uend/ustep))
+        #x=x[us:ue+1]
+        #y=y[us:ue+1]
+        #print "XXXXXXXXX"
+        #print x
+        #print y
         ax.plot(x, y,
                 '-',
                 color=pickColor(ischeme),
