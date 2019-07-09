@@ -534,10 +534,6 @@ class Ui_MainWindow(object):
 
             gPrefixdata = self.prefixdatapath.text()
             gTasksetpath = self.tasksetdatapath.text()
-            if self.seed.text() != '':
-                gSeed = self.seed.text()
-            else:
-                gSeed = 9999
 
             ###CONFIGURATION###
             gTotBucket = self.tasksetsperconfig.value()
@@ -548,7 +544,10 @@ class Ui_MainWindow(object):
             gSSofftypes = self.numberofsegs.value()
             gMinsstype = self.slengthminvalue.value()
             gMaxsstype = self.slengthmaxvalue.value()
-
+            if self.seed.text() != '':
+                gSeed = self.seed.text()
+            else:
+                gSeed = datetime.datetime.now()
             ###MultiPlot###
             gmultiplot = self.combobox_plot.currentText()
             if gmultiplot == 'Tasks per set':
@@ -675,10 +674,7 @@ class Ui_MainWindow(object):
 
             tasksets_difutil = []
 
-            if self.seed.text() != '':
-                gSeed = self.seed.text()
-            else:
-                gSeed = datetime.datetime.now()
+            
             random.seed(gSeed)
 
             if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
