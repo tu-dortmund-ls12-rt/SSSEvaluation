@@ -667,6 +667,8 @@ class Ui_MainWindow(object):
             global gTotBucket
             global gTasksinBkt
             global gUStep
+            global gUStart
+            global gUEnd
             global gMaxsstype
             global gMinsstype
             global gSSofftypes
@@ -678,11 +680,16 @@ class Ui_MainWindow(object):
             random.seed(gSeed)
 
             if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
-                y = np.zeros(int(100 / gUStep) + 1)
-                for u in xrange(0, len(y), 1):
+                # khchen original code
+                #y = np.zeros(int(100 / gUStep) + 1)
+                #for u in xrange(0, len(y), 1):
+
+                y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
+                for u in xrange(gUStart, gUEnd, gUStep):
                     tasksets = []
                     for i in xrange(0, gTotBucket, 1):
-                        percentageU = u * gUStep / 100
+                        #percentageU = u * gUStep / 100
+                        percentageU = u / 100
                         tasks = tgPath.taskGeneration_p(gTasksinBkt, percentageU, gMinsstype, gMaxsstype, vRatio=1,
                                                         seed=gSeed, numLog=int(2), numsegs=gSSofftypes)
                         sortedTasks = sorted(tasks, key=lambda item: item['period'])
@@ -722,11 +729,14 @@ class Ui_MainWindow(object):
             sspropotions = ['10']
             periodlogs = ['2']
             for ischeme in gSchemes:
-                x = np.arange(0, int(100 / gUStep) + 1)
-                y = np.zeros(int(100 / gUStep) + 1)
+                x = np.arange(gUStart, gUEnd+1, gUStep)
+                #y = np.zeros(int(100 / gUStep) + 1)
+                print x
+                y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
+                print y
                 ifskip = False
                 for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
-                    print "Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", u * gUStep, "SSLength:", str(
+                    print "Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", gUStart + u * gUStep, "SSLength:", str(
                         gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes
                     if u == 0:
                         y[u] = 1
