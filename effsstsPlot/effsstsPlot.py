@@ -243,7 +243,7 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
                     label=pickName(ischeme),
                     linewidth=1.0,
                     clip_on=False)
-            if c==0:
+            if c==1:
                 ax.legend(bbox_to_anchor=(0.5, 1.11),
                           loc=10,
                           markerscale=1.5,
