@@ -32,7 +32,6 @@ garwrap = []
 
 gmultiplot = ''
 gmpCheck = False
-gplotallmulti = False
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -55,14 +54,6 @@ class Ui_MainWindow(object):
         self.runtests.setGeometry(QtCore.QRect(12, 23, 90, 17))
         self.runtests.setChecked(True)
         self.runtests.setObjectName("runtests")
-        self.plotdata = QtWidgets.QCheckBox(self.groupBox_2)
-        self.plotdata.setGeometry(QtCore.QRect(110, 23, 100, 17))
-        self.plotdata.setChecked(True)
-        self.plotdata.setObjectName("plotdata")
-        self.plotall = QtWidgets.QCheckBox(self.groupBox_2)
-        self.plotall.setGeometry(QtCore.QRect(202, 23, 70, 17))
-        self.plotall.setChecked(True)
-        self.plotall.setObjectName("plotall")
         self.combobox_input = QtWidgets.QComboBox(self.groupBox_2)
         self.combobox_input.setGeometry(QtCore.QRect(12, 100, 215, 17))
         self.combobox_input.setObjectName("combobox_input")
@@ -291,6 +282,7 @@ class Ui_MainWindow(object):
         self.groupBox_multiplot = QtWidgets.QGroupBox(self.centralwidget)  # multi plot
         self.groupBox_multiplot.setGeometry(QtCore.QRect(10, 446, 925, 120))
         self.groupBox_multiplot.setObjectName("groupBox_multiplot")
+
         self.combobox_plot = QtWidgets.QComboBox(self.groupBox_multiplot)
         self.combobox_plot.setGeometry(QtCore.QRect(150, 58, 240, 20))
         self.combobox_plot.setObjectName("combobox_plot")
@@ -393,13 +385,17 @@ class Ui_MainWindow(object):
             c.hide()
 
         self.mp_check = QtWidgets.QCheckBox(self.groupBox_multiplot)
-        self.mp_check.setGeometry(QtCore.QRect(12, 28, 150, 20))
+        self.mp_check.setGeometry(QtCore.QRect(110, 28, 150, 20))
         self.mp_check.setObjectName("mp_check")
-        self.mp_check.setToolTip('Multiple Plot')
-        self.plotallmulti = QtWidgets.QCheckBox(self.groupBox_multiplot)
-        self.plotallmulti.setGeometry(QtCore.QRect(140, 28, 150, 20))
-        self.plotallmulti.setChecked(False)
-        self.plotallmulti.setObjectName("plotall")
+        self.mp_check.setToolTip('Plots')
+        self.plotdata = QtWidgets.QCheckBox(self.groupBox_multiplot)
+        self.plotdata.setGeometry(QtCore.QRect(12, 28, 100, 20))
+        self.plotdata.setChecked(True)
+        self.plotdata.setObjectName("plotdata")
+        self.plotall = QtWidgets.QCheckBox(self.groupBox_multiplot)
+        self.plotall.setGeometry(QtCore.QRect(250, 28, 150, 20))
+        self.plotall.setChecked(True)
+        self.plotall.setObjectName("plotall")
 
         #khchen
         self.combosjsb = QtWidgets.QCheckBox(self.groupBox_8)
@@ -445,7 +441,6 @@ class Ui_MainWindow(object):
             global gPlotall
             global gTaskChoice
             global gmpCheck
-            global gplotallmulti
 
             del gSchemes[:]
             setSchemes()
@@ -499,8 +494,6 @@ class Ui_MainWindow(object):
                     anumt.hide()
 
 
-
-
         def clickexit(self):
             app.quit()
 
@@ -531,13 +524,11 @@ class Ui_MainWindow(object):
 
             global gmultiplot
             global gmpCheck
-            global gplotallmulti
 
             ###GENERAL###
             gRuntest = self.runtests.isChecked()
             gPlotdata = self.plotdata.isChecked()
             gPlotall = self.plotall.isChecked()
-            gplotallmulti = self.plotallmulti.isChecked()
             gTaskChoice = self.combobox_input.currentText()
 
             gPrefixdata = self.prefixdatapath.text()
@@ -670,7 +661,7 @@ class Ui_MainWindow(object):
             if gmpCheck:
                 if len(gSchemes) != 0:
                     try:
-                        effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gplotallmulti, gmultiplot, garwrap, gSchemes, gMinsstype, gMaxsstype, gSSofftypes,
+                        effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gMinsstype, gMaxsstype, gSSofftypes,
                                                    gUStart, gUEnd, gUStep, gTasksinBkt)
                     except Exception as e:
                         MainWindow.statusBar().showMessage(str(e))
@@ -838,7 +829,7 @@ class Ui_MainWindow(object):
         self.tasksetdatapath.setText(_translate("MainWindow", "TspCon_100_TpTs_10_Utilst_5_Minss_0.01_Maxss_0.1_Seg_2_.pkl"))
         self.runtests.setText(_translate("MainWindow", "Run Tests"))
         self.plotdata.setText(_translate("MainWindow", "Plot Data"))
-        self.plotall.setText(_translate("MainWindow", "Plot All"))
+        self.plotall.setText(_translate("MainWindow", "Plot all schemes"))
         self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
         self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
         #khchen
@@ -855,7 +846,7 @@ class Ui_MainWindow(object):
         self.run.setText(_translate("MainWindow", "Run"))
         self.exit.setText(_translate("MainWindow", "Exit"))
         self.groupBox_7.setTitle(_translate("MainWindow", "Schedulability tests"))
-        self.groupBox_multiplot.setTitle(_translate("MainWindow", "Multiple plots"))
+        self.groupBox_multiplot.setTitle(_translate("MainWindow", "Plots"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
         self.biondi.setText(_translate("MainWindow", "Biondi RTSS 16"))
@@ -883,7 +874,6 @@ class Ui_MainWindow(object):
         self.label_mp_min.setText(_translate("MainWindow", "Min Values:"))
         self.label_mp_max.setText(_translate("MainWindow", "Max Values:"))
         self.mp_check.setText(_translate("MainWindow", "Multiple Plots"))
-        self.plotallmulti.setText(_translate("MainWindow", "Plot all schemes"))
         self.passopa.setText(_translate("MainWindow", "PASS-OPA"))
         self.actionOpen.setText(_translate("MainWindow", "Open"))
         self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
