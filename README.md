@@ -25,3 +25,9 @@ The framework already includes schedulability tests for multiple algorithms:
 
 # Framework Usage
 ![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/framework_gui-1.jpg)
+
+# How to integrate your algorithms?
+
+The framework can be extended with other scheduling algorithms written in Python or C++. The integration is in twofold:
+* Make sure the content of task is consistent to your existed algorithms. This is a bit tricky: Each task is formed as a dictionary in Python, which consists of its period ['period'], worst case execution time ['execution'], utilization ['utilization'], relative deadline ['deadline'], the possible suspension time ['sslength'], the set of execution segements ['Cseg'], the set of suspension segements ['Sseg']. For the other keys in the dictionary, they are the intermediate variables for task generations.
+* Based on the same format of tasks, the targeted algorithm in Python should be implemented accordingly (recommended to store in the folder of schedTest). If the algorithm is written in C++, an executable binary needs to be pre-built so that the process can be called from the main python script. The properties of tasks and the result of the analysis are transmitted in the form of csv or txt file.
