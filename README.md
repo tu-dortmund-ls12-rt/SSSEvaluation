@@ -1,6 +1,6 @@
 # Evaluation Framework for Self-Suspending Task Systems
 This tutorial explains how to use the framework discussed in the paper:
->Georg von der Brüggen, Milad Nayebi, Junjie Shi, Kuan-Hsun Chen, and Jian-Jia Chen, Evaluation Framework for Self-Suspending Task Systems, 10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS 2019), to appear, July 2019
+>Georg von der Brüggen, Milad Nayebi, Junjie Shi, Kuan-Hsun Chen, and Jian-Jia Chen, Evaluation Framework for Self-Suspending Task Systems, 10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS 2019), July 2019
 
 Our goal is to provide an easy to use framework that allows to compare these schedulability tests based on synthesized task sets.
 
