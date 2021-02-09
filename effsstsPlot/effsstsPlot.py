@@ -129,7 +129,7 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
     i = 1
     for ischeme in schemes:
         ifile = prefix+"/"+str(minsstype)+"-"+str(maxsstype)+"/"+str(ssofftypes)+"/"+ischeme+ str(numberoftasks) +".npy"
-        data = np.load(ifile, allow_pickle=True)
+        data = np.load(ifile)
         x = data[0][0::1]
         y = data[1][0::1]
         us = int(math.ceil(ustart/ustep))
@@ -224,7 +224,7 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
             elif id_par == 'Suspension Length':
                 ifile = prefix + "/" + str(minsstype[c]) + "-" + str(maxsstype[c]) + "/" + str(
                     ssofftypes) + "/" + ischeme + str(numberoftasks) + ".npy"
-            data = np.load(ifile,allow_pickle=True)
+            data = np.load(ifile)
             x = data[0][0::1]
             y = data[1][0::1]
             us = int(math.ceil(ustart/ustep))

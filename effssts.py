@@ -131,7 +131,7 @@ def main():
 				if not os.path.exists(plotPath):
 					os.makedirs(plotPath)
 
-				np.save(plotfile,np.array([x,y]),allow_pickle=True)
+				np.save(plotfile,np.array([x,y]))
 				#effsstsPlot.effsstsPlot(ischeme)
 
 def usage():

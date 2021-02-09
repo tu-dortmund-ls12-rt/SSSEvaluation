@@ -814,7 +814,7 @@ class Ui_MainWindow(object):
 
                 if not os.path.exists(plotPath):
                     os.makedirs(plotPath)
-                np.save(plotfile, np.array([x, y]),allow_pickle=True)
+                np.save(plotfile, np.array([x, y]))
 
 
     def retranslateUi(self, MainWindow):
