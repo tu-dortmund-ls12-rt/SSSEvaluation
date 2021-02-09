@@ -1,4 +1,4 @@
-from PASS import *
+from schedTest import PASS
 def Audsley(tasks):
 	#Optimal Priority Assignment
 	priortyassigned=[0 for i in range(len(tasks))]
@@ -33,8 +33,7 @@ def Audsley(tasks):
 				maxSC=max(maxSC,SC)
 				
 
-			
-			if PASS(maxSC,Tn,primeTasks) == True:
+			if PASS.PASS(maxSC,Tn,primeTasks) == True:
 				priortyassigned[i]=1
 				canLevel=1
 				tasks[i]['priority']=len(tasks)-plevel

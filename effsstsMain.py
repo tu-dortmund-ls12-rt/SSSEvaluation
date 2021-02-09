@@ -5,11 +5,11 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions
 from effsstsPlot import effsstsPlot
 import os
 import datetime
-import cPickle as pickle
+import pickle
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -690,12 +690,13 @@ class Ui_MainWindow(object):
             if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
                 # khchen original code
                 #y = np.zeros(int(100 / gUStep) + 1)
-                #for u in xrange(0, len(y), 1):
+                #for u in range(0, len(y), 1):
 
                 y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
-                for u in xrange(gUStart, gUEnd, gUStep):
+
+                for u in range(gUStart, gUEnd, gUStep):
                     tasksets = []
-                    for i in xrange(0, gTotBucket, 1):
+                    for i in range(0, gTotBucket, 1):
                         #percentageU = u * gUStep / 100
                         percentageU = u / 100
                         tasks = tgPath.taskGeneration_p(gTasksinBkt, percentageU, gMinsstype, gMaxsstype, vRatio=1,
@@ -703,7 +704,6 @@ class Ui_MainWindow(object):
                         sortedTasks = sorted(tasks, key=lambda item: item['period'])
                         tasksets.append(sortedTasks)
                     tasksets_difutil.append(tasksets)
-
                 if gTaskChoice == 'Generate and Save Tasksets':
                     file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' \
                                 + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
@@ -713,7 +713,6 @@ class Ui_MainWindow(object):
                     info = [gTotBucket, gTasksinBkt, gUStep, gMinsstype, gMaxsstype, gSSofftypes, gSeed ]
                     with open('./genTasksets/'+file_name, 'wb') as f:
                         pickle.dump([tasksets_difutil,info] , f)
-
             elif gTaskChoice == 'Load Tasksets':
                 # if len(gTasksetpath) != 0:
                 file_name = gTasksetpath
@@ -728,7 +727,6 @@ class Ui_MainWindow(object):
                 gMaxsstype = float(info[4])
                 gSSofftypes = int(info[5])
                 gSeed = info[6]
-
             return tasksets_difutil
 
 
@@ -739,13 +737,13 @@ class Ui_MainWindow(object):
             for ischeme in gSchemes:
                 x = np.arange(gUStart, gUEnd+1, gUStep)
                 #y = np.zeros(int(100 / gUStep) + 1)
-                print x
+                print(x)
                 y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
-                print y
+                print(y)
                 ifskip = False
                 for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
-                    print "Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", gUStart + u * gUStep, "SSLength:", str(
-                        gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes
+                    print("Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per set:", gTasksinBkt, "U:", gUStart + u * gUStep, "SSLength:", str(
+                        gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes)
                     if u == 0:
                         y[u] = 1
                         continue
@@ -754,10 +752,9 @@ class Ui_MainWindow(object):
                         continue
                     numfail = 0
                     if ifskip == True:
-                        print "acceptanceRatio:", 0
+                        print("acceptanceRatio:", 0)
                         y[u] = 0
                         continue
-
                     for tasks in tasksets:  # iterate for each taskset
                         if ischeme == 'SCEDF':
                             if SCEDF.SC_EDF(tasks) == False:
@@ -806,7 +803,7 @@ class Ui_MainWindow(object):
                             assert ischeme, 'not vaild ischeme'
 
                     acceptanceRatio = 1 - (numfail / gTotBucket)
-                    print "acceptanceRatio:", acceptanceRatio
+                    print("acceptanceRatio:", acceptanceRatio)
                     y[u] = acceptanceRatio
                     if acceptanceRatio == 0:
                         ifskip = True
@@ -817,8 +814,7 @@ class Ui_MainWindow(object):
 
                 if not os.path.exists(plotPath):
                     os.makedirs(plotPath)
-
-                np.save(plotfile, np.array([x, y]))
+                np.save(plotfile, np.array([x, y]),allow_pickle=True)
 
 
     def retranslateUi(self, MainWindow):

@@ -129,13 +129,13 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
     i = 1
     for ischeme in schemes:
         ifile = prefix+"/"+str(minsstype)+"-"+str(maxsstype)+"/"+str(ssofftypes)+"/"+ischeme+ str(numberoftasks) +".npy"
-        data = np.load(ifile)
+        data = np.load(ifile, allow_pickle=True)
         x = data[0][0::1]
         y = data[1][0::1]
         us = int(math.ceil(ustart/ustep))
         ue = int(math.floor(uend/ustep))
-        print x
-        print y
+        print(x)
+        print(y)
         x=x[us:ue+1]
         y=y[us:ue+1]
         ax.plot(x, y,
@@ -166,10 +166,10 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
     #plt.show()
     if plotall:
         fig.savefig(prefix + '/EFFSSTS[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf', bbox_inches='tight')
-        print '[DONE]', '/' + prefix + '/EFFSSTS[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf'
+        print('[DONE]', '/' + prefix + '/EFFSSTS[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf')
     else:
         fig.savefig(prefix + '/' + schemes[0] + '[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf', bbox_inches='tight')
-        print '[DONE]', '/' + prefix + '/' + schemes[0] + '[' +  str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf'
+        print('[DONE]', '/' + prefix + '/' + schemes[0] + '[' +  str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf')
     #sys.exit()
 
 
@@ -224,13 +224,13 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
             elif id_par == 'Suspension Length':
                 ifile = prefix + "/" + str(minsstype[c]) + "-" + str(maxsstype[c]) + "/" + str(
                     ssofftypes) + "/" + ischeme + str(numberoftasks) + ".npy"
-            data = np.load(ifile)
+            data = np.load(ifile,allow_pickle=True)
             x = data[0][0::1]
             y = data[1][0::1]
             us = int(math.ceil(ustart/ustep))
             ue = int(math.floor(uend/ustep))
-            print x
-            print y
+            print(x)
+            print(y)
             x=x[us:ue+1]
             y=y[us:ue+1]
             ax.plot(x, y,
@@ -264,25 +264,25 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
     #plt.show()
     if plotall:
         fig.savefig(prefix + '/EFFSSTS[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf', bbox_inches='tight')
-        print '[DONE]', '/' + prefix + '/EFFSSTS[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf'
+        print('[DONE]', '/' + prefix + '/EFFSSTS[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf')
     else:
         fig.savefig(prefix + '/' + schemes[0] + '[' + str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf', bbox_inches='tight')
-        print '[DONE]', '/' + prefix + '/' + schemes[0] + '[' +  str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf'
+        print('[DONE]', '/' + prefix + '/' + schemes[0] + '[' +  str(ssofftypes) + '][' + str(minsstype)+"-"+str(maxsstype) + '][' + str(numberoftasks) + '].pdf')
 
 
 def effsstsPlotAll(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, ustart, uend, ustep, numberoftasks):
-    print '-------------------------------------------------------'
-    print prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, ustart, uend, ustep,numberoftasks
-    print '-------------------------------------------------------'
+    print('-------------------------------------------------------')
+    print(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, ustart, uend, ustep,numberoftasks)
+    print('-------------------------------------------------------')
     for scheme in schemes:
         effsstsPlot(prefix, False, scheme.split(), minsstype, maxsstype, ssofftypes, ustart, uend, ustep, numberoftasks)
     if (plotall):
         effsstsPlot(prefix, True, schemes, minsstype, maxsstype, ssofftypes, ustart, uend, ustep, numberoftasks)
 
 def effsstsPlotAllmulti(prefix, plotall, id_par, par_values, schemes, minsstype, maxsstype, ssofftypes, ustart, uend, ustep, numberoftasks):
-    print '-------------------------------------------------------'
-    print prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, ustart, uend, ustep,numberoftasks
-    print '-------------------------------------------------------'
+    print('-------------------------------------------------------')
+    print(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, ustart, uend, ustep,numberoftasks)
+    print('-------------------------------------------------------')
     for scheme in schemes:
         effsstsPlotmulti(prefix, False, id_par, par_values, scheme.split(), minsstype, maxsstype, ssofftypes, ustart, uend, ustep, numberoftasks)
     if (plotall):
@@ -290,7 +290,7 @@ def effsstsPlotAllmulti(prefix, plotall, id_par, par_values, schemes, minsstype,
 
 if __name__ == '__main__':
     args = sys.argv
-    print args
+    print(args)
     testSchemes = ['EDA', 'NC', 'SCEDF', 'PASS-OPA']
     testSelfSuspendingType= ['S','M','L']
     testNumberofSegments = [2]

@@ -3,13 +3,13 @@ from functions import *
 
 def dbfProportional(t,task,ssofftypes):
 	sum=0
-	for i in xrange(ssofftypes):
+	for i in range(ssofftypes):
 		sum+=task['Cseg'][i]
 
 	#D=(task['period']-task['sslength'])/ssofftypes
 
 	TiMinusSi=0
-	for i in xrange(ssofftypes):
+	for i in range(ssofftypes):
 		TiMinusSi+=task['Cseg'][i]/sum
 
 	if t<TiMinusSi:
@@ -19,14 +19,14 @@ def dbfProportional(t,task,ssofftypes):
 
 	
 def PROPORTIONAL(tasks, ssofftypes):
-	sortedTasks=sorted(tasks,cmp=lm_cmp)
-	for i in xrange(len(sortedTasks)):
+	sortedTasks=sorted(tasks,key= lambda x: (x["period"]-x["sslength"])/2)
+	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		Ci=0
-		for j in xrange(ssofftypes):
+		for j in range(ssofftypes):
 			Ci+=task['Cseg'][j]
 		D = 0
-		# for k in xrange(ssofftypes):
+		# for k in range(ssofftypes):
 		# 	D+=(task['Cseg'][k])/Ci
 		#D=(task['period']-task['sslength'])/ssofftypes
 		D=(task['period']-task['sslength'])*task['Cseg'][0]/Ci

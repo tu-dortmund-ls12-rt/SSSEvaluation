@@ -7,7 +7,7 @@ from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad
 from effsstsPlot import effsstsPlot
 import os
 import datetime
-import ConfigParser as cp
+import configparser as cp
 
 
 
@@ -63,8 +63,8 @@ def main():
 				x = np.arange(0, int(100/UStep)+1) 
 				y = np.zeros(int(100/UStep)+1)
 				ifskip=False
-				for u in xrange(0,len(y),1):
-					print "Scheme:",ischeme,"N:",totBucket,"U:",u*UStep, "MinSSLength:",str(minsstype), "MaxSSLength:",str(maxsstype),"OffType:",ssofftypes,"prop: ", issprop
+				for u in range(0,len(y),1):
+					print("Scheme:",ischeme,"N:",totBucket,"U:",u*UStep, "MinSSLength:",str(minsstype), "MaxSSLength:",str(maxsstype),"OffType:",ssofftypes,"prop: ", issprop)
 					if u == 0:
 						y[u] = 1
 						continue
@@ -73,11 +73,11 @@ def main():
 						continue
 					numfail = 0
 					if ifskip == True:
-						print "acceptanceRatio:", 0
+						print("acceptanceRatio:", 0)
 						y[u] = 0
 						continue 
 
-					for i in xrange(0, totBucket, 1):									
+					for i in range(0, totBucket, 1):									
 						percentageU = u*UStep/100
 						prop = int(issprop)/10
 						tasks = tgPath.taskGeneration_p(tasksinBkt, percentageU,minsstype,maxsstype, vRatio=prop, seed=i, numLog=int(iplog), numsegs=ssofftypes)
@@ -120,7 +120,7 @@ def main():
 							assert ischeme, 'not vaild ischeme'
 			
 					acceptanceRatio=1-(numfail/totBucket)
-					print "acceptanceRatio:",acceptanceRatio
+					print("acceptanceRatio:",acceptanceRatio)
 					y[u]=acceptanceRatio
 					if acceptanceRatio == 0:
 						ifskip=True
@@ -130,8 +130,8 @@ def main():
 
 				if not os.path.exists(plotPath):
 					os.makedirs(plotPath)
-				
-				np.save(plotfile,np.array([x,y]))
+
+				np.save(plotfile,np.array([x,y]),allow_pickle=True)
 				#effsstsPlot.effsstsPlot(ischeme)
 
 def usage():
@@ -179,7 +179,7 @@ def usage():
 	[Schedulability Tests]
 	schemes = SCAIR-OPA, EDA
 	"""
-	print howToUse
+	print(howToUse)
 if __name__ == '__main__':
 	args = sys.argv
 	if len(args) < 2:

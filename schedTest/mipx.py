@@ -10,7 +10,10 @@
 #        x +   y       >= 1
 #  x, y, z binary
 
+from mip import *
 from gurobipy import *
+
+import gurobipy
 def sumDBF(t,tasks,d):
     sumd=0
     for j in range(len(tasks)):
@@ -58,7 +61,6 @@ def mip(tasks):
     #M=99999999
     
     for i in range(len(tasks)):        
-
         d.append( m.addVar(vtype=GRB.INTEGER, name="d"+str(i),lb=tasks[i]['Cseg'][0],ub=(tasks[i]['period']-tasks[i]['sslength'])/2))
         
         for j in range(len(tasks)):
@@ -170,7 +172,6 @@ def mip(tasks):
         m.addConstr(expr<=t  , "c25"+str(i))
     
     #expr = LinExpr()
-    
     # Set objective
     m.setObjective(0, GRB.MINIMIZE )
     m.update()
@@ -179,8 +180,8 @@ def mip(tasks):
     m.optimize()
     
     m.write("model.lp") 
-    #print m.ObjCon
-    #print n,m.NumConstrs
+    #print(m.ObjCon)
+    #print(n,m.NumConstrs)
 
 
     #for v in m.getVars():
@@ -188,26 +189,26 @@ def mip(tasks):
     #
     #if m.Status!=2:
          #m.computeIIS();
-         #print m.Status
-         #print tasks
+         #print(m.Status)
+         #print(tasks)
          #m.write("model.ilp");
-         #print m.getConstrs
+         #print(m.getConstrs)
             
 
     #     ##for i in d:
-    #      #   print i.x
+    #      #   print(i.x)
     #     # for i in y1:
     #     #     for j in i:
-    #     #         print j.x
+    #     #         print(j.x)
     #     # for i in y2:
     #     #     for j in i:
-    #     #         print j.x
+    #     #         print(j.x)
     #     # for i in a2:
     #     #     for j in i:
-    #     #         print j.x
+    #     #         print(j.x)
     #     # for i in b2:
     #     #     for j in i:
-    #     #         print j.x
+    #     #         print(j.x)
     #     sys.exit()
     if m.Status==2:
         for i in range(len(tasks)):        
@@ -216,30 +217,30 @@ def mip(tasks):
             
             
             if sumDBF(t,tasks,d)>t+0.1:
-                print tasks
+                print(tasks)
                 for k in range(len(tasks)):        
-                    print "tasks",k,d[k].X
-                print sumDBF(t,tasks,d),t
-                print "infeasible1"
+                    print("tasks",k,d[k].X)
+                print(sumDBF(t,tasks,d),t)
+                print("infeasible1")
 
                 
                 for h in range(len(tasks)):
-                    print y2[1][h].varName,y2[1][h].X
-                    print a2[1][h].varName, a2[1][h].X
-                    print b2[1][h].varName, b2[1][h].X
+                    print(y2[1][h].varName,y2[1][h].X)
+                    print(a2[1][h].varName, a2[1][h].X)
+                    print(b2[1][h].varName, b2[1][h].X)
                 sys.exit()
             t=tasks[i]['period']-tasks[i]['sslength']-d[i].x
             if sumDBF(t,tasks,d)>t+0.1:
-                print tasks
+                print(tasks)
                 for k in range(len(tasks)):        
-                    print "tasks",k,d[k].x
-                print sumDBF(t,tasks,d),t
-                print "infeasible1"
+                    print("tasks",k,d[k].x)
+                print(sumDBF(t,tasks,d),t)
+                print("infeasible1")
                 sys.exit()
 
             
         return True
-    #print m.Status
+    #print(m.Status)
     return False
 
     

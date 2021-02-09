@@ -16,7 +16,10 @@ def tasks_out(tasks):
                 list_t.append(task[key])
         list_tasks.append(list_t)
     ar_t = np.asarray(list_tasks)
+    if not os.path.exists("./rtss2016/"):
+        os.makedirs("./rtss2016/")
     np.savetxt('./rtss2016/py_input.txt', ar_t, delimiter=',', fmt='%s')
+
 
 def str_2_bool(s):
     if s == 'True':

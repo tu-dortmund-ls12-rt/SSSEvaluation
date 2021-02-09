@@ -1,5 +1,5 @@
 import math
-from functions import *
+from schedTest import functions
 
 def WCRT(CS,Tn,HPTasks):	
 	R=0

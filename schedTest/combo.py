@@ -33,7 +33,7 @@ def TDAjitblock(task,HPTasks): #original design in RTAS2018
                 return True
 def sjsb(tasks):
     # note that tasks must be sorted according to periods. (RM)
-    for i in xrange(len(tasks)):
+    for i in range(len(tasks)):
         if TDAjitblock(tasks[i], tasks[:i]):
             continue
         else:
