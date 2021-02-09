@@ -153,7 +153,7 @@ def SEIFDApath(task,HindexTasks,k,scheme,ifsame):
 			return False
 		
 def PATH(tasks,scheme):
-	sortedTasks=sorted(tasks,key= lambda x: (x["period"]-x["sslength"])/2)
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 
 	ischme=scheme.split('-')[1]
 	k=int(scheme.split('-')[2])

@@ -10,7 +10,7 @@ from schedTest import functions
 
 	
 # def EDA(tasks):
-# 	sortedTasks=sorted(tasks,key= lambda x: (x["period"]-x["sslength"])/2)
+# 	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 # 	for i in range(len(sortedTasks)):
 # 		task=sortedTasks[i]
 # 		D=(task['period']-task['sslength'])/2
@@ -38,7 +38,7 @@ def dbfEDA(t,task,ssofftypes):
 
 	
 def EDA(tasks, ssofftypes):
-	sortedTasks=sorted(tasks,key= lambda x: (x["period"]-x["sslength"])/2)
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		D=(task['period']-task['sslength'])/ssofftypes

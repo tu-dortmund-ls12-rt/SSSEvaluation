@@ -372,7 +372,7 @@ def SEIFDA(task,HindexTasks,k,scheme):
 			return d1
 			
 def greedy(tasks,scheme):
-	sortedTasks=sorted(tasks,key= lambda x: (x["period"]-x["sslength"])/2)
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 	
 	ischme=scheme.split('-')[1]
 	k=int(scheme.split('-')[2])
@@ -424,7 +424,7 @@ def greedy(tasks,scheme):
 		
 	return True
 def EDA(tasks):
-	sortedTasks=sorted(tasks,key= lambda x: (x["period"]-x["sslength"])/2)
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		D=(task['period']-task['sslength'])/2

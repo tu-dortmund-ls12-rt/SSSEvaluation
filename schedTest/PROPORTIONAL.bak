@@ -19,7 +19,7 @@ def dbfProportional(t,task,ssofftypes):
 
 	
 def PROPORTIONAL(tasks, ssofftypes):
-	sortedTasks=sorted(tasks,key= lambda x: (x["period"]-x["sslength"])/2)
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		Ci=0
