@@ -3,7 +3,7 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, RSS
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -115,6 +115,9 @@ def main():
 								numfail+=1
 						elif ischeme == 'SCAIR-OPA':
 							if rad.Audsley(sortedTasks,ischeme) == False:
+								numfail+=1
+						elif ischeme == 'RSS':
+							if RSS.SC2EDF(sortedTasks) == False:
 								numfail+=1
 						else:
 							assert ischeme, 'not vaild ischeme'

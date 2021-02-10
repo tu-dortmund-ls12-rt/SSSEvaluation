@@ -5,7 +5,7 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions, RSS
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -423,6 +423,13 @@ class Ui_MainWindow(object):
         self.actionAbout_Framework = QtWidgets.QAction(MainWindow)
         self.actionAbout_Framework.setObjectName("actionAbout_Framework")
 
+        #hteper
+        self.rss = QtWidgets.QCheckBox(self.groupBox_8)
+        self.rss.setGeometry(QtCore.QRect(10, 75, 100, 17))
+        self.rss.setObjectName("rss")
+        self.rss.setToolTip('Redundant Self-suspension')
+
+
 
 
         def clickMethod(self):
@@ -635,6 +642,9 @@ class Ui_MainWindow(object):
             #khchen Combo-SJSB
             if self.combosjsb.isChecked():
                 gSchemes.append('Combo-SJSB')
+            #hteper RSS
+            if self.rss.isChecked():
+                gSchemes.append('RSS')
 
             if gRuntest:
                 #khchen
@@ -796,8 +806,9 @@ class Ui_MainWindow(object):
                         elif ischeme == 'Combo-SJSB':
                             if combo.sjsb(tasks) == False:  # sorted tasks
                                 numfail += 1
-                        elif ischeme == 'Combo-SJSB':
-                            if combo.sjsb(tasks) == False:  # sorted tasks
+                        #hteper
+                        elif ischeme == 'RSS':
+                            if RSS.SC2EDF(tasks) == False:  # sorted tasks
                                 numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'
@@ -856,6 +867,7 @@ class Ui_MainWindow(object):
         self.scrm.setText(_translate("MainWindow", "SCRM"))
         self.scairrm.setText(_translate("MainWindow", "SCAIR-RM"))
         self.combosjsb.setText(_translate("MainWindow", "Combo-SJSB"))
+        self.rss.setText(_translate("MainWindow", "RSS"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
         self.groupBox_5.setTitle(_translate("MainWindow", "FRD Segmented"))

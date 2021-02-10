@@ -27,6 +27,8 @@ def pickColor(ischeme):
         color = '#C97089'
     elif ischeme == 'Combo-SJSB':
         color = '#B93049'
+    elif ischeme == 'RSS':
+        color = '#816000'
     elif ischeme.__contains__('SEIFDA-minD'):
         color = '#0000FF'
     elif ischeme.__contains__('SEIFDA-PBminD'):
@@ -67,6 +69,8 @@ def pickMarker(ischeme):
         marker = '3'
     elif ischeme == 'Combo-SJSB':
         marker = '4'
+    elif ischeme == 'RSS':
+        marker = 'p'
     elif ischeme.__contains__('SEIFDA-minD'):
         marker = 'o'
     elif ischeme.__contains__('SEIFDA-PBminD'):
