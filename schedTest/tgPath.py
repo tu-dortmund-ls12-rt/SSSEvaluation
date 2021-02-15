@@ -142,6 +142,7 @@ def SSS_seg_gen(vRatio,minCtune,maxCtune,maxnumsegs,minSratio,numpaths,scalef):
 
 
 			itask['period']=math.ceil(itask['period'])
+			itask['deadline']=math.ceil(itask['deadline'])
 			itask['execution']=maxSumC
 			itask['sslength']=maxSumS
 

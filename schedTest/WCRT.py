@@ -5,7 +5,6 @@ from schedTest import functions
 # Calculation of the Worst-Case-Response-Time (WCRT) for a given task and a set of higher priority tasks
 # Input: CS - ExecutionTime, Tn - Task Period Length, HPTasks - Higher Priority Task Set
 # Output: R - WCRT
-
 def WCRT(CS,Tn,HPTasks):	
 	R=0
 	while True:

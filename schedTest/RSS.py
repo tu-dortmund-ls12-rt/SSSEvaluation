@@ -1,9 +1,14 @@
-# Method2: Redundant Self-suspension analysis
 import math # math.ceil(), math.floor()
 
+# Sorts the given task set by the execution time + suspension length in ascending order
+# Input: Task set
+# Output: Sorted Taskset
 def sort_by_ex_and_susp(tasks): # lowest ex + susp first
     return sorted(tasks, key=lambda k: k['execution']+k['sslength'])
 
+# Redundant Self Suspension Analyses by https://ieeexplore.ieee.org/abstract/document/9211430
+# Input: Task set
+# Output: Schedulability of the Task Set under RSS
 def SC2EDF(tasks):
     htasks = sort_by_ex_and_susp(tasks)
 
