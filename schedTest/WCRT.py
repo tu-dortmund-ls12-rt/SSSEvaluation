@@ -1,7 +1,7 @@
 import math
 from schedTest import functions
 
-# From: https://ieeexplore.ieee.org/abstract/document/9211430 Section IV.
+# From: https://ieeexplore.ieee.org/abstract/document/9211430 Section IV
 # Calculation of the Worst-Case-Response-Time (WCRT) for a given task and a set of higher priority tasks
 # Input: CS - ExecutionTime, Tn - Task Period Length, HPTasks - Higher Priority Task Set
 # Output: R - WCRT
