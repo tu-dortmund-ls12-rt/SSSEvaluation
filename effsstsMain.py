@@ -5,7 +5,7 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions, RSS
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions, RSS, UDLEDF, WLAEDF
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -427,7 +427,17 @@ class Ui_MainWindow(object):
         self.rss = QtWidgets.QCheckBox(self.groupBox_8)
         self.rss.setGeometry(QtCore.QRect(10, 75, 100, 17))
         self.rss.setObjectName("rss")
-        self.rss.setToolTip('Redundant Self-suspension')
+        self.rss.setToolTip('Utilization-based Schedulability Test')
+        
+        self.udledf = QtWidgets.QCheckBox(self.groupBox_8)
+        self.udledf.setGeometry(QtCore.QRect(10, 100, 100, 17))
+        self.udledf.setObjectName("udledf")
+        self.udledf.setToolTip('')
+        
+        self.wlaedf = QtWidgets.QCheckBox(self.groupBox_8)
+        self.wlaedf.setGeometry(QtCore.QRect(10, 125, 100, 17))
+        self.wlaedf.setObjectName("wlaedf")
+        self.wlaedf.setToolTip('Workload-based Schedulability Test')
 
 
 
@@ -642,9 +652,13 @@ class Ui_MainWindow(object):
             #khchen Combo-SJSB
             if self.combosjsb.isChecked():
                 gSchemes.append('Combo-SJSB')
-            #hteper RSS
+            #hteper
             if self.rss.isChecked():
                 gSchemes.append('RSS')
+            if self.udledf.isChecked():
+                gSchemes.append('UDLEDF')
+            if self.wlaedf.isChecked():
+                gSchemes.append('WLAEDF')
 
             if gRuntest:
                 #khchen
@@ -810,6 +824,12 @@ class Ui_MainWindow(object):
                         elif ischeme == 'RSS':
                             if RSS.SC2EDF(tasks) == False:  # sorted tasks
                                 numfail += 1
+                        elif ischeme == 'UDLEDF':
+                            if UDLEDF.UDLEDF_improved(tasks) == False:  # sorted tasks
+                                numfail += 1
+                        elif ischeme == 'WLAEDF':
+                            if WLAEDF.WLAEDF(tasks) == False:  # sorted tasks
+                                numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'
 
@@ -868,6 +888,8 @@ class Ui_MainWindow(object):
         self.scairrm.setText(_translate("MainWindow", "SCAIR-RM"))
         self.combosjsb.setText(_translate("MainWindow", "Combo-SJSB"))
         self.rss.setText(_translate("MainWindow", "RSS"))
+        self.udledf.setText(_translate("MainWindow", "UDLEDF"))
+        self.wlaedf.setText(_translate("MainWindow", "WLAEDF"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
         self.groupBox_5.setTitle(_translate("MainWindow", "FRD Segmented"))
