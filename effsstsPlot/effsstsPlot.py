@@ -33,6 +33,8 @@ def pickColor(ischeme):
         color = '#824000'
     elif ischeme == 'WLAEDF':
         color = '#832000'
+    elif ischeme == 'RTEDF':
+        color = '#832000'
     elif ischeme.__contains__('SEIFDA-minD'):
         color = '#0000FF'
     elif ischeme.__contains__('SEIFDA-PBminD'):
@@ -79,6 +81,8 @@ def pickMarker(ischeme):
         marker = 'o'
     elif ischeme == 'WLAEDF':
         marker = 'H'
+    elif ischeme == 'RTEDF':
+        marker = 'x'
     elif ischeme.__contains__('SEIFDA-minD'):
         marker = 'o'
     elif ischeme.__contains__('SEIFDA-PBminD'):

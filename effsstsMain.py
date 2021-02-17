@@ -5,7 +5,7 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions, RSS, UDLEDF, WLAEDF
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions, RSS, UDLEDF, WLAEDF, RTEDF
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -439,6 +439,11 @@ class Ui_MainWindow(object):
         self.wlaedf.setObjectName("wlaedf")
         self.wlaedf.setToolTip('Workload-based Schedulability Test')
 
+        self.rtedf = QtWidgets.QCheckBox(self.groupBox_8)
+        self.rtedf.setGeometry(QtCore.QRect(10, 150, 100, 17))
+        self.rtedf.setObjectName("rtedf")
+        self.rtedf.setToolTip('Response-Time-Based Schedulability Test')
+        
 
 
 
@@ -659,6 +664,8 @@ class Ui_MainWindow(object):
                 gSchemes.append('UDLEDF')
             if self.wlaedf.isChecked():
                 gSchemes.append('WLAEDF')
+            if self.rtedf.isChecked():
+                gSchemes.append('RTEDF')
 
             if gRuntest:
                 #khchen
@@ -830,6 +837,9 @@ class Ui_MainWindow(object):
                         elif ischeme == 'WLAEDF':
                             if WLAEDF.WLAEDF(tasks) == False:  # sorted tasks
                                 numfail += 1
+                        elif ischeme == 'RTEDF':
+                            if RTEDF.RTEDF(tasks) == False:  # sorted tasks
+                                numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'
 
@@ -888,6 +898,7 @@ class Ui_MainWindow(object):
         self.scairrm.setText(_translate("MainWindow", "SCAIR-RM"))
         self.combosjsb.setText(_translate("MainWindow", "Combo-SJSB"))
         self.rss.setText(_translate("MainWindow", "RSS"))
+        self.rtedf.setText(_translate("MainWindow", "RTEDF"))
         self.udledf.setText(_translate("MainWindow", "UDLEDF"))
         self.wlaedf.setText(_translate("MainWindow", "WLAEDF"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))

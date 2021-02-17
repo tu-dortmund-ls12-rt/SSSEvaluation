@@ -3,7 +3,7 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, RSS, UDLEDF, WLAEDF
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, RSS, UDLEDF, WLAEDF, RTEDF
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -118,6 +118,9 @@ def main():
 								numfail+=1
 						elif ischeme == 'RSS':
 							if RSS.SC2EDF(sortedTasks) == False:
+								numfail+=1	
+						elif ischeme == 'RTEDF':
+							if RTEDF.RTEDF(sortedTasks) == False:
 								numfail+=1
 						elif ischeme == 'UDLEDF':
 							if UDLEDF.UDLEDF_improved(sortedTasks) == False:

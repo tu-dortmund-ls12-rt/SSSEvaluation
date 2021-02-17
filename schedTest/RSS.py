@@ -2,7 +2,7 @@ import math # math.ceil(), math.floor()
 
 # Sorts the given task set by the execution time + suspension length in ascending order
 # Input: Task set
-# Output: Sorted Taskset
+# Output: Sorted Task set
 def sort_by_ex_and_susp(tasks): # lowest ex + susp first
     return sorted(tasks, key=lambda k: k['execution']+k['sslength'])
 

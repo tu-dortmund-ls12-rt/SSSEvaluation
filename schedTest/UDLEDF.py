@@ -42,7 +42,7 @@ def UDLEDF_simple(tasks):
 
 	return checkval <= 1
 
-# Calculate the sum of suspension ratios of the taskset
+# Calculate the sum of suspension ratios of the task set
 # Input: Task set
 # Output: Schedulability test under UDLEDF
 def UDLEDF_ret(tasks):  # returns the checkval without totalutil
