@@ -5,7 +5,8 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions, RSS, UDLEDF, WLAEDF, RTEDF
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -158,12 +159,25 @@ class Ui_MainWindow(object):
         self.groupBox_7.setGeometry(QtCore.QRect(10, 240, 925, 203))
         self.groupBox_7.setObjectName("groupBox_7")
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupBox_7) #General
-        self.groupBox_6.setGeometry(QtCore.QRect(795, 20, 81, 175))
+        self.groupBox_6.setGeometry(QtCore.QRect(795, 20, 110, 175))
         self.groupBox_6.setObjectName("groupBox_6")
+
         self.nc = QtWidgets.QCheckBox(self.groupBox_6)
         self.nc.setGeometry(QtCore.QRect(10, 25, 47, 17))
         self.nc.setObjectName("nc")
         self.nc.setToolTip('Necessary Condition')
+        self.suspobl = QtWidgets.QCheckBox(self.groupBox_6)
+        self.suspobl.setGeometry(QtCore.QRect(10, 50, 100, 17))
+        self.suspobl.setObjectName("suspobl")
+        self.suspobl.setToolTip('Suspension Oblivious')
+        self.suspjit = QtWidgets.QCheckBox(self.groupBox_6)
+        self.suspjit.setGeometry(QtCore.QRect(10, 75, 100, 17))
+        self.suspjit.setObjectName("suspjit")
+        self.suspjit.setToolTip('Schedulability with Suspension as Jitter')
+        self.suspblock = QtWidgets.QCheckBox(self.groupBox_6)
+        self.suspblock.setGeometry(QtCore.QRect(10, 100, 100, 17))
+        self.suspblock.setObjectName("suspblock")
+        self.suspblock.setToolTip('Schedulability with Suspension as Blocking Time')
 
         self.groupBox = QtWidgets.QGroupBox(self.groupBox_7)  #FRD Hybrid
         self.groupBox.setGeometry(QtCore.QRect(235, 21, 211, 175))
@@ -397,11 +411,6 @@ class Ui_MainWindow(object):
         self.plotall.setChecked(True)
         self.plotall.setObjectName("plotall")
 
-        #khchen
-        self.combosjsb = QtWidgets.QCheckBox(self.groupBox_8)
-        self.combosjsb.setGeometry(QtCore.QRect(10, 50, 113, 17))
-        self.combosjsb.setObjectName("combosjsb")
-        self.combosjsb.setToolTip('Combining Jitter and Blocking')
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 730, 21))
@@ -425,24 +434,25 @@ class Ui_MainWindow(object):
 
         #hteper
         self.rss = QtWidgets.QCheckBox(self.groupBox_8)
-        self.rss.setGeometry(QtCore.QRect(10, 75, 100, 17))
+        self.rss.setGeometry(QtCore.QRect(10, 50, 100, 17))
         self.rss.setObjectName("rss")
         self.rss.setToolTip('Utilization-based Schedulability Test')
-        
         self.udledf = QtWidgets.QCheckBox(self.groupBox_8)
-        self.udledf.setGeometry(QtCore.QRect(10, 100, 100, 17))
+        self.udledf.setGeometry(QtCore.QRect(10, 75, 100, 17))
         self.udledf.setObjectName("udledf")
         self.udledf.setToolTip('')
-        
         self.wlaedf = QtWidgets.QCheckBox(self.groupBox_8)
-        self.wlaedf.setGeometry(QtCore.QRect(10, 125, 100, 17))
+        self.wlaedf.setGeometry(QtCore.QRect(10, 100, 100, 17))
         self.wlaedf.setObjectName("wlaedf")
         self.wlaedf.setToolTip('Workload-based Schedulability Test')
-
         self.rtedf = QtWidgets.QCheckBox(self.groupBox_8)
-        self.rtedf.setGeometry(QtCore.QRect(10, 150, 100, 17))
+        self.rtedf.setGeometry(QtCore.QRect(10, 125, 100, 17))
         self.rtedf.setObjectName("rtedf")
         self.rtedf.setToolTip('Response-Time-Based Schedulability Test')
+        self.uniframework = QtWidgets.QCheckBox(self.groupBox_8)
+        self.uniframework.setGeometry(QtCore.QRect(10, 150, 125, 17))
+        self.uniframework.setObjectName("uniframework")
+        self.uniframework.setToolTip('Unified Response Time Analysis Framework')
         
 
 
@@ -654,9 +664,6 @@ class Ui_MainWindow(object):
                 gSchemes.append('PATH-PBminD-' + str(self.pathpbmindddg.value()) + '-D=D')
             if self.pathpbminddnd.isChecked():
                 gSchemes.append('PATH-PBminD-' + str(self.pathpbminddndg.value()) + '-DnD')
-            #khchen Combo-SJSB
-            if self.combosjsb.isChecked():
-                gSchemes.append('Combo-SJSB')
             #hteper
             if self.rss.isChecked():
                 gSchemes.append('RSS')
@@ -666,6 +673,14 @@ class Ui_MainWindow(object):
                 gSchemes.append('WLAEDF')
             if self.rtedf.isChecked():
                 gSchemes.append('RTEDF')
+            if self.uniframework.isChecked():
+                gSchemes.append('UNIFRAMEWORK')
+            if self.suspobl.isChecked():
+                gSchemes.append('SUSPOBL')
+            if self.suspjit.isChecked():
+                gSchemes.append('SUSPJIT')
+            if self.suspblock.isChecked():
+                gSchemes.append('SUSPBLOCK')
 
             if gRuntest:
                 #khchen
@@ -823,10 +838,6 @@ class Ui_MainWindow(object):
                         elif ischeme == 'Biondi':
                             if rt.Biondi(tasks) == False:
                                 numfail += 1
-                        # khchen
-                        elif ischeme == 'Combo-SJSB':
-                            if combo.sjsb(tasks) == False:  # sorted tasks
-                                numfail += 1
                         #hteper
                         elif ischeme == 'RSS':
                             if RSS.SC2EDF(tasks) == False:  # sorted tasks
@@ -839,6 +850,18 @@ class Ui_MainWindow(object):
                                 numfail += 1
                         elif ischeme == 'RTEDF':
                             if RTEDF.RTEDF(tasks) == False:  # sorted tasks
+                                numfail += 1
+                        elif ischeme == 'UNIFRAMEWORK':
+                            if UNIFRAMEWORK.UniFramework(tasks) == False:  # sorted tasks
+                                numfail += 1
+                        elif ischeme == 'SUSPOBL':
+                            if FixedPriority.SuspObl(tasks) == False:  # sorted tasks
+                                numfail += 1
+                        elif ischeme == 'SUSPJIT':
+                            if FixedPriority.SuspJit(tasks) == False:  # sorted tasks
+                                numfail += 1
+                        elif ischeme == 'SUSPBLOCK':
+                            if FixedPriority.SuspBlock(tasks) == False:  # sorted tasks
                                 numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'
@@ -896,11 +919,14 @@ class Ui_MainWindow(object):
         self.scedf.setText(_translate("MainWindow", "SCEDF"))
         self.scrm.setText(_translate("MainWindow", "SCRM"))
         self.scairrm.setText(_translate("MainWindow", "SCAIR-RM"))
-        self.combosjsb.setText(_translate("MainWindow", "Combo-SJSB"))
         self.rss.setText(_translate("MainWindow", "RSS"))
         self.rtedf.setText(_translate("MainWindow", "RTEDF"))
         self.udledf.setText(_translate("MainWindow", "UDLEDF"))
         self.wlaedf.setText(_translate("MainWindow", "WLAEDF"))
+        self.uniframework.setText(_translate("MainWindow", "UniFramework"))
+        self.suspobl.setText(_translate("MainWindow", "SuspObl"))
+        self.suspjit.setText(_translate("MainWindow", "SuspJit"))
+        self.suspblock.setText(_translate("MainWindow", "SuspBlock"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
         self.groupBox_5.setTitle(_translate("MainWindow", "FRD Segmented"))

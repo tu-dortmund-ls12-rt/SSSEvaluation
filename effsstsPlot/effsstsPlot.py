@@ -25,8 +25,6 @@ def pickColor(ischeme):
         color = '#A742F4'
     elif ischeme == 'SCAIR-OPA':
         color = '#C97089'
-    elif ischeme == 'Combo-SJSB':
-        color = '#B93049'
     elif ischeme == 'RSS':
         color = '#816000'
     elif ischeme == 'UDLEDF':
@@ -35,6 +33,14 @@ def pickColor(ischeme):
         color = '#832000'
     elif ischeme == 'RTEDF':
         color = '#832000'
+    elif ischeme == 'UNIFRAMEWORK':
+        color = '#840000'
+    elif ischeme == 'SUSPOBL':
+        color = '#840000'
+    elif ischeme == 'SUSPJIT':
+        color = '#840000'
+    elif ischeme == 'SUSPBLOCK':
+        color = '#840000'
     elif ischeme.__contains__('SEIFDA-minD'):
         color = '#0000FF'
     elif ischeme.__contains__('SEIFDA-PBminD'):
@@ -73,8 +79,6 @@ def pickMarker(ischeme):
         marker = '2'
     elif ischeme == 'SCAIR-OPA':
         marker = '3'
-    elif ischeme == 'Combo-SJSB':
-        marker = '4'
     elif ischeme == 'RSS':
         marker = 'p'
     elif ischeme == 'UDLEDF':
@@ -83,6 +87,14 @@ def pickMarker(ischeme):
         marker = 'H'
     elif ischeme == 'RTEDF':
         marker = 'x'
+    elif ischeme == 'UNIFRAMEWORK':
+        marker = 'D'
+    elif ischeme == 'SUSPOBL':
+        marker = '*'
+    elif ischeme == 'SUSPJIT':
+        marker = 'v'
+    elif ischeme == 'SUSPBLOCK':
+        marker = 's'
     elif ischeme.__contains__('SEIFDA-minD'):
         marker = 'o'
     elif ischeme.__contains__('SEIFDA-PBminD'):

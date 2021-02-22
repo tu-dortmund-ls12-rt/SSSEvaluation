@@ -3,7 +3,7 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, RSS, UDLEDF, WLAEDF, RTEDF
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -128,6 +128,18 @@ def main():
 						elif ischeme == 'WLAEDF':
 							if WLAEDF.WLAEDF(sortedTasks) == False:
 								numfail+=1
+						elif ischeme == 'UNIFRAMEWORK':
+							if UNIFRAMEWORK.UniFramework(sortedTasks) == False:
+								numfail+=1
+						elif ischeme == 'SuspObl':
+							if FixedPriority.SuspObl(sortedTasks) == False:
+								numfail+=1	
+						elif ischeme == 'SuspJit':
+							if FixedPriority.SuspJit(sortedTasks) == False:
+								numfail+=1	
+						elif ischeme == 'SuspBlock':
+							if FixedPriority.SuspBlock(sortedTasks) == False:
+								numfail+=1	
 						else:
 							assert ischeme, 'not vaild ischeme'
 			
