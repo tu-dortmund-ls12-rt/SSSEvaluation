@@ -39,11 +39,12 @@ To activate the full feature set of the framework, you need to install the Gurob
 # Schedulability Tests
 
 Name | Paper | File name | Method name
+---|---|---|---
 RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
 UDLEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | UDLEDF.py | UDLEDF_improved
 WLAEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | WLAEDF.py | WLAEDF
 RTEDF  | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Algorithm1 | RTEDF.py | RTEDF
 Uniframework | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
-SuspObl | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | SuspObl
-SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | SuspJit
+SuspObl | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | SuspObl.py | SuspObl
+SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | SuspJit.py | SuspJit
 SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
