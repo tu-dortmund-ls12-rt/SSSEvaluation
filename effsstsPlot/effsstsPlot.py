@@ -214,11 +214,11 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
 
     # for three sub-plot, fixed
     # fig = plt.figure(figsize=(13, 4))
-    #fig = plt.figure()
+    # fig = plt.figure()
     # create a virtual outer subsplot for putting big x-ylabel
     # ax = fig.add_subplot(111)
     # fig.subplots_adjust(top=0.9, left=0.1, right=0.95, hspace=0.3)
-    if id_par == 'Tasks per set':
+    if id_par == 'Tasks per Set':
         numberoftasks = par_values
 
     elif id_par == 'Number of Segments':
@@ -243,7 +243,7 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
                        bottom=False, left=False, right=False)
         i = 1
         for ischeme in schemes:
-            if id_par == 'Tasks per set':
+            if id_par == 'Tasks per Set':
                 ifile = prefix + "/" + str(minsstype) + "-" + str(maxsstype) + "/" + str(
                     ssofftypes) + "/" + ischeme + str(numberoftasks[c]) + ".npy"
             elif id_par == 'Number of Segments':
@@ -252,7 +252,18 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
             elif id_par == 'Suspension Length':
                 ifile = prefix + "/" + str(minsstype[c]) + "-" + str(maxsstype[c]) + "/" + str(
                     ssofftypes) + "/" + ischeme + str(numberoftasks) + ".npy"
-            data = np.load(ifile)
+            data = [0]
+            try:
+                data = np.load(ifile)
+            except:
+                print("Data not loaded")
+            if np.all(data)==False:
+                if id_par == 'Tasks per Set':
+                    raise Exception("Run "+str(ischeme)+" with "+str(numberoftasks[c])+" "+str(id_par)+" first")
+                elif id_par == 'Number of Segments':
+                    raise Exception("Run "+str(ischeme)+" with "+str(ssofftypes[c])+" Segments first")
+                elif id_par == 'Suspension Length':
+                    raise Exception("Run "+str(ischeme)+" with Suspension Interval of ["+str(minsstype[c])+","+str(maxsstype[c])+"] first")
             x = data[0][0::1]
             y = data[1][0::1]
             us = int(math.ceil(ustart/ustep))
