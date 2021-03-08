@@ -547,26 +547,27 @@ class Ui_MainWindow(object):
         self.groupbox_plots.setObjectName("groupbox_plots")
         
         self.plotdata = QtWidgets.QCheckBox(self.groupbox_plots)
-        self.plotdata.setGeometry(QtCore.QRect(12, 30, 90, 25))
+        self.plotdata.setGeometry(QtCore.QRect(12, 30, 160, 25))
         self.plotdata.setChecked(True)
         self.plotdata.setObjectName("plotdata")
 
-        self.mp_check = QtWidgets.QCheckBox(self.groupbox_plots)
-        self.mp_check.setGeometry(QtCore.QRect(112, 30, 125, 25))
-        self.mp_check.setObjectName("mp_check")
-        self.mp_check.setToolTip('Plots')
-
         self.plotall = QtWidgets.QCheckBox(self.groupbox_plots)
-        self.plotall.setGeometry(QtCore.QRect(250, 30, 135, 25))
+        self.plotall.setGeometry(QtCore.QRect(172, 30, 180, 25))
         self.plotall.setChecked(True)
         self.plotall.setObjectName("plotall")
 
+        self.mp_check = QtWidgets.QCheckBox(self.groupbox_plots)
+        self.mp_check.setGeometry(QtCore.QRect(12, 63, 190, 25))
+        self.mp_check.setObjectName("mp_check")
+        self.mp_check.setToolTip('Plots')
+        self.mp_check.stateChanged.connect(lambda: selectionchange_plot(self.combobox_plot))
+
         self.label_mp_control = QtWidgets.QLabel(self.groupbox_plots)
-        self.label_mp_control.setGeometry(QtCore.QRect(12, 63, 130, 25))
+        self.label_mp_control.setGeometry(QtCore.QRect(211, 63, 130, 25))
         self.label_mp_control.setObjectName("label_mp")
 
         self.combobox_plot = QtWidgets.QComboBox(self.groupbox_plots)
-        self.combobox_plot.setGeometry(QtCore.QRect(150, 63, 180, 25))
+        self.combobox_plot.setGeometry(QtCore.QRect(351, 63, 180, 25))
         self.combobox_plot.setObjectName("combobox_plot")
         self.combobox_plot.addItems(choice_plot)
         self.combobox_plot.currentIndexChanged.connect(lambda: selectionchange_plot(self.combobox_plot))
@@ -673,9 +674,65 @@ class Ui_MainWindow(object):
             a.hide()
             b.hide()
             c.hide()
+            
+        self.label_mp_control.hide()
+        self.combobox_plot.hide()
+        self.label_mp.hide()
+    
+        self.tasksperset_p1.hide()
+        self.tasksperset_p2.hide()
+        self.tasksperset_p3.hide()
+        self.numberofsegs_p1.hide()
+        self.numberofsegs_p2.hide()
+        self.numberofsegs_p3.hide()
+        self.label_mp_max.hide()
+        self.slengthmaxvalue_p1.hide()
+        self.slengthmaxvalue_p2.hide()
+        self.slengthmaxvalue_p3.hide()
+        self.label_mp_min.hide()
+        self.slengthminvalue_p1.hide()
+        self.slengthminvalue_p2.hide()
+        self.slengthminvalue_p3.hide()
         
+        # if self.mp_check.isChecked():
+        #     self.label_mp_control.show()
+        #     self.combobox_plot.show()
+        #     self.label_mp.show()
+        #     self.tasksperset_p1.show()
+        #     self.tasksperset_p2.show()
+        #     self.tasksperset_p3.show()
+        #     self.numberofsegs_p1.show()
+        #     self.numberofsegs_p2.show()
+        #     self.numberofsegs_p3.show()
+        #     self.label_mp_max.show()
+        #     self.slengthmaxvalue_p1.show()
+        #     self.slengthmaxvalue_p2.show()
+        #     self.slengthmaxvalue_p3.show()
+        #     self.label_mp_min.show()
+        #     self.slengthminvalue_p1.show()
+        #     self.slengthminvalue_p2.show()
+        #     self.slengthminvalue_p3.show()
+        # else:
+        #     self.label_mp_control.hide()
+        #     self.combobox_plot.hide()
+        #     self.label_mp.hide()
+        #     self.tasksperset_p1.hide()
+        #     self.tasksperset_p2.hide()
+        #     self.tasksperset_p3.hide()
+        #     self.numberofsegs_p1.hide()
+        #     self.numberofsegs_p2.hide()
+        #     self.numberofsegs_p3.hide()
+        #     self.label_mp_max.hide()
+        #     self.slengthmaxvalue_p1.hide()
+        #     self.slengthmaxvalue_p2.hide()
+        #     self.slengthmaxvalue_p3.hide()
+        #     self.label_mp_min.hide()
+        #     self.slengthminvalue_p1.hide()
+        #     self.slengthminvalue_p2.hide()
+        #     self.slengthminvalue_p3.hide()
 
 
+        
         self.run = QtWidgets.QPushButton(self.centralwidget)
         self.run.setToolTip('Button to run the settings')
         self.run.setGeometry(QtCore.QRect(812, 670, 200, 25))
@@ -744,41 +801,67 @@ class Ui_MainWindow(object):
 
 
         def selectionchange_plot( com_b):
-            if com_b.currentText() =='Suspension Length':
-                self.label_mp_max.show()
-                self.label_mp_min.show()
+
+            
+            if not(self.mp_check.isChecked()):
+                self.label_mp_control.hide()
+                self.combobox_plot.hide()
                 self.label_mp.hide()
-            else:
+            
+                self.tasksperset_p1.hide()
+                self.tasksperset_p2.hide()
+                self.tasksperset_p3.hide()
+                self.numberofsegs_p1.hide()
+                self.numberofsegs_p2.hide()
+                self.numberofsegs_p3.hide()
                 self.label_mp_max.hide()
+                self.slengthmaxvalue_p1.hide()
+                self.slengthmaxvalue_p2.hide()
+                self.slengthmaxvalue_p3.hide()
                 self.label_mp_min.hide()
+                self.slengthminvalue_p1.hide()
+                self.slengthminvalue_p2.hide()
+                self.slengthminvalue_p3.hide()
+            else:
+                self.label_mp_control.show()
+                self.combobox_plot.show()
                 self.label_mp.show()
 
-            for i in range(1, 4):
-                slmax = 'slengthmaxvalue_p' + str(i)
-                slmin = 'slengthminvalue_p' + str(i)
-                numseg = 'numberofsegs_p' + str(i)
-                numtasks = 'tasksperset_p' + str(i)
 
-                aslmax = getattr(self, slmax)
-                aslmin = getattr(self, slmin)
-                anums = getattr(self, numseg)
-                anumt = getattr(self, numtasks)
-                if com_b.currentText() == 'Tasks per Set':
-                    aslmax.hide()
-                    aslmin.hide()
-                    anums.hide()
-                    anumt.show()
-                elif com_b.currentText() == 'Number of Segments':
-                    aslmax.hide()
-                    aslmin.hide()
-                    anums.show()
-                    anumt.hide()
-                elif com_b.currentText() == 'Suspension Length':
-                    aslmax.show()
-                    aslmin.show()
-                    anums.hide()
-                    anumt.hide()
+                if com_b.currentText() =='Suspension Length':
+                    self.label_mp_max.show()
+                    self.label_mp_min.show()
+                    self.label_mp.hide()
+                else:
+                    self.label_mp_max.hide()
+                    self.label_mp_min.hide()
+                    self.label_mp.show()
+        
+                for i in range(1, 4):
+                    slmax = 'slengthmaxvalue_p' + str(i)
+                    slmin = 'slengthminvalue_p' + str(i)
+                    numseg = 'numberofsegs_p' + str(i)
+                    numtasks = 'tasksperset_p' + str(i)
 
+                    aslmax = getattr(self, slmax)
+                    aslmin = getattr(self, slmin)
+                    anums = getattr(self, numseg)
+                    anumt = getattr(self, numtasks)
+                    if com_b.currentText() == 'Tasks per Set':
+                        aslmax.hide()
+                        aslmin.hide()
+                        anums.hide()
+                        anumt.show()
+                    elif com_b.currentText() == 'Number of Segments':
+                        aslmax.hide()
+                        aslmin.hide()
+                        anums.show()
+                        anumt.hide()
+                    elif com_b.currentText() == 'Suspension Length':
+                        aslmax.show()
+                        aslmin.show()
+                        anums.hide()
+                        anumt.hide()   
 
         def clickexit(self):
             app.quit()
@@ -1142,8 +1225,8 @@ class Ui_MainWindow(object):
         self.prefixdatapath.setText(_translate("MainWindow", "effsstsPlot/Data"))
         self.tasksetdatapath.setText(_translate("MainWindow", "TspCon_100_TpTs_10_Utilst_5_Minss_0.01_Maxss_0.1_Seg_2_.pkl"))
         self.runtests.setText(_translate("MainWindow", "Run Tests"))
-        self.plotdata.setText(_translate("MainWindow", "Plot Data"))
-        self.plotall.setText(_translate("MainWindow", "Plot all schemes"))
+        self.plotdata.setText(_translate("MainWindow", "Plot selected Tests"))
+        self.plotall.setText(_translate("MainWindow", "Combine selected Tests"))
         self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
         self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
         #khchen
@@ -1194,7 +1277,7 @@ class Ui_MainWindow(object):
         self.label_mp_control.setText(_translate("MainWindow", "Control Parameter:"))
         self.label_mp_min.setText(_translate("MainWindow", "Min Values:"))
         self.label_mp_max.setText(_translate("MainWindow", "Max Values:"))
-        self.mp_check.setText(_translate("MainWindow", "Multiple Plots"))
+        self.mp_check.setText(_translate("MainWindow", "Combine available Tests"))
         self.passopa.setText(_translate("MainWindow", "PASS-OPA"))
         self.actionOpen.setText(_translate("MainWindow", "Open"))
         self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
