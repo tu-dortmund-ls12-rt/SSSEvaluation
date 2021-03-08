@@ -40,6 +40,23 @@ To activate the full feature set of the framework, you need to install the Gurob
 
 Name | Paper | File name | Method name
 ---|---|---|---
+SEIFDA-minD- | | SEIFDA.py | SEIFDA
+SEIFDA-maxD- | | SEIFDA.py | SEIFDA
+SEIFDA-PBminD- | | SEIFDA.py | SEIFDA
+EDA | | EDA.py | SEIFDA
+PROPORTIONAL | | PROPORTIONAL.py | PROPORTIONAL
+SEIFDA-MILP | | mipx.py | mip
+Oblivious-IUB | | PATH.py | SEIFDApath
+Clairvoyant-SSSD | | PATH.py | SEIFDApath
+Oblivious-MP | | PATH.py | SEIFDApath
+Clairvoyant-PDAB | | PATH.py | SEIFDApath
+SCEDF | | SCEDF.py | SC_EDF
+SCRM | | SEIFDA.py | SC_RM
+SCAIR-RM | | rad.py | scair_dm
+SCAIR-OPA | | rad.py | Audsley
+Biondi RTSS 16 | | rt.py | Biondi
+PASS-OPA | | Audsley.py | Audsley
+NC | | NC.py | NC
 RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
 UDLEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | UDLEDF.py | UDLEDF_improved
 WLAEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | WLAEDF.py | WLAEDF
