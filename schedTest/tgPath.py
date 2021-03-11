@@ -1,3 +1,9 @@
+"""
+Task Creation is as described in Section V of the paper "Hybrid Self-Suspension
+Models in Real-Time Embedded Systems" from v.d.Brueggen, Huang and Chen from
+RTCSA 2017.
+https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2017-rtcsa-georg.pdf
+"""
 from __future__ import division
 import random
 import math
@@ -163,5 +169,3 @@ def taskGeneration_p(numTasks,uTotal,minsslength,maxsslength,Pmin=100,numLog=1,v
     CSet_generate(Pmin,numLog)
     SSS_seg_gen(vRatio,minsslength,maxsslength,numsegs,minSratio,numpaths,scalef)
     return PSet
-
-
