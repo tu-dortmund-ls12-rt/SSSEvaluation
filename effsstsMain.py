@@ -6,7 +6,7 @@ import sys
 import getopt
 import numpy as np
 from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions
-from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -218,61 +218,57 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents_5.setLayout(self.formLayout_5)
 
         self.seifdamind = QtWidgets.QCheckBox(self.formLayoutWidget_5)
-        #self.seifdamind.setGeometry(QtCore.QRect(0, 0, 170, 17))
         self.seifdamind.setObjectName("seifdamind")
         self.seifdamind.setToolTip('Shortest Execution Interval First Deadline Assignment - Picks the minimum x')
         self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.seifdamind)
 
         self.seifdamindg = QtWidgets.QSpinBox(self.formLayoutWidget_5)
-        #self.seifdamindg.setGeometry(QtCore.QRect(150, 5, 31, 20))
         self.seifdamindg.setMaximum(5)
         self.seifdamindg.setProperty("value", 1)
         self.seifdamindg.setObjectName("seifdamindg")
         self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.seifdamindg)
 
         self.seifdamaxd = QtWidgets.QCheckBox(self.formLayoutWidget_5)
-        #self.seifdamaxd.setGeometry(QtCore.QRect(5, 30, 170, 17))
         self.seifdamaxd.setObjectName("seifdamaxd")
         self.seifdamaxd.setToolTip('Shortest Execution Interval First Deadline Assignment - Picks the maximum x')
         self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.seifdamaxd)
 
         self.seifdamaxdg = QtWidgets.QSpinBox(self.formLayoutWidget_5)
-        #self.seifdamaxdg.setGeometry(QtCore.QRect(150, 30, 31, 20))
         self.seifdamaxdg.setMaximum(5)
         self.seifdamaxdg.setProperty("value", 1)
         self.seifdamaxdg.setObjectName("seifdamaxdg")
         self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.seifdamaxdg)
 
         self.seifdapbmind = QtWidgets.QCheckBox(self.formLayoutWidget_5)
-        #self.seifdapbmind.setGeometry(QtCore.QRect(5, 55, 140, 17))
         self.seifdapbmind.setObjectName("seifdapbmind")
         self.seifdapbmind.setToolTip('Shortest Execution Interval First Deadline Assignment - Proportionally-Bounded-Min x')
         self.formLayout_5.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.seifdapbmind)
         
         self.seifdapbmindg = QtWidgets.QSpinBox(self.formLayoutWidget_5)
-        #self.seifdapbmindg.setGeometry(QtCore.QRect(150, 55, 31, 20))
         self.seifdapbmindg.setMaximum(5)
         self.seifdapbmindg.setProperty("value", 1)
         self.seifdapbmindg.setObjectName("seifdapbmindg")
         self.formLayout_5.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.seifdapbmindg)
 
         self.eda = QtWidgets.QCheckBox(self.formLayoutWidget_5)
-        #self.eda.setGeometry(QtCore.QRect(5, 80, 50, 17))
         self.eda.setObjectName("eda")
         self.eda.setToolTip('Equal relative Deadline Assignment (EDA)') 
         self.formLayout_5.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.eda)
 
         self.proportional = QtWidgets.QCheckBox(self.formLayoutWidget_5)
-        #self.proportional.setGeometry(QtCore.QRect(5, 105, 140, 17))
         self.proportional.setObjectName("proportional")
         self.proportional.setToolTip('Proportional relative deadline assignment')
         self.formLayout_5.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.proportional)
 
         self.seifdamip = QtWidgets.QCheckBox(self.formLayoutWidget_5)
-        #self.seifdamip.setGeometry(QtCore.QRect(5, 300, 170, 17))
         self.seifdamip.setObjectName("seifdamip")
         self.seifdamip.setToolTip('Shortest Execution Interval First Deadline Assignment - MILP')
         self.formLayout_5.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.seifdamip)
+
+        self.gmfpa = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.gmfpa.setObjectName("gmfpa")
+        self.gmfpa.setToolTip('Generalized Multiframe Task Model with Parameter Adaptation')
+        self.formLayout_5.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.gmfpa)
 
 
 
@@ -306,52 +302,44 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents.setLayout(self.formLayout)
 
         self.pathminddd = QtWidgets.QCheckBox(self.groupBox)
-        #self.pathminddd.setGeometry(QtCore.QRect(7, 25, 127, 17))
         self.pathminddd.setObjectName("pathminddd")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.pathminddd)
 
         self.pathminddd.setToolTip('Pattern Oblivious Individual Upper Bounds')
         self.pathmindddg = QtWidgets.QSpinBox(self.groupBox)
-        #self.pathmindddg.setGeometry(QtCore.QRect(160, 25, 31, 20))
         self.pathmindddg.setMaximum(5)
         self.pathmindddg.setProperty("value", 1)
         self.pathmindddg.setObjectName("pathmindddg")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.pathmindddg)
 
         self.pathminddnd = QtWidgets.QCheckBox(self.groupBox)
-        #self.pathminddnd.setGeometry(QtCore.QRect(7, 50, 137, 17))
         self.pathminddnd.setObjectName("pathminddnd")
         self.pathminddnd.setToolTip('Pattern-Clairvoyant Shorter Segment Shorter Deadline')
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.pathminddnd)
 
         self.pathminddndg = QtWidgets.QSpinBox(self.groupBox)
-        #self.pathminddndg.setGeometry(QtCore.QRect(160, 50, 31, 20))
         self.pathminddndg.setMaximum(5)
         self.pathminddndg.setProperty("value", 1)
         self.pathminddndg.setObjectName("pathminddndg")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.pathminddndg)
 
         self.pathpbminddd = QtWidgets.QCheckBox(self.groupBox)
-        #self.pathpbminddd.setGeometry(QtCore.QRect(7, 75, 137, 17))
         self.pathpbminddd.setObjectName("pathpbminddd")
         self.pathpbminddd.setToolTip('Pattern-Oblivious Multiple Paths')
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.pathpbminddd)
 
         self.pathpbmindddg = QtWidgets.QSpinBox(self.groupBox)
-        #self.pathpbmindddg.setGeometry(QtCore.QRect(160, 75, 31, 20))
         self.pathpbmindddg.setMaximum(5)
         self.pathpbmindddg.setProperty("value", 1)
         self.pathpbmindddg.setObjectName("pathpbmindddg")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.pathpbmindddg)
 
         self.pathpbminddnd = QtWidgets.QCheckBox(self.groupBox)
-        #self.pathpbminddnd.setGeometry(QtCore.QRect(7, 100, 148, 17))
         self.pathpbminddnd.setObjectName("pathpbminddnd")
         self.pathpbminddnd.setToolTip('Pattern-Clairvoyant Proportional Deadline with A Bias')
         self.formLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.pathpbminddnd)
 
         self.pathpbminddndg = QtWidgets.QSpinBox(self.groupBox)
-        #self.pathpbminddndg.setGeometry(QtCore.QRect(160, 100, 31, 20))
         self.pathpbminddndg.setMaximum(5)
         self.pathpbminddndg.setProperty("value", 1)
         self.pathpbminddndg.setObjectName("pathpbminddndg")
@@ -389,31 +377,26 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents_4.setLayout(self.formLayout_4)
 
         self.scedf = QtWidgets.QCheckBox(self.groupBox_4)
-        #self.scedf.setGeometry(QtCore.QRect(10, 75, 75, 17))
         self.scedf.setObjectName("scedf")
         self.scedf.setToolTip('Suspension as Computation Earliest-Deadline-First (SCEDF)')
         self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.scedf)
 
         self.scrm = QtWidgets.QCheckBox(self.groupBox_4)
-        #self.scrm.setGeometry(QtCore.QRect(10, 100, 61, 17))
         self.scrm.setObjectName("scrm")
         self.scrm.setToolTip('Suspension as Computation Rate-Monotonic (SCRM)')
         self.formLayout_4.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.scrm)
         
         self.scairrm = QtWidgets.QCheckBox(self.groupBox_4)
-        #self.scairrm.setGeometry(QtCore.QRect(10, 25, 93, 17))
         self.scairrm.setObjectName("scairrm")
         self.scairrm.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Rate-Monotonic (RM)')
         self.formLayout_4.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.scairrm)
         
         self.scairopa = QtWidgets.QCheckBox(self.groupBox_4)
-        #self.scairopa.setGeometry(QtCore.QRect(10, 50, 99, 17))
         self.scairopa.setObjectName("scairopa")
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
         self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
         
         self.biondi = QtWidgets.QCheckBox(self.groupBox_4)
-        #self.biondi.setGeometry(QtCore.QRect(10, 125, 160, 17))
         self.biondi.setObjectName("Biondi")
         self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
         self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.biondi)
@@ -450,55 +433,46 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents_8.setLayout(self.formLayout_8)
 
         self.passopa = QtWidgets.QCheckBox(self.groupBox_8)
-        self.passopa.setGeometry(QtCore.QRect(10, 25, 103, 17))
         self.passopa.setObjectName("passopa")
         self.passopa.setToolTip('Priority Assignment algorithm for Self-Suspending Systems - Optimal-Priority Assignment')
         self.formLayout_8.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.passopa)
 
         self.rss = QtWidgets.QCheckBox(self.groupBox_8)
-        self.rss.setGeometry(QtCore.QRect(10, 50, 100, 17))
         self.rss.setObjectName("rss")
         self.rss.setToolTip('Utilization-based Schedulability Test')
         self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.rss)
         
         self.udledf = QtWidgets.QCheckBox(self.groupBox_8)
-        self.udledf.setGeometry(QtCore.QRect(10, 75, 100, 17))
         self.udledf.setObjectName("udledf")
         self.udledf.setToolTip('')
         self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.udledf)
         
         self.wlaedf = QtWidgets.QCheckBox(self.groupBox_8)
-        self.wlaedf.setGeometry(QtCore.QRect(10, 100, 100, 17))
         self.wlaedf.setObjectName("wlaedf")
         self.wlaedf.setToolTip('Workload-based Schedulability Test')
         self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.wlaedf)
         
         self.rtedf = QtWidgets.QCheckBox(self.groupBox_8)
-        self.rtedf.setGeometry(QtCore.QRect(10, 125, 100, 17))
         self.rtedf.setObjectName("rtedf")
         self.rtedf.setToolTip('Response-Time-Based Schedulability Test')
         self.formLayout_8.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.rtedf)
         
         self.uniframework = QtWidgets.QCheckBox(self.groupBox_8)
-        self.uniframework.setGeometry(QtCore.QRect(10, 150, 125, 17))
         self.uniframework.setObjectName("uniframework")
         self.uniframework.setToolTip('Unified Response Time Analysis Framework')
         self.formLayout_8.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.uniframework)
         
         self.suspobl = QtWidgets.QCheckBox(self.groupBox_8)
-        self.suspobl.setGeometry(QtCore.QRect(10, 50, 100, 17))
         self.suspobl.setObjectName("suspobl")
         self.suspobl.setToolTip('Suspension Oblivious')
         self.formLayout_8.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.suspobl)
 
         self.suspjit = QtWidgets.QCheckBox(self.groupBox_8)
-        self.suspjit.setGeometry(QtCore.QRect(10, 75, 100, 17))
         self.suspjit.setObjectName("suspjit")
         self.suspjit.setToolTip('Schedulability with Suspension as Jitter')
         self.formLayout_8.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.suspjit)
 
         self.suspblock = QtWidgets.QCheckBox(self.groupBox_8)
-        self.suspblock.setGeometry(QtCore.QRect(10, 100, 100, 17))
         self.suspblock.setObjectName("suspblock")
         self.suspblock.setToolTip('Schedulability with Suspension as Blocking Time')
         self.formLayout_8.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.suspblock)
@@ -535,7 +509,6 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents_6.setLayout(self.formLayout_6)
 
         self.nc = QtWidgets.QCheckBox(self.groupBox_6)
-        self.nc.setGeometry(QtCore.QRect(10, 25, 47, 17))
         self.nc.setObjectName("nc")
         self.nc.setToolTip('Necessary Condition')
         self.formLayout_6.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.nc)
@@ -1018,6 +991,8 @@ class Ui_MainWindow(object):
                 gSchemes.append('SUSPJIT')
             if self.suspblock.isChecked():
                 gSchemes.append('SUSPBLOCK')
+            if self.gmfpa.isChecked():
+                gSchemes.append('GMFPA')
 
             if gRuntest:
                 #khchen
@@ -1200,6 +1175,9 @@ class Ui_MainWindow(object):
                         elif ischeme == 'SUSPBLOCK':
                             if FixedPriority.SuspBlock(tasks) == False:  # sorted tasks
                                 numfail += 1
+                        elif ischeme == 'GMFPA':
+                            if GMFPA.GMFPA(tasks) == False:  # sorted tasks
+                                numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'
 
@@ -1257,6 +1235,7 @@ class Ui_MainWindow(object):
         self.scrm.setText(_translate("MainWindow", "SCRM"))
         self.scairrm.setText(_translate("MainWindow", "SCAIR-RM"))
         self.rss.setText(_translate("MainWindow", "RSS"))
+        self.gmfpa.setText(_translate("MainWindow", "GMF-PA"))
         self.rtedf.setText(_translate("MainWindow", "RTEDF"))
         self.udledf.setText(_translate("MainWindow", "UDLEDF"))
         self.wlaedf.setText(_translate("MainWindow", "WLAEDF"))

@@ -31,6 +31,7 @@ def UUniFast_Discard(n,U_avg):
 		del USet[:]
 
 def ExpDist(limit,U_mean):
+	taskSet=[]
 	while 1:
 		uBkt=random.expovariate(U_mean)
 		print(uBkt)
@@ -38,6 +39,7 @@ def ExpDist(limit,U_mean):
 			break
 		taskSet.append(uBkt)
 def UniDist(n,U_min,U_max):
+	taskSet=[]
 	for i in range(n-1):
 		uBkt=random.uniform(U_min, U_max)
 		taskSet.append(uBkt)
