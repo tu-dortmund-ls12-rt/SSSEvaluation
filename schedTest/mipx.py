@@ -179,7 +179,7 @@ def mip(tasks):
     #m.params.NumericFocus = 3
     m.optimize()
     
-    m.write("model.lp") 
+    m.write("mipx.lp") 
     #print(m.ObjCon)
     #print(n,m.NumConstrs)
 
