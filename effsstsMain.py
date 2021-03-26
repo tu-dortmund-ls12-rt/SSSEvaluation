@@ -189,12 +189,12 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #FRD Segmented
-        self.groupBox_5.setGeometry(QtCore.QRect(11, 24, 212, 250))
+        self.groupBox_5.setGeometry(QtCore.QRect(11, 24, 232, 250))
         self.groupBox_5.setObjectName("groupBox_5")
 
         self.scrollArea_5 = QtWidgets.QScrollArea(self.groupBox_5)
         self.scrollArea_5.setWidgetResizable(True)
-        self.scrollArea_5.setGeometry(QtCore.QRect(1, 21, 211, 229))
+        self.scrollArea_5.setGeometry(QtCore.QRect(1, 21, 231, 229))
         self.scrollArea_5.setObjectName("scrollArea_5")
         self.scrollArea_5.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_5.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -267,13 +267,20 @@ class Ui_MainWindow(object):
 
         self.gmfpa = QtWidgets.QCheckBox(self.formLayoutWidget_5)
         self.gmfpa.setObjectName("gmfpa")
-        self.gmfpa.setToolTip('Generalized Multiframe Task Model with Parameter Adaptation')
+        self.gmfpa.setToolTip('Generalized Multiframe Task Model with Parameter Adaptation - Set granularity of time steps')
         self.formLayout_5.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.gmfpa)
+
+        self.gmfpag = QtWidgets.QDoubleSpinBox(self.formLayoutWidget_5)
+        self.gmfpag.setMaximum(1.0)
+        self.gmfpag.setSingleStep(0.01)
+        self.gmfpag.setProperty("value", 0.5)
+        self.gmfpag.setObjectName("gmfpag")
+        self.formLayout_5.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.gmfpag)
 
 
 
         self.groupBox = QtWidgets.QGroupBox(self.groupbox_schedulability_tests)  #FRD Hybrid
-        self.groupBox.setGeometry(QtCore.QRect(233, 24, 217, 250))
+        self.groupBox.setGeometry(QtCore.QRect(253, 24, 217, 250))
         self.groupBox.setObjectName("groupBox")
 
         self.scrollArea = QtWidgets.QScrollArea(self.groupBox)
@@ -348,7 +355,7 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_4 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #Segmented
-        self.groupBox_4.setGeometry(QtCore.QRect(460, 24, 170, 250))
+        self.groupBox_4.setGeometry(QtCore.QRect(480, 24, 170, 250))
         self.groupBox_4.setObjectName("groupBox_4")
         
         self.scrollArea_4 = QtWidgets.QScrollArea(self.groupBox_4)
@@ -404,7 +411,7 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_8 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #Dynamic
-        self.groupBox_8.setGeometry(QtCore.QRect(640, 24, 170, 250))
+        self.groupBox_8.setGeometry(QtCore.QRect(660, 24, 170, 250))
         self.groupBox_8.setObjectName("groupBox_8")
 
         self.scrollArea_8 = QtWidgets.QScrollArea(self.groupBox_8)
@@ -480,12 +487,12 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #General
-        self.groupBox_6.setGeometry(QtCore.QRect(820, 24, 170, 250))
+        self.groupBox_6.setGeometry(QtCore.QRect(840, 24, 150, 250))
         self.groupBox_6.setObjectName("groupBox_6")
 
         self.scrollArea_6 = QtWidgets.QScrollArea(self.groupBox_6)
         self.scrollArea_6.setWidgetResizable(True)
-        self.scrollArea_6.setGeometry(QtCore.QRect(1, 21, 169, 229))
+        self.scrollArea_6.setGeometry(QtCore.QRect(1, 21, 149, 229))
         self.scrollArea_6.setObjectName("scrollArea_6")
         self.scrollArea_6.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_6.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -992,7 +999,7 @@ class Ui_MainWindow(object):
             if self.suspblock.isChecked():
                 gSchemes.append('SUSPBLOCK')
             if self.gmfpa.isChecked():
-                gSchemes.append('GMFPA')
+                gSchemes.append('GMFPA-' + str(self.gmfpag.value()))
 
             if gRuntest:
                 #khchen
@@ -1175,8 +1182,8 @@ class Ui_MainWindow(object):
                         elif ischeme == 'SUSPBLOCK':
                             if FixedPriority.SuspBlock(tasks) == False:  # sorted tasks
                                 numfail += 1
-                        elif ischeme == 'GMFPA':
-                            if GMFPA.GMFPA(tasks) == False:  # sorted tasks
+                        elif ischeme.split('-')[0] == 'GMFPA':
+                            if GMFPA.GMFPA(tasks,ischeme) == False:  # sorted tasks
                                 numfail += 1
                         else:
                             assert ischeme, 'not vaild ischeme'

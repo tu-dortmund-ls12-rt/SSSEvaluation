@@ -3,23 +3,18 @@ import gurobipy as gp
 from gurobipy import GRB
 import numpy as np
 
-def GMFPA(tasks):
+def GMFPA(tasks,ischeme):
     #tasks = [{'period': 865, 'execution': 5, 'deadline': 865, 'utilization': 0.005975544927920393, 'sslength': 60, 'minSr': 1, 'paths': [{'Cseg': [1, 4], 'Sseg': [58], 'deadline': [-1, -1]}, {'Cseg': [1, 4], 'Sseg': [60], 'deadline': [-1, -1]}], 'Cseg': [1, 4], 'Sseg': [60]}, {'period': 2024, 'execution': 88, 'deadline': 2024, 'utilization': 0.04402445507207961, 'sslength': 43, 'minSr': 1, 'paths': [{'Cseg': [6, 82], 'Sseg': [43], 'deadline': [-1, -1]}, {'Cseg': [8, 64], 'Sseg': [40], 'deadline': [-1, -1]}], 'Cseg': [8, 82], 'Sseg': [43]}]
     #tasks = [{'period': 711, 'execution': 96, 'deadline': 711, 'utilization': 0.13612793259110334, 'sslength': 59, 'minSr': 1, 'paths': [{'Cseg': [44, 52], 'Sseg': [54], 'deadline': [-1, -1]}, {'Cseg': [40, 39], 'Sseg': [59], 'deadline': [-1, -1]}], 'Cseg': [44, 52], 'Sseg': [59]}, {'period': 817, 'execution': 522, 'deadline': 817, 'utilization': 0.64019865591712, 'sslength': 19, 'minSr': 1, 'paths': [{'Cseg': [3, 519], 'Sseg': [19], 'deadline': [-1, -1]}, {'Cseg': [421, 61], 'Sseg': [16], 'deadline': [-1, -1]}], 'Cseg': [421, 519], 'Sseg': [19]}, {'period': 4269, 'execution': 100, 'deadline': 4269, 'utilization': 0.023673411491776708, 'sslength': 88, 'minSr': 1, 'paths': [{'Cseg': [1, 96], 'Sseg': [86], 'deadline': [-1, -1]}, {'Cseg': [11, 89], 'Sseg': [88], 'deadline': [-1, -1]}], 'Cseg': [11, 96], 'Sseg': [88]}]
-
-    #print(tasks)
 
     #Calculate n and N_i
     len_tasks = len(tasks)
     len_segs = 2*len(tasks[0]['Cseg'])-1
-    #print("Number of tasks n: ",len_tasks)
-    #print("Number of Segments Ni: ",len_segs)
 
     #Calculate U_cap
     U_cap = 0
     for i in range(len_tasks):
         U_cap += tasks[i]['utilization']
-    #print("Utilization: ",U_cap)
 
     #Calculate H
     P_max = 0
@@ -27,7 +22,6 @@ def GMFPA(tasks):
         task = tasks[i]
         if(task['period']-min(task['Cseg']) > P_max):
             P_max = task['period']-min(task['Cseg'])
-    #print("P_max: ",P_max)
 
     H = 0
     if U_cap < 1:
@@ -38,22 +32,19 @@ def GMFPA(tasks):
             periods[i] = tasks[i]['period']
         #print(periods)
         H = np.lcm(periods)
-    #print("H: ",H)
 
     #Approximation of H to Ha
 
-    exponent = 1.5
-    len_Ha = math.ceil(math.log(H,exponent))+1
+    epsilon = 1+(float)(ischeme.split('-')[1])
+    len_Ha = math.ceil(math.log(H,epsilon))+1
 
     Ha = list(range(len_Ha))
     for i in range(len_Ha):
-        Ha[i] = 1*math.pow(exponent,i)
+        Ha[i] = 1*math.pow(epsilon,i)
     Ha[len_Ha-1]=H
-    #print("Ha ",Ha)
 
     #Calculate realmin
     realmin = np.finfo(float).tiny
-    #print("realmin: ",realmin)
     
     #Set Constants
     Pi = list(range(len_tasks))
@@ -70,17 +61,26 @@ def GMFPA(tasks):
             else:
                 Eik[i][k] = 0
 
-    #print("Pi: ",Pi)
-    #print("Di: ",Di)
-    #print("Eik: ",Eik)
+    # print("Tasks: ",tasks)
+    # print("Number of tasks n: ",len_tasks)
+    # print("Number of Segments Ni: ",len_segs)
+    # print("Utilization: ",U_cap)
+    # print("P_max: ",P_max)
+    # print("H: ",H)
+    # print("Epsilon: ",epsilon)
+    # print("len_Ha: ",len_Ha)
+    # print("Ha ",Ha)
+    # print("realmin: ",realmin)
+    # print("Pi: ",Pi)
+    # print("Di: ",Di)
+    # print("Eik: ",Eik)
 
     #Create Gurobi Model
     m = gp.Model("mip1")
 
     #Set Variables
     Dik = m.addMVar(    (len_tasks,len_segs)                    ,vtype=GRB.CONTINUOUS   ,name="Dik")
-    # Dijk = m.addMVar(   (len_tasks,len_segs,len_segs)         ,vtype=GRB.CONTINUOUS   ,name="Dik")
-    #Pik = m.addMVar(    (len_tasks,len_segs)                   ,vtype=GRB.CONTINUOUS   ,name="Pik") # implicit deadline, not needed
+    # Pik = m.addMVar(    (len_tasks,len_segs)                   ,vtype=GRB.CONTINUOUS   ,name="Pik") # implicit deadline, not needed
     Tb = m.addMVar(     (len_tasks,len_Ha,len_segs,len_segs) ,vtype=GRB.CONTINUOUS   ,name="Tb")
     Xitjk = m.addMVar(  (len_tasks,len_Ha,len_segs,len_segs) ,vtype=GRB.BINARY       ,name="Xitjk")
     Yitjk = m.addMVar(  (len_tasks,len_Ha,len_segs,len_segs) ,vtype=GRB.CONTINUOUS   ,name="Yitjk")
@@ -167,6 +167,6 @@ def GMFPA(tasks):
 
     
 
-#GMFPA([])
+# GMFPA([],"GMFPA-0.5")
 
 
