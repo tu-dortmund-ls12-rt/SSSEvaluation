@@ -42,7 +42,7 @@ class Ui_MainWindow(object):
 
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1024, 720)
+        MainWindow.resize(1024, 660)
 
 
 
@@ -183,28 +183,28 @@ class Ui_MainWindow(object):
 
 
         self.groupbox_schedulability_tests = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
-        self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 232, 1000, 288))
+        self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 232, 1000, 228))
         self.groupbox_schedulability_tests.setObjectName("groupbox_schedulability_tests")
 
 
 
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #FRD Segmented
-        self.groupBox_5.setGeometry(QtCore.QRect(11, 24, 232, 250))
+        self.groupBox_5.setGeometry(QtCore.QRect(11, 24, 232, 190))
         self.groupBox_5.setObjectName("groupBox_5")
 
         self.scrollArea_5 = QtWidgets.QScrollArea(self.groupBox_5)
         self.scrollArea_5.setWidgetResizable(True)
-        self.scrollArea_5.setGeometry(QtCore.QRect(1, 21, 231, 229))
+        self.scrollArea_5.setGeometry(QtCore.QRect(1, 21, 231, 169))
         self.scrollArea_5.setObjectName("scrollArea_5")
         self.scrollArea_5.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_5.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollAreaWidgetContents_5 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_5.setGeometry(QtCore.QRect(0, 0, 212, 229))
+        self.scrollAreaWidgetContents_5.setGeometry(QtCore.QRect(0, 0, 212, 169))
         self.scrollAreaWidgetContents_5.setObjectName("scrollAreaWidgetContents_5")
 
         self.formLayoutWidget_5 = QtWidgets.QWidget(self.scrollAreaWidgetContents_5)
-        self.formLayoutWidget_5.setGeometry(QtCore.QRect(0, 0, 212, 229))
+        self.formLayoutWidget_5.setGeometry(QtCore.QRect(0, 0, 212, 169))
         self.formLayoutWidget_5.setObjectName("formLayoutWidget_5")
         
         self.formLayout_5 = QtWidgets.QFormLayout(self.formLayoutWidget_5)
@@ -280,22 +280,22 @@ class Ui_MainWindow(object):
 
 
         self.groupBox = QtWidgets.QGroupBox(self.groupbox_schedulability_tests)  #FRD Hybrid
-        self.groupBox.setGeometry(QtCore.QRect(253, 24, 217, 250))
+        self.groupBox.setGeometry(QtCore.QRect(253, 24, 217, 190))
         self.groupBox.setObjectName("groupBox")
 
         self.scrollArea = QtWidgets.QScrollArea(self.groupBox)
         self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setGeometry(QtCore.QRect(1, 21, 216, 229))
+        self.scrollArea.setGeometry(QtCore.QRect(1, 21, 216, 169))
         self.scrollArea.setObjectName("scrollArea")
         self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 217, 229))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 217, 169))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
 
         self.formLayoutWidget = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(0, 0, 217, 229))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(0, 0, 217, 169))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         
         self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
@@ -355,22 +355,22 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_4 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #Segmented
-        self.groupBox_4.setGeometry(QtCore.QRect(480, 24, 170, 250))
+        self.groupBox_4.setGeometry(QtCore.QRect(480, 24, 170, 190))
         self.groupBox_4.setObjectName("groupBox_4")
         
         self.scrollArea_4 = QtWidgets.QScrollArea(self.groupBox_4)
         self.scrollArea_4.setWidgetResizable(True)
-        self.scrollArea_4.setGeometry(QtCore.QRect(1, 21, 169, 229))
+        self.scrollArea_4.setGeometry(QtCore.QRect(1, 21, 169, 169))
         self.scrollArea_4.setObjectName("scrollArea_4")
         self.scrollArea_4.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_4.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollAreaWidgetContents_4 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_4.setGeometry(QtCore.QRect(0, 0, 170, 229))
+        self.scrollAreaWidgetContents_4.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.scrollAreaWidgetContents_4.setObjectName("scrollAreaWidgetContents_4")
 
         self.formLayoutWidget_4 = QtWidgets.QWidget(self.scrollAreaWidgetContents_4)
-        self.formLayoutWidget_4.setGeometry(QtCore.QRect(0, 0, 170, 229))
+        self.formLayoutWidget_4.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.formLayoutWidget_4.setObjectName("formLayoutWidget_4")
         
         self.formLayout_4 = QtWidgets.QFormLayout(self.formLayoutWidget_4)
@@ -411,22 +411,22 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_8 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #Dynamic
-        self.groupBox_8.setGeometry(QtCore.QRect(660, 24, 170, 250))
+        self.groupBox_8.setGeometry(QtCore.QRect(660, 24, 170, 190))
         self.groupBox_8.setObjectName("groupBox_8")
 
         self.scrollArea_8 = QtWidgets.QScrollArea(self.groupBox_8)
         self.scrollArea_8.setWidgetResizable(True)
-        self.scrollArea_8.setGeometry(QtCore.QRect(1, 21, 169, 229))
+        self.scrollArea_8.setGeometry(QtCore.QRect(1, 21, 169, 169))
         self.scrollArea_8.setObjectName("scrollArea_8")
         self.scrollArea_8.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_8.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollAreaWidgetContents_8 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_8.setGeometry(QtCore.QRect(0, 0, 170, 229))
+        self.scrollAreaWidgetContents_8.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.scrollAreaWidgetContents_8.setObjectName("scrollAreaWidgetContents_8")
 
         self.formLayoutWidget_8 = QtWidgets.QWidget(self.scrollAreaWidgetContents_8)
-        self.formLayoutWidget_8.setGeometry(QtCore.QRect(0, 0, 170, 229))
+        self.formLayoutWidget_8.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.formLayoutWidget_8.setObjectName("formLayoutWidget_8")
         
         self.formLayout_8 = QtWidgets.QFormLayout(self.formLayoutWidget_8)
@@ -487,22 +487,22 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #General
-        self.groupBox_6.setGeometry(QtCore.QRect(840, 24, 150, 250))
+        self.groupBox_6.setGeometry(QtCore.QRect(840, 24, 150, 190))
         self.groupBox_6.setObjectName("groupBox_6")
 
         self.scrollArea_6 = QtWidgets.QScrollArea(self.groupBox_6)
         self.scrollArea_6.setWidgetResizable(True)
-        self.scrollArea_6.setGeometry(QtCore.QRect(1, 21, 149, 229))
+        self.scrollArea_6.setGeometry(QtCore.QRect(1, 21, 149, 169))
         self.scrollArea_6.setObjectName("scrollArea_6")
         self.scrollArea_6.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_6.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollAreaWidgetContents_6 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 170, 229))
+        self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.scrollAreaWidgetContents_6.setObjectName("scrollAreaWidgetContents_6")
 
         self.formLayoutWidget_6 = QtWidgets.QWidget(self.scrollAreaWidgetContents_6)
-        self.formLayoutWidget_6.setGeometry(QtCore.QRect(0, 0, 170, 229))
+        self.formLayoutWidget_6.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.formLayoutWidget_6.setObjectName("formLayoutWidget_6")
         
         self.formLayout_6 = QtWidgets.QFormLayout(self.formLayoutWidget_6)
@@ -523,7 +523,7 @@ class Ui_MainWindow(object):
 
 
         self.groupbox_plots = QtWidgets.QGroupBox(self.centralwidget)  # multi plot
-        self.groupbox_plots.setGeometry(QtCore.QRect(12, 530, 1000, 130))
+        self.groupbox_plots.setGeometry(QtCore.QRect(12, 470, 1000, 130))
         self.groupbox_plots.setObjectName("groupbox_plots")
         
         self.plotdata = QtWidgets.QCheckBox(self.groupbox_plots)
@@ -715,11 +715,11 @@ class Ui_MainWindow(object):
         
         self.run = QtWidgets.QPushButton(self.centralwidget)
         self.run.setToolTip('Button to run the settings')
-        self.run.setGeometry(QtCore.QRect(812, 670, 200, 25))
+        self.run.setGeometry(QtCore.QRect(812, 610, 200, 25))
         self.run.setObjectName("run")
         self.exit = QtWidgets.QPushButton(self.centralwidget)
         self.exit.setToolTip('Exit the framework')
-        self.exit.setGeometry(QtCore.QRect(12, 670, 200, 25))
+        self.exit.setGeometry(QtCore.QRect(12, 610, 200, 25))
         self.exit.setObjectName("exit")
 
 

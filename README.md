@@ -46,6 +46,7 @@ SEIFDA-PBminD- | | SEIFDA.py | SEIFDA
 EDA | | EDA.py | SEIFDA
 PROPORTIONAL | | PROPORTIONAL.py | PROPORTIONAL
 SEIFDA-MILP | | mipx.py | mip
+GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
 Oblivious-IUB | | PATH.py | SEIFDApath
 Clairvoyant-SSSD | | PATH.py | SEIFDApath
 Oblivious-MP | | PATH.py | SEIFDApath
