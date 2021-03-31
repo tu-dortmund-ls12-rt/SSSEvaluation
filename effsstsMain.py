@@ -6,7 +6,7 @@ import sys
 import getopt
 import numpy as np
 from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions
-from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -194,7 +194,7 @@ class Ui_MainWindow(object):
 
         self.scrollArea_5 = QtWidgets.QScrollArea(self.groupBox_5)
         self.scrollArea_5.setWidgetResizable(True)
-        self.scrollArea_5.setGeometry(QtCore.QRect(1, 21, 231, 169))
+        self.scrollArea_5.setGeometry(QtCore.QRect(0, 20, 232, 170))
         self.scrollArea_5.setObjectName("scrollArea_5")
         self.scrollArea_5.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_5.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -285,7 +285,7 @@ class Ui_MainWindow(object):
 
         self.scrollArea = QtWidgets.QScrollArea(self.groupBox)
         self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setGeometry(QtCore.QRect(1, 21, 216, 169))
+        self.scrollArea.setGeometry(QtCore.QRect(0, 20, 217, 170))
         self.scrollArea.setObjectName("scrollArea")
         self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -360,7 +360,7 @@ class Ui_MainWindow(object):
         
         self.scrollArea_4 = QtWidgets.QScrollArea(self.groupBox_4)
         self.scrollArea_4.setWidgetResizable(True)
-        self.scrollArea_4.setGeometry(QtCore.QRect(1, 21, 169, 169))
+        self.scrollArea_4.setGeometry(QtCore.QRect(0, 20, 170, 170))
         self.scrollArea_4.setObjectName("scrollArea_4")
         self.scrollArea_4.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_4.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -416,7 +416,7 @@ class Ui_MainWindow(object):
 
         self.scrollArea_8 = QtWidgets.QScrollArea(self.groupBox_8)
         self.scrollArea_8.setWidgetResizable(True)
-        self.scrollArea_8.setGeometry(QtCore.QRect(1, 21, 169, 169))
+        self.scrollArea_8.setGeometry(QtCore.QRect(0, 20, 170, 170))
         self.scrollArea_8.setObjectName("scrollArea_8")
         self.scrollArea_8.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_8.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -492,7 +492,7 @@ class Ui_MainWindow(object):
 
         self.scrollArea_6 = QtWidgets.QScrollArea(self.groupBox_6)
         self.scrollArea_6.setWidgetResizable(True)
-        self.scrollArea_6.setGeometry(QtCore.QRect(1, 21, 149, 169))
+        self.scrollArea_6.setGeometry(QtCore.QRect(0, 20, 150, 170))
         self.scrollArea_6.setObjectName("scrollArea_6")
         self.scrollArea_6.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_6.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -519,6 +519,11 @@ class Ui_MainWindow(object):
         self.nc.setObjectName("nc")
         self.nc.setToolTip('Necessary Condition')
         self.formLayout_6.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.nc)
+
+        self.srsr = QtWidgets.QCheckBox(self.groupBox_6)
+        self.srsr.setObjectName("srsr")
+        self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
+        self.formLayout_6.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.srsr)
 
 
 
@@ -673,45 +678,6 @@ class Ui_MainWindow(object):
         self.slengthminvalue_p1.hide()
         self.slengthminvalue_p2.hide()
         self.slengthminvalue_p3.hide()
-        
-        # if self.mp_check.isChecked():
-        #     self.label_mp_control.show()
-        #     self.combobox_plot.show()
-        #     self.label_mp.show()
-        #     self.tasksperset_p1.show()
-        #     self.tasksperset_p2.show()
-        #     self.tasksperset_p3.show()
-        #     self.numberofsegs_p1.show()
-        #     self.numberofsegs_p2.show()
-        #     self.numberofsegs_p3.show()
-        #     self.label_mp_max.show()
-        #     self.slengthmaxvalue_p1.show()
-        #     self.slengthmaxvalue_p2.show()
-        #     self.slengthmaxvalue_p3.show()
-        #     self.label_mp_min.show()
-        #     self.slengthminvalue_p1.show()
-        #     self.slengthminvalue_p2.show()
-        #     self.slengthminvalue_p3.show()
-        # else:
-        #     self.label_mp_control.hide()
-        #     self.combobox_plot.hide()
-        #     self.label_mp.hide()
-        #     self.tasksperset_p1.hide()
-        #     self.tasksperset_p2.hide()
-        #     self.tasksperset_p3.hide()
-        #     self.numberofsegs_p1.hide()
-        #     self.numberofsegs_p2.hide()
-        #     self.numberofsegs_p3.hide()
-        #     self.label_mp_max.hide()
-        #     self.slengthmaxvalue_p1.hide()
-        #     self.slengthmaxvalue_p2.hide()
-        #     self.slengthmaxvalue_p3.hide()
-        #     self.label_mp_min.hide()
-        #     self.slengthminvalue_p1.hide()
-        #     self.slengthminvalue_p2.hide()
-        #     self.slengthminvalue_p3.hide()
-
-
         
         self.run = QtWidgets.QPushButton(self.centralwidget)
         self.run.setToolTip('Button to run the settings')
@@ -959,6 +925,8 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('NC')
+            if self.srsr.isChecked():
+                gSchemes.append('SRSR')
             if self.biondi.isChecked():
                 gSchemes.append('Biondi')
             if self.passopa.isChecked():
@@ -1148,6 +1116,9 @@ class Ui_MainWindow(object):
                         elif ischeme == 'NC':
                             if NC.NC(tasks) == False:
                                 numfail += 1
+                        elif ischeme == 'SRSR':
+                            if SRSR.SRSR(tasks) == False:
+                                numfail += 1
                         elif ischeme == 'SCAIR-RM':
                             if rad.scair_dm(tasks) == False:
                                 numfail += 1
@@ -1231,6 +1202,7 @@ class Ui_MainWindow(object):
         self.groupbox_plots.setTitle(_translate("MainWindow", "Plots"))
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
+        self.srsr.setText(_translate("MainWindow", "SRSR"))
         self.biondi.setText(_translate("MainWindow", "Biondi RTSS 16"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
