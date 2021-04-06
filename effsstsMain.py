@@ -11,8 +11,7 @@ from effsstsPlot import effsstsPlot
 import os
 import datetime
 import pickle
-import threading
-from queue import Queue
+from multiprocessing import Process, JoinableQueue
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -1083,7 +1082,7 @@ class Ui_MainWindow(object):
         def schedulabilityTest(Tasksets_util):
             global numfail
             global queue
-            queue = Queue()
+            queue = JoinableQueue()
 
             sspropotions = ['10']
             periodlogs = ['2']
@@ -1110,13 +1109,12 @@ class Ui_MainWindow(object):
                     if ifskip == True:
                         print("acceptanceRatio:", 0)
                         y[u] = 0
-                        continue
+                        ConnectionRefusedError
                     for task in tasksets:
                         queue.put((task,ischeme))
-                    print("gthread: ",gthread)
                     for i in range(gthread):
-                        threading.Thread(target=switchTest, args=()).start()
-                    
+                        Process(target=switchTest, args=[]).start()
+
                     queue.join()
 
                     numfail = sum(numfail)
@@ -1138,7 +1136,6 @@ class Ui_MainWindow(object):
         def switchTest():
             global numfail
             global queue
-            
             while not queue.empty():
                 tasks,ischeme = queue.get()
                 if ischeme == 'SCEDF':
