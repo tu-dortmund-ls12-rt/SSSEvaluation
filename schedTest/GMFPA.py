@@ -145,7 +145,6 @@ def GMFPA(tasks,ischeme):
                             for k in range(1,len_segs,2)),name='c13')
                             
     #Start Optimizer
-    m.setParam( 'OutputFlag', False )
     m.update()
     m.optimize()
     if m.Status==2:
