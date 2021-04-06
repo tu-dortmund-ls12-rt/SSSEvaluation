@@ -38,14 +38,18 @@ def GMFPA(tasks,ischeme):
         H = np.lcm(periods)
 
     #Approximation of H to Ha
-
+    Ha = []
+    len_Ha = 0
     epsilon = 1+(float)(ischeme.split('-')[1])
-    len_Ha = math.ceil(math.log(H,epsilon))+1
-
-    Ha = list(range(len_Ha))
-    for i in range(len_Ha):
-        Ha[i] = 1*math.pow(epsilon,i)
-    Ha[len_Ha-1]=H
+    if epsilon != 1:
+        len_Ha = math.ceil(math.log(H,epsilon))+1
+        Ha = list(range(len_Ha))
+        for i in range(len_Ha):
+            Ha[i] = 1*math.pow(epsilon,i)
+        Ha[len_Ha-1]=H
+    else:
+        len_Ha = H
+        Ha = list(range(H))
 
     #Calculate realmin
     realmin = np.finfo(float).tiny
