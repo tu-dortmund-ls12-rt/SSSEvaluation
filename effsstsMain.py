@@ -11,6 +11,7 @@ from effsstsPlot import effsstsPlot
 import os
 import datetime
 import pickle
+import threading
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -1065,6 +1066,7 @@ class Ui_MainWindow(object):
 
 
         def schedulabilityTest(Tasksets_util):
+            global numfail
             sspropotions = ['10']
             periodlogs = ['2']
             for ischeme in gSchemes:
@@ -1074,6 +1076,9 @@ class Ui_MainWindow(object):
                 y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
                 print(y)
                 ifskip = False
+                # print("Hello")
+                # print(Tasksets_util)
+                # print("Hello")
                 for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
                     print("Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per Set:", gTasksinBkt, "U:", gUStart + u * gUStep, "SSLength:", str(
                         gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes)
@@ -1083,81 +1088,18 @@ class Ui_MainWindow(object):
                     if u * gUStep == 100:
                         y[u] = 0
                         continue
-                    numfail = 0
+                    numfail = [0]*len(tasksets)
                     if ifskip == True:
                         print("acceptanceRatio:", 0)
                         y[u] = 0
                         continue
-                    for tasks in tasksets:  # iterate for each taskset
-                        if ischeme == 'SCEDF':
-                            if SCEDF.SC_EDF(tasks) == False:
-                                numfail += 1
-                        elif ischeme == 'SCRM':
-                            if SEIFDA.SC_RM(tasks) == False:
-                                numfail += 1
-                        elif ischeme == 'PASS-OPA':
-                            if Audsley.Audsley(tasks) == False:
-                                numfail += 1
-                        elif ischeme == 'SEIFDA-MILP':
-                            if mipx.mip(tasks) == False:
-                                numfail += 1
-                        elif ischeme.split('-')[0] == 'SEIFDA':
-                            if SEIFDA.greedy(tasks, ischeme) == False:
-                                numfail += 1
-                        elif ischeme.split('-')[0] == 'PATH':
-                            if PATH.PATH(tasks, ischeme) == False:
-                                numfail += 1
-                        elif ischeme == 'EDA':
-                            if EDA.EDA(tasks, gSSofftypes) == False:
-                                numfail += 1
-                        elif ischeme == 'PROPORTIONAL':
-                            if PROPORTIONAL.PROPORTIONAL(tasks, gSSofftypes) == False:
-                                numfail += 1
-                        elif ischeme == 'NC':
-                            if NC.NC(tasks) == False:
-                                numfail += 1
-                        elif ischeme == 'SRSR':
-                            if SRSR.SRSR(tasks) == False:
-                                numfail += 1
-                        elif ischeme == 'SCAIR-RM':
-                            if rad.scair_dm(tasks) == False:
-                                numfail += 1
-                        elif ischeme == 'SCAIR-OPA':
-                            if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'Biondi':
-                            if rt.Biondi(tasks) == False:
-                                numfail += 1
-                        #hteper
-                        elif ischeme == 'RSS':
-                            if RSS.SC2EDF(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'UDLEDF':
-                            if UDLEDF.UDLEDF_improved(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'WLAEDF':
-                            if WLAEDF.WLAEDF(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'RTEDF':
-                            if RTEDF.RTEDF(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'UNIFRAMEWORK':
-                            if UNIFRAMEWORK.UniFramework(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'SUSPOBL':
-                            if FixedPriority.SuspObl(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'SUSPJIT':
-                            if FixedPriority.SuspJit(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme == 'SUSPBLOCK':
-                            if FixedPriority.SuspBlock(tasks) == False:  # sorted tasks
-                                numfail += 1
-                        elif ischeme.split('-')[0] == 'GMFPA':
-                            if GMFPA.GMFPA(tasks,ischeme) == False:  # sorted tasks
-                                numfail += 1
-                        else:
-                            assert ischeme, 'not vaild ischeme'
+                    threads = []
+                    for v, tasks in enumerate(tasksets, start = 0):  # iterate for each taskset
+                        threads.append(threading.Thread(target=switchTest, args=(v,tasks,ischeme,)))
+                        threads[v].start()
+                    for v in range(len(tasksets)):
+                        threads[v].join()
+                    numfail = sum(numfail)
 
                     acceptanceRatio = 1 - (numfail / gTotBucket)
                     print("acceptanceRatio:", acceptanceRatio)
@@ -1172,6 +1114,77 @@ class Ui_MainWindow(object):
                 if not os.path.exists(plotPath):
                     os.makedirs(plotPath)
                 np.save(plotfile, np.array([x, y]))
+        
+        def switchTest(i, tasks, ischeme):
+            global numfail
+            if ischeme == 'SCEDF':
+                if SCEDF.SC_EDF(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme == 'SCRM':
+                if SEIFDA.SC_RM(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme == 'PASS-OPA':
+                if Audsley.Audsley(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme == 'SEIFDA-MILP':
+                if mipx.mip(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme.split('-')[0] == 'SEIFDA':
+                if SEIFDA.greedy(tasks, ischeme) == False:
+                    numfail[i] += 1
+            elif ischeme.split('-')[0] == 'PATH':
+                if PATH.PATH(tasks, ischeme) == False:
+                    numfail[i] += 1
+            elif ischeme == 'EDA':
+                if EDA.EDA(tasks, gSSofftypes) == False:
+                    numfail[i] += 1
+            elif ischeme == 'PROPORTIONAL':
+                if PROPORTIONAL.PROPORTIONAL(tasks, gSSofftypes) == False:
+                    numfail[i] += 1
+            elif ischeme == 'NC':
+                if NC.NC(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme == 'SRSR':
+                if SRSR.SRSR(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme == 'SCAIR-RM':
+                if rad.scair_dm(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme == 'SCAIR-OPA':
+                if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'Biondi':
+                if rt.Biondi(tasks) == False:
+                    numfail[i] += 1
+            elif ischeme == 'RSS':
+                if RSS.SC2EDF(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'UDLEDF':
+                if UDLEDF.UDLEDF_improved(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'WLAEDF':
+                if WLAEDF.WLAEDF(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'RTEDF':
+                if RTEDF.RTEDF(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'UNIFRAMEWORK':
+                if UNIFRAMEWORK.UniFramework(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'SUSPOBL':
+                if FixedPriority.SuspObl(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'SUSPJIT':
+                if FixedPriority.SuspJit(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme == 'SUSPBLOCK':
+                if FixedPriority.SuspBlock(tasks) == False:  # sorted tasks
+                    numfail[i] += 1
+            elif ischeme.split('-')[0] == 'GMFPA':
+                if GMFPA.GMFPA(tasks,ischeme) == False:  # sorted tasks
+                    numfail[i] += 1
+            else:
+                assert ischeme, 'not vaild ischeme'
 
 
     def retranslateUi(self, MainWindow):
