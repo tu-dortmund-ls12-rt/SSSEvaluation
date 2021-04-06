@@ -12,6 +12,7 @@ import os
 import datetime
 import pickle
 import threading
+from queue import Queue
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -31,6 +32,7 @@ gMinsstype = 0.01
 gMaxsstype = 0.1
 gNumberofruns = 1
 garwrap = []
+gthread = 10
 
 gmultiplot = ''
 gmpCheck = False
@@ -66,6 +68,14 @@ class Ui_MainWindow(object):
         self.combobox_input.setObjectName("combobox_input")
         self.combobox_input.addItems(choice_list)
         self.combobox_input.currentIndexChanged.connect(lambda: selectionchange(self.combobox_input))
+
+        self.label_threadcount = QtWidgets.QLabel(self.groupBox_general)
+        self.label_threadcount.setGeometry(QtCore.QRect(800, 32, 100, 25))
+        self.label_threadcount.setObjectName("label_threadcount")
+
+        self.threadcount = QtWidgets.QLineEdit(self.groupBox_general)
+        self.threadcount.setGeometry(QtCore.QRect(895, 32, 95, 25))
+        self.threadcount.setObjectName("threadcount")
         
         self.label_5 = QtWidgets.QLabel(self.groupBox_general)
         self.label_5.setGeometry(QtCore.QRect(12, 65, 115, 25))
@@ -837,6 +847,7 @@ class Ui_MainWindow(object):
             global gSeed
             global gTaskChoice
             global garwrap
+            global gthread
 
             global gmultiplot
             global gmpCheck
@@ -863,6 +874,10 @@ class Ui_MainWindow(object):
                 gSeed = self.seed.text()
             else:
                 gSeed = datetime.datetime.now()
+            if self.threadcount.text() != '':
+                gthread = self.threadcount.text()
+            else:
+                gthread = 10
             ###MultiPlot###
             gmultiplot = self.combobox_plot.currentText()
             if gmultiplot == 'Tasks per Set':
@@ -1067,6 +1082,9 @@ class Ui_MainWindow(object):
 
         def schedulabilityTest(Tasksets_util):
             global numfail
+            global queue
+            queue = Queue()
+
             sspropotions = ['10']
             periodlogs = ['2']
             for ischeme in gSchemes:
@@ -1088,17 +1106,19 @@ class Ui_MainWindow(object):
                     if u * gUStep == 100:
                         y[u] = 0
                         continue
-                    numfail = [0]*len(tasksets)
+                    numfail = []
                     if ifskip == True:
                         print("acceptanceRatio:", 0)
                         y[u] = 0
                         continue
-                    threads = []
-                    for v, tasks in enumerate(tasksets, start = 0):  # iterate for each taskset
-                        threads.append(threading.Thread(target=switchTest, args=(v,tasks,ischeme,)))
-                        threads[v].start()
-                    for v in range(len(tasksets)):
-                        threads[v].join()
+                    for task in tasksets:
+                        queue.put((task,ischeme))
+                    print("gthread: ",gthread)
+                    for i in range(gthread):
+                        threading.Thread(target=switchTest, args=()).start()
+                    
+                    queue.join()
+
                     numfail = sum(numfail)
 
                     acceptanceRatio = 1 - (numfail / gTotBucket)
@@ -1115,76 +1135,80 @@ class Ui_MainWindow(object):
                     os.makedirs(plotPath)
                 np.save(plotfile, np.array([x, y]))
         
-        def switchTest(i, tasks, ischeme):
+        def switchTest():
             global numfail
-            if ischeme == 'SCEDF':
-                if SCEDF.SC_EDF(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme == 'SCRM':
-                if SEIFDA.SC_RM(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme == 'PASS-OPA':
-                if Audsley.Audsley(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme == 'SEIFDA-MILP':
-                if mipx.mip(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme.split('-')[0] == 'SEIFDA':
-                if SEIFDA.greedy(tasks, ischeme) == False:
-                    numfail[i] += 1
-            elif ischeme.split('-')[0] == 'PATH':
-                if PATH.PATH(tasks, ischeme) == False:
-                    numfail[i] += 1
-            elif ischeme == 'EDA':
-                if EDA.EDA(tasks, gSSofftypes) == False:
-                    numfail[i] += 1
-            elif ischeme == 'PROPORTIONAL':
-                if PROPORTIONAL.PROPORTIONAL(tasks, gSSofftypes) == False:
-                    numfail[i] += 1
-            elif ischeme == 'NC':
-                if NC.NC(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme == 'SRSR':
-                if SRSR.SRSR(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme == 'SCAIR-RM':
-                if rad.scair_dm(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme == 'SCAIR-OPA':
-                if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'Biondi':
-                if rt.Biondi(tasks) == False:
-                    numfail[i] += 1
-            elif ischeme == 'RSS':
-                if RSS.SC2EDF(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'UDLEDF':
-                if UDLEDF.UDLEDF_improved(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'WLAEDF':
-                if WLAEDF.WLAEDF(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'RTEDF':
-                if RTEDF.RTEDF(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'UNIFRAMEWORK':
-                if UNIFRAMEWORK.UniFramework(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'SUSPOBL':
-                if FixedPriority.SuspObl(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'SUSPJIT':
-                if FixedPriority.SuspJit(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme == 'SUSPBLOCK':
-                if FixedPriority.SuspBlock(tasks) == False:  # sorted tasks
-                    numfail[i] += 1
-            elif ischeme.split('-')[0] == 'GMFPA':
-                if GMFPA.GMFPA(tasks,ischeme) == False:  # sorted tasks
-                    numfail[i] += 1
-            else:
-                assert ischeme, 'not vaild ischeme'
+            global queue
+            while not queue.empty():
+                tasks,ischeme = queue.get()
+                if ischeme == 'SCEDF':
+                    if SCEDF.SC_EDF(tasks) == False:
+                        numfail.append(1)
+                elif ischeme == 'SCRM':
+                    if SEIFDA.SC_RM(tasks) == False:
+                        numfail.append(1)
+                elif ischeme == 'PASS-OPA':
+                    if Audsley.Audsley(tasks) == False:
+                        numfail.append(1)
+                elif ischeme == 'SEIFDA-MILP':
+                    if mipx.mip(tasks) == False:
+                        numfail.append(1)
+                elif ischeme.split('-')[0] == 'SEIFDA':
+                    if SEIFDA.greedy(tasks, ischeme) == False:
+                        numfail.append(1)
+                elif ischeme.split('-')[0] == 'PATH':
+                    if PATH.PATH(tasks, ischeme) == False:
+                        numfail.append(1)
+                elif ischeme == 'EDA':
+                    if EDA.EDA(tasks, gSSofftypes) == False:
+                        numfail.append(1)
+                elif ischeme == 'PROPORTIONAL':
+                    if PROPORTIONAL.PROPORTIONAL(tasks, gSSofftypes) == False:
+                        numfail.append(1)
+                elif ischeme == 'NC':
+                    if NC.NC(tasks) == False:
+                        numfail.append(1)
+                elif ischeme == 'SRSR':
+                    if SRSR.SRSR(tasks) == False:
+                        numfail.append(1)
+                elif ischeme == 'SCAIR-RM':
+                    if rad.scair_dm(tasks) == False:
+                        numfail.append(1)
+                elif ischeme == 'SCAIR-OPA':
+                    if rad.Audsley(tasks, ischeme) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'Biondi':
+                    if rt.Biondi(tasks) == False:
+                        numfail.append(1)
+                elif ischeme == 'RSS':
+                    if RSS.SC2EDF(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'UDLEDF':
+                    if UDLEDF.UDLEDF_improved(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'WLAEDF':
+                    if WLAEDF.WLAEDF(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'RTEDF':
+                    if RTEDF.RTEDF(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'UNIFRAMEWORK':
+                    if UNIFRAMEWORK.UniFramework(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'SUSPOBL':
+                    if FixedPriority.SuspObl(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'SUSPJIT':
+                    if FixedPriority.SuspJit(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme == 'SUSPBLOCK':
+                    if FixedPriority.SuspBlock(tasks) == False:  # sorted tasks
+                        numfail.append(1)
+                elif ischeme.split('-')[0] == 'GMFPA':
+                    if GMFPA.GMFPA(tasks,ischeme) == False:  # sorted tasks
+                        numfail.append(1)
+                else:
+                    assert ischeme, 'not vaild ischeme'
+                queue.task_done()
 
 
     def retranslateUi(self, MainWindow):
@@ -1198,7 +1222,7 @@ class Ui_MainWindow(object):
         self.plotall.setText(_translate("MainWindow", "Combine selected Tests"))
         self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
         self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
-        #khchen
+        self.label_threadcount.setText(_translate("MainWindow", "Threadcount:"))
         self.label_seed.setText(_translate("MainWindow", "Seed:"))
         self.groupbox_configurations.setTitle(_translate("MainWindow", "Configurations"))
         self.label_6.setText(_translate("MainWindow", "Task Sets per Configuration:"))
