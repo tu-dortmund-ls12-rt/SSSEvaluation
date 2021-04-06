@@ -875,7 +875,7 @@ class Ui_MainWindow(object):
             else:
                 gSeed = datetime.datetime.now()
             if self.threadcount.text() != '':
-                gthread = self.threadcount.text()
+                gthread = int(self.threadcount.text())
             else:
                 gthread = 10
             ###MultiPlot###
@@ -1138,6 +1138,7 @@ class Ui_MainWindow(object):
         def switchTest():
             global numfail
             global queue
+            
             while not queue.empty():
                 tasks,ischeme = queue.get()
                 if ischeme == 'SCEDF':
