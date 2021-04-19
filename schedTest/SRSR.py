@@ -1,159 +1,162 @@
 import math
+from bisect import bisect_left
+from bisect import insort_left 
 
-def SRSR(tasks):
-    #tasks = [{'period': 865, 'execution': 5, 'deadline': 865, 'utilization': 0.005975544927920393, 'sslength': 60, 'minSr': 1, 'paths': [{'Cseg': [1, 4], 'Sseg': [58], 'deadline': [-1, -1]}, {'Cseg': [1, 4], 'Sseg': [60], 'deadline': [-1, -1]}], 'Cseg': [1, 4], 'Sseg': [60]}, {'period': 2024, 'execution': 88, 'deadline': 2024, 'utilization': 0.04402445507207961, 'sslength': 43, 'minSr': 1, 'paths': [{'Cseg': [6, 82], 'Sseg': [43], 'deadline': [-1, -1]}, {'Cseg': [8, 64], 'Sseg': [40], 'deadline': [-1, -1]}], 'Cseg': [8, 82], 'Sseg': [43]}]
-    tasks = [{'period': 711, 'execution': 96, 'deadline': 711, 'utilization': 0.13612793259110334, 'sslength': 59, 'minSr': 1, 'paths': [{'Cseg': [44, 52], 'Sseg': [54], 'deadline': [-1, -1]}, {'Cseg': [40, 39], 'Sseg': [59], 'deadline': [-1, -1]}], 'Cseg': [44, 52], 'Sseg': [59]}, {'period': 817, 'execution': 522, 'deadline': 817, 'utilization': 0.64019865591712, 'sslength': 19, 'minSr': 1, 'paths': [{'Cseg': [3, 519], 'Sseg': [19], 'deadline': [-1, -1]}, {'Cseg': [421, 61], 'Sseg': [16], 'deadline': [-1, -1]}], 'Cseg': [421, 519], 'Sseg': [19]}, {'period': 4269, 'execution': 100, 'deadline': 4269, 'utilization': 0.023673411491776708, 'sslength': 88, 'minSr': 1, 'paths': [{'Cseg': [1, 96], 'Sseg': [86], 'deadline': [-1, -1]}, {'Cseg': [11, 89], 'Sseg': [88], 'deadline': [-1, -1]}], 'Cseg': [11, 96], 'Sseg': [88]}]
-
-    print(tasks)
-
+# Synchronous Release Sequence Refinement
+# From: https://dl.acm.org/doi/abs/10.1145/2997465.2997485
+# Input: Task set
+# Output: Schedulability of the Task Set under SRSR
+def SRSR(tasks):    
     len_tasks = len(tasks)
-    len_segs = 2*len(tasks[0]['Cseg'])-1
-
-    print("len_tasks: ",len_tasks)
-    print("len_segs: ",len_segs)
-
+    # Assumption: All higher priority tasks are non-suspending
+    # Work through taskset-subsets to determine schedulability
+    # Conversion of Suspending tasks to non-suspending:
+    # ExecutionTime = Sum(Execution-Segments)+Suspension Segment
     for i in range(len_tasks):
-        SRSR_n(tasks,i)
+        subtasks = tasks[0:i]
+        task = tasks[i]
+        if not SRSR_n(subtasks,task):
+           return False
+    return True
 
 
-    return False
-
-def SRSR_n(tasks,n):
-    #Create stack
-    store = []
-    print("n: ",n)
-
-    #Create A for sync list
-    len_c_segs = len(tasks[0]['Cseg'])
-    A = list(range(n))
-    for i in range(n):
-        A[i]=list(range(len_c_segs))
-    print(A)
-
-    #Add A to stack
-    store.append(A)
-
-    #Calculate maximum number of interfering jobs
-    Nup = list(range(n))
-    for i in range(n):
-        print("period: ",tasks[i]['period'])
-        Nup[i] = math.ceil(WCRT_SRSR(tasks,n)/tasks[i]['period'])
-    print("Nup: ", Nup)
-
-    #Deadline for TDA analysis
-    Dn = tasks[n]['deadline']
-
-    #While the Stack is not empty, process each element
-    while store:
-        A = store.pop()
-        print("A: ",A)
-        #Calculate the reponse time 
-        if RT_SRSR(tasks,n,A,Nup) > Dn:
-            abstract = False
-            for i in range(len(A)):
-                if len(A[i])>1:
-                    abstract = True
-            if abstract:
-                Ai = [0]*len(A)
-                print("Ai: ",Ai)
-                for i in range(len(A)):
-                    Ai[i]=A[:]
-                print("Ai: ",Ai)
-                imax = 0
-                for i in range(len(A)):
-                    if len(A[i])>1 and tasks[i]["utilization"] > tasks[imax]["utilization"]:
-                        imax = i
-                print("imax: ",imax)
-                for i in range(len(A)):
-                    Ai[i][imax] = [i]
-                    store.append(Ai[i])
-                print("Ai: ",Ai)
-                print("store: ",store)
+# Input: Non-suspending task-set and suspending task
+# Output: Schedulability of the task regarding higher-priority task-set
+def SRSR_n(tasks,task):
+    # Determine segments which each higher priority can interfere with
+    syn = [12 for t in tasks]
+    todo = [syn]
+    offset = [0] * len(tasks)
+    # Calculate maximum number of interferences by higher priority tasks
+    NIup = maxRels(tasks, task['Cseg'][0],offset)
+    while len(todo) > 0:
+        head = todo.pop()
+        processedNI = []
+        # Calculate response time of task
+        rt = RespTime(tasks, task, offset, NIup, head, processedNI)
+        if rt > task['deadline']:
+            if isAbst(head):
+                #do a refinement step if abstract
+                ind = selectToRefine(head, tasks)
+                syn1 = list(head)
+                syn2 = list(head)
+                syn1[ind] = 1
+                syn2[ind] = 2
+                todo.append(syn1)
+                todo.append(syn2)
             else:
+                # counter example found without any further refinement possible
                 return False
     return True
 
-def WCRT_SRSR(tasks,n):
-    print("n2: ",n)
-    Ci = list(range(n))
-    Cn = tasks[n]['Cseg'][0]
-    Ti = list(range(n))
-    Dn = tasks[n]['deadline']
-    len_c_segs = len(tasks[0]['Cseg'])
-    len_s_segs = len(tasks[0]['Sseg'])
+# Input: Lists a and x
+# Output: Is x element of a?
+def contains(a, x):
+    'Locate the leftmost value exactly equal to x'
+    i = bisect_left(a, x)
+    if i != len(a) and a[i] == x:
+        return True
+    return False
 
-    for i in range(n):
-        Ti[i] = tasks[i]['deadline']
-        print(tasks[i])
-        for c in range(len_c_segs):
-            Ci[i]+= tasks[i]['Cseg'][c]
-        for s in range(len_s_segs):
-            Ci[i]+= tasks[i]['Sseg'][s]
-    print("Ci: ",Ci)
-    print("Cn: ",Cn)
-    print("Ti: ",Ti)
-    print("Dn: ",Dn)
+# Input: Taskset, task, offset of tasks, Interferences, Segments, Processed Interferences
+# Output: Response time of task
+def RespTime(tasks, task, offset, NIup, syn, processedNI):
+    # to avoid redundant calls
+    if contains(processedNI, NIup) == True:
+        # print 'already processed ' + str(len(processedNI))
+        return 0
+    insort_left(processedNI, NIup)
+
+    offset = [0] * len(tasks)
+        
+    UBss  = wcrt(task['Cseg'][0]+task['Sseg'][0]+task['Cseg'][1], tasks,offset)
+    UBss2 = wcrt(task['Cseg'][1], tasks,offset)
     
-    Wn = Cn
-    t = sum(Ci)
-    while t > Wn:
-        Wn = Cn
-        for i in range(n):
-            Wn += math.ceil(t/Ti[i])*Ci[i]
-            Wn += Ci[i]
-        if t > Dn:
+    n = len(tasks)
+    Rss1bwd = 0
+    NI = list(NIup)
+    Rss1 = task['Cseg'][0] + sum([NIup[k]*(sum(tasks[k]['Cseg'])+tasks[k]["sslength"]) for k in range(n)])
+
+    while Rss1bwd != Rss1:
+        Rss1bwd = Rss1
+        for k in range(n):
+            if syn[k] == 2: # the task belongs to Sync2
+                if NI[k] > (Rss1 + task['Sseg'][0] + 0.0) / tasks[k]['period']:
+                    NI[k] = NI[k] - 1
+                    
+        # compute the response time of tau_{n,1}:
+        rels = [min(NI[k], math.ceil( (Rss1 + 0.0) / tasks[k]['period']))  for k in range(n)]
+        Rss1 = task['Cseg'][0] + sum([rels[k]*(sum(tasks[k]['Cseg'])+tasks[k]["sslength"]) for k in range(n)])  + 0.0
+        for k in range(n):
+            NI[k] = min(NI[k], math.ceil( (Rss1 + 0.0) / tasks[k]['period'])) # seemed incomplete in the paper
+            
+    # compute the offsets with \tau_{n,2}
+    for k in range(n):
+        if syn[k] == 12 or syn[k] == 2:
+            offset[k] = 0
+        else:
+            offset[k] = max(0, NI[k]*tasks[k]['period'] - Rss1 - task['Sseg'][0])
+        
+    # compute the response time of tau_{n,2}:
+    Rss2 = wcrt(task['Cseg'][1], tasks, offset)
+    Rss = Rss1 + Rss2 + task['Sseg'][0]
+    
+    if Rss < UBss and Rss2 < UBss2:
+        for k in range(n):
+            if NI[k] > 0:
+                NIp = list(NI)
+                NIp[k] = NIp[k] - 1
+
+                R = RespTime(tasks, task, offset, NIp, syn, processedNI)
+                if R > Rss:
+                    Rss = R    
+    return Rss
+
+
+# Input: Segments that can be refined, Taskset
+# Output: Index of task that should be refined
+def selectToRefine(sync, tasks):
+    imax = 0
+    for i in range(len(sync)):
+        if sync[i] == 12:
+            imax = i
             break
-        t = Wn
+    for i in range(len(sync)):
+        if sync[i] == 12 and tasks[i]["utilization"] > tasks[imax]["utilization"]:
+            imax = i
+    return imax
 
-    print("t: ",t)
-    print("Wn: ",Wn)
 
+# Input: Segment
+# Output: Can the segment be abstracted
+def isAbst(head):
+    if 12 in head:
+        return True
+    return False
+
+# Input: Taskset, execution time, task-offsets
+# Output: Maximum number of execution times of each task during interval
+def maxRels(tasks,execution,offset):
+    rt = wcrt(execution,tasks,offset) + 0.0
+    NI = []
+    for task in tasks:
+        NI.append( math.ceil(rt / task['period']) )
+    return NI
+
+
+# Input: Execution time, taskset, task-offsets
+# Output: worst-case-response-time of task
+def wcrt(execution, tasks,offset):
+    Wn = execution
+    loads = [rf(Wn,task['period'],sum(tasks[u]['Cseg'])+task["sslength"],offset[u]) for u,task in enumerate(tasks)]
+    t = execution + sum(loads)
+    while(t > Wn):
+        Wn = t
+        loads = [rf(Wn,task['period'],sum(tasks[u]['Cseg'])+task["sslength"],offset[u]) for u,task in enumerate(tasks)]
+        t = execution + sum(loads)
     return t
 
-
-def RT_SRSR(tasks,n,Syn,Nup):
-    N = Nup[:]
-
-
-    len_c_segs = len(tasks[0]['Cseg'])
-    len_s_segs = len(tasks[0]['Sseg'])
-    Ci = list(range(n))
-    for i in range(n):
-        print(tasks[i])
-        for c in range(len_c_segs):
-            Ci[i]+= tasks[i]['Cseg'][c]
-        for s in range(len_s_segs):
-            Ci[i]+= tasks[i]['Sseg'][s]
-
-    Rss1b = 0
-    Rss1 = tasks[n]['Cseg'][0]
-    for i in range(n):
-        Rss1 += Nup[i]*Ci[i]
-    while Rss1b != Rss1:
-        Rss1b = Rss1
-        for i in range(n):
-            if Syn[i]==[2] and N[i] > (Rss1+tasks[n]['Sseg'][0])/tasks[i]['period']:
-                N[i] = N[i]-1
-        Rss1 = tasks[n]['Cseg'][0]
-        for i in range(n):
-            Rss1 += min(N[i],math.ceil(Rss1/tasks[i]['period']))*Ci[i]
-        
-        for i in range(n):
-            N[i] = min(N[i],math.ceil(Rss1/tasks[i]['period']))
-    
-    O = list(range(n))
-    for i in range(n):
-        if Syn[i] == [0,1]:
-            O[i] = 0
-        else:
-            O[i] = max(0,N[i]*tasks[i]['period']-Rss1-tasks[n]['Sseg'][0])
-    Rss2 = tasks[n]['Cseg'][1]
-    for i in range(n):
-        Rss2 += math.ceil((Rss2-O[i])/tasks[i]['period'])*Ci[i]
-    Rss = Rss1 + tasks[n]['Sseg'][0]+Rss2
-    
-    
-
-    return 1
-
-#SRSR([])
+# Input: time, period, execution time, offset
+# Output: response-time of task
+def rf(t,T,E,O):
+    return math.ceil((t-O + 0.0) / T) * E 

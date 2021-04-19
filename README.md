@@ -24,7 +24,7 @@ The framework already includes schedulability tests for multiple algorithms:
 * PASS: Wen-Hung Huang, Jian-Jia Chen, Husheng Zhou, and Cong Liu. PASS: Priority assignment of real-time tasks with dynamic suspending behavior under fixed-priority scheduling. In DAC 2015.
 
 # Framework Usage
-![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/schedulability/framework_gui-2.jpg)
+![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/framework_gui-2.jpg)
 
 # How to integrate your algorithms?
 
@@ -66,3 +66,5 @@ Uniframework | https://ieeexplore.ieee.org/abstract/document/7557869 Section V |
 SuspObl | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspObl
 SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
 SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
+GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
+SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR

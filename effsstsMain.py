@@ -11,7 +11,7 @@ from effsstsPlot import effsstsPlot
 import os
 import datetime
 import pickle
-from multiprocessing import Process, JoinableQueue, Value, Queue, Pool
+from multiprocessing import Pool
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -31,7 +31,7 @@ gMinsstype = 0.01
 gMaxsstype = 0.1
 gNumberofruns = 1
 garwrap = []
-gthread = 10
+gthread = 1
 
 gmultiplot = ''
 gmpCheck = False
@@ -114,7 +114,7 @@ class Ui_MainWindow(object):
 
         self.tasksetsperconfig = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.tasksetsperconfig.setGeometry(QtCore.QRect(210, 32, 55, 25))
-        self.tasksetsperconfig.setMaximum(100)
+        self.tasksetsperconfig.setMaximum(1000)
         self.tasksetsperconfig.setProperty("value", 100)
         self.tasksetsperconfig.setObjectName("tasksetsperconfig")
 
@@ -876,7 +876,7 @@ class Ui_MainWindow(object):
             if self.threadcount.text() != '':
                 gthread = int(self.threadcount.text())
             else:
-                gthread = 10
+                gthread = 1
             ###MultiPlot###
             gmultiplot = self.combobox_plot.currentText()
             if gmultiplot == 'Tasks per Set':
@@ -940,8 +940,6 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('NC')
-            if self.srsr.isChecked():
-                gSchemes.append('SRSR')
             if self.biondi.isChecked():
                 gSchemes.append('Biondi')
             if self.passopa.isChecked():
@@ -983,6 +981,17 @@ class Ui_MainWindow(object):
                 gSchemes.append('SUSPBLOCK')
             if self.gmfpa.isChecked():
                 gSchemes.append('GMFPA-' + str(self.gmfpag.value()))
+            if self.srsr.isChecked():
+                if gSSofftypes > 2:
+                    self.srsr.setChecked(False)
+                    error_msg = QtWidgets.QMessageBox()
+                    error_msg.setIcon(QtWidgets.QMessageBox.Critical)
+                    error_msg.setWindowTitle("SRSR won't work!")
+                    error_msg.setInformativeText('Necessary Condition does not work for more than two segements.')
+                    #error_msg.setDetailedText("Necessary Condition only works for two segements of computation.")
+                    error_msg.exec_()
+                else:
+                    gSchemes.append('SRSR')
 
             if gRuntest:
                 #khchen
@@ -1107,6 +1116,7 @@ class Ui_MainWindow(object):
                         print("acceptanceRatio:", 0)
                         y[u] = 0
                         continue
+                    
                     numfail = 0
                     splitTasks = np.array_split(tasksets,gthread)
                     results = [pool.apply_async(switchTest, args=(tasks,ischeme,)) for tasks in splitTasks]
@@ -1134,7 +1144,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Evaluation Framework for Self-Suspending Task Systems"))
         self.groupBox_general.setTitle(_translate("MainWindow", "General"))
         self.prefixdatapath.setText(_translate("MainWindow", "effsstsPlot/Data"))
-        self.threadcount.setText(_translate("MainWindow", "10"))
+        self.threadcount.setText(_translate("MainWindow", "1"))
         self.tasksetdatapath.setText(_translate("MainWindow", "TspCon_100_TpTs_10_Utilst_5_Minss_0.01_Maxss_0.1_Seg_2_.pkl"))
         self.runtests.setText(_translate("MainWindow", "Run Tests"))
         self.plotdata.setText(_translate("MainWindow", "Plot selected Tests"))
