@@ -17,13 +17,13 @@ def parameterRead():
 	try:
 		opts, args = getopt.getopt(sys.argv[1:],"hi:s:m:")
 	except getopt.GetoptError:
-		print 'test.py -i <seed> -u <totalutilzation> -if <scalefactor>'
+		print('test.py -i <seed> -u <totalutilzation> -if <scalefactor>')
 		sys.exit(2)
-	print opts, args
+	print(opts, args)
 	
 	for opt, arg in opts:
 		if opt == '-h':
-			print 'test.py -s <randoseed> -u <totalutilzation> -f <scalefactor>'
+			print('test.py -s <randoseed> -u <totalutilzation> -f <scalefactor>')
 			sys.exit()		
 		elif opt in ("-i", "--input"):
 			rfile = arg
@@ -139,13 +139,13 @@ def MRBF(t,itask):
 		else:
 			tjump=t
 		l=alpha_t(tjump,itask,i)	
-		#print "tjump:",tjump,"l:",l
+		#print("tjump:",tjump,"l:",l)
 		for j in range(i,l+1):			
 			D+=itask["Cseg"][j%numcseg]			
 
 		if D > maxD:
 			maxD=D
-	#print "t: ",t,"d:",maxD,itask
+	#print("t: ",t,"d:",maxD,itask)
 	return maxD
 def ssRTA(Cn,HPTasks,Tn):
 	R=0
@@ -256,10 +256,10 @@ def SC_EDF(tasks):
 	return EDFB(U)
 def RM(tasks):
 	
-	for i in xrange(len(tasks)):
+	for i in range(len(tasks)):
 		result=0
 		HPTasks=tasks[:i]
-		#print HPTasks
+		#print(HPTasks)u
 		Cn=tasks[i]['execution']
 		Sn=tasks[i]['sslength']
 		Tn=tasks[i]['period']
@@ -297,10 +297,10 @@ def Burst_HP(Cn,Sn,Tn,HPTasks):
 def BURST_RM(tasks):
 	#sorting tasks by increasing period
 	sortedTasksRM=sorted(tasks, key=lambda item:item['period']) 
-	#print sortedTasksLM
-	for i in xrange(len(sortedTasksRM)):
+	#print(sortedTasksLM)
+	for i in range(len(sortedTasksRM)):
 		HPTasks=sortedTasksRM[:i]
-		#print HPTasks
+		#print(HPTasks)
 		Cn=sortedTasksRM[i]['execution']
 		Sn=sortedTasksRM[i]['sslength']
 		Tn=sortedTasksRM[i]['period']
@@ -316,10 +316,10 @@ def XM(tasks,scheme):
 		sortedTasksLM=sorted(tasks, key=lambda item:item['period']) 
 	else:
 		sys.exit(2)
-	#print sortedTasksLM
-	for i in xrange(len(sortedTasksLM)):
+	#print(sortedTasksLM)
+	for i in range(len(sortedTasksLM)):
 		HPTasks=sortedTasksLM[:i]
-		#print HPTasks
+		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']
 		Tn=sortedTasksLM[i]['period']
@@ -331,11 +331,11 @@ def LM(tasks,blk=False):
 	
 	#sorting tasks by increasing T-S
 	sortedTasksLM=sorted(tasks,cmp=dm_cmp)
-	#print sortedTasksLM
-	for i in xrange(len(sortedTasksLM)):
+	#print(sortedTasksLM)
+	for i in range(len(sortedTasksLM)):
 		result=0
 		HPTasks=sortedTasksLM[:i]
-		#print HPTasks
+		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']
 		Tn=sortedTasksLM[i]['period']
@@ -380,10 +380,10 @@ def NC(tasks):
 				priortyassigned[i]=1
 
 				canLevel=1
-				#print "assign success at",i
+				#print("assign success at",i)
 				break	
 		if canLevel == 0:
-			#print "fail assign at",plevel 
+			#print("fail assign at",plevel)
 			return False 
 	return True
 def NCSC(tasks):
@@ -442,7 +442,7 @@ def NCSC(tasks):
 			return False 
 	return True
 def Audsley(tasks,scheme):
-	#print tasks
+	#print(tasks)
 	#Optimal Priority Assignment
 	priortyassigned=[0 for i in range(len(tasks))]
 	for plevel in range(len(tasks)): 
@@ -459,10 +459,10 @@ def Audsley(tasks,scheme):
 			for j in range(len(tasks)):
 				if priortyassigned[j]==0 and i != j:
 					primeTasks.append(tasks[j])
-			#print "all :",tasks
-			#print "task:",itask
-			#print "prime:",primeTasks
-			#print ""
+			#print("all :",tasks)
+			#print("task:",itask)
+			#print("prime:",primeTasks)
+			#print("")
 
 			
 			Tn=itask['period']
@@ -496,7 +496,7 @@ def Audsley(tasks,scheme):
 				sys.exit(2)
 
 		if canLevel == 0:
-			#print "fail assign at",plevel 
+			#print("fail assign at",plevel)
 			return False 
 	
 	return True

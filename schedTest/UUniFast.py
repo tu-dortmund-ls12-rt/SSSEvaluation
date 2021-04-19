@@ -30,7 +30,7 @@ ax=[]
 ay=[]
 az=[]
 
-for i in xrange(0, 1000, 1):                  
+for i in range(0, 1000, 1):                  
     tasks = tgPath.taskGeneration_p(3, 100,0.01,0.1, vRatio=1, seed=i, numLog=2, numsegs=2)
     ax.append(math.ceil(tasks[0]['utilization']))
     ay.append(math.ceil(tasks[1]['utilization']))

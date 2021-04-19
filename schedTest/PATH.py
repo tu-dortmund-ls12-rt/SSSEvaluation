@@ -1,6 +1,6 @@
 from __future__ import division
 import math
-from functions import *
+from schedTest import functions
 
 def dbfpath1(task,t,k):
 	
@@ -132,7 +132,7 @@ def SEIFDApath(task,HindexTasks,k,scheme,ifsame):
 					t.append(itask['period']-itask['paths'][p]['Sseg'][0]+(a-1)*itask['period'])
 			
 		flag=False
-		#print len(t)
+		#print(len(t))
 		for it in t:
 			dbf=0
 			for itask in HindexTasks+[task]:			
@@ -140,7 +140,7 @@ def SEIFDApath(task,HindexTasks,k,scheme,ifsame):
 			if dbf >it:
 				flag=True
 				break
-		#print d1
+		#print(d1)
 		if flag==True:
 			if scheme=='minD' or scheme=='PBminD':				
 				d1=d1+1			
@@ -153,13 +153,13 @@ def SEIFDApath(task,HindexTasks,k,scheme,ifsame):
 			return False
 		
 def PATH(tasks,scheme):
-	sortedTasks=sorted(tasks,cmp=lm_cmp)
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 
 	ischme=scheme.split('-')[1]
 	k=int(scheme.split('-')[2])
 	ifsame=scheme.split('-')[3]=='D=D'
 	
-	for i in xrange(len(sortedTasks)):
+	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		HindexTasks=sortedTasks[:i]
 		
@@ -179,6 +179,6 @@ def PATH(tasks,scheme):
 		for itask in tasks:
 			dbf+=dbfpath(itask,it,1000)	
 			if dbf>it:
-				print dbf,'false'
+				print(dbf,'false')
 				sys.exit()
 	return True		

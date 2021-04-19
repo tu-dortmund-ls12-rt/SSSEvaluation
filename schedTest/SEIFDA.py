@@ -1,4 +1,5 @@
 from __future__ import division
+from schedTest import functions
 import random
 import math
 import json
@@ -14,13 +15,13 @@ def parameterRead():
 	try:
 		opts, args = getopt.getopt(sys.argv[1:],"hi:s:m:")
 	except getopt.GetoptError:
-		print 'test.py -i <seed> -u <totalutilzation> -if <scalefactor>'
+		print('test.py -i <seed> -u <totalutilzation> -if <scalefactor>')
 		sys.exit(2)
-	print opts, args
+	print(opts, args)
 	
 	for opt, arg in opts:
 		if opt == '-h':
-			print 'test.py -s <randoseed> -u <totalutilzation> -f <scalefactor>'
+			print('test.py -s <randoseed> -u <totalutilzation> -f <scalefactor>')
 			sys.exit()		
 		elif opt in ("-i", "--input"):
 			rfile = arg
@@ -136,13 +137,13 @@ def MRBF(t,itask):
 		else:
 			tjump=t
 		l=alpha_t(tjump,itask,i)	
-		#print "tjump:",tjump,"l:",l
+		#print("tjump:",tjump,"l:",l)
 		for j in range(i,l+1):			
 			D+=itask["Cseg"][j%numcseg]			
 
 		if D > maxD:
 			maxD=D
-	#print "t: ",t,"d:",maxD,itask
+	#print("t: ",t,"d:",maxD,itask)
 	return maxD
 def ssRTA(Cn,HPTasks,Tn):
 	R=0
@@ -281,13 +282,9 @@ def dbf2FPTAS(task,t,d,k):
 		return (t+task['sslength'])*(task['Cseg'][0]+task['Cseg'][1])/task['period']+d*task['Cseg'][1]/task['period']
 	else:
 		return dbf2(task,t,d)
-def lm_cmp(x, y):
-	dx=(x['period']-x['sslength'])/2
-	dy=(y['period']-y['sslength'])/2
-	return int(dx - dy)
 def NC(tasks):
 	
-	for i in xrange(len(tasks)):
+	for i in range(len(tasks)):
 		task=tasks[i]
 		D=(task['period']-task['sslength'])
 
@@ -317,7 +314,7 @@ def SEIFDA(task,HindexTasks,k,scheme):
 		d1=(task['period']-task['sslength'])/2
 	elif scheme=='PBminD':
 		if task['Cseg'][0]+task['Cseg'][1] ==0:
-			print "0"
+			print("0")
 			d1=0
 		else:
 			if task['Cseg'][0]<task['Cseg'][1]:
@@ -348,7 +345,7 @@ def SEIFDA(task,HindexTasks,k,scheme):
 			t.append(task['period']-(d1+task['sslength'])+(a-1)*task['period'])
 			t.append(task['period']-task['sslength']+(a-1)*task['period'])
 		flag=False
-		#print len(t)
+		#print(len(t))
 		for it in t:
 			dbf=0
 			for itask in HindexTasks:
@@ -358,7 +355,7 @@ def SEIFDA(task,HindexTasks,k,scheme):
 			if dbf >it:
 				flag=True
 				break
-		#print d1
+		#print(d1)
 		if flag==True:
 			if scheme=='minD' or scheme=='PBminD':
 				if task['Cseg'][0]<task['Cseg'][1]:
@@ -376,13 +373,13 @@ def SEIFDA(task,HindexTasks,k,scheme):
 			return d1
 			
 def greedy(tasks,scheme):
-	sortedTasks=sorted(tasks,cmp=lm_cmp)
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 	
 	ischme=scheme.split('-')[1]
 	k=int(scheme.split('-')[2])
-	#print k
+	#print(k)
 
-	for i in xrange(len(sortedTasks)):
+	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		HindexTasks=sortedTasks[:i]
 		
@@ -417,19 +414,19 @@ def greedy(tasks,scheme):
 			t.append(itask['period']-itask['sslength']+(a-1)*itask['period'])
 
 	
-	#print len(t)
+	#print(len(t))
 	for it in t:
 		dbf=0
 		for itask in tasks:
 			d=itask['d1']
 			dbf+=max(dbf1FPTAS(itask,it,d,k),dbf2FPTAS(itask,it,d,k))
 		if dbf>it:
-			print dbf,d,'false'
+			print(dbf,d,'false')
 		
 	return True
 def EDA(tasks):
-	sortedTasks=sorted(tasks,cmp=lm_cmp)
-	for i in xrange(len(sortedTasks)):
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
+	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		D=(task['period']-task['sslength'])/2
 		dbf=0
@@ -441,10 +438,10 @@ def EDA(tasks):
 	return True
 def RM(tasks):
 	
-	for i in xrange(len(tasks)):
+	for i in range(len(tasks)):
 		result=0
 		HPTasks=tasks[:i]
-		#print HPTasks
+		#print(HPTasks)
 		Cn=tasks[i]['execution']
 		Sn=tasks[i]['sslength']
 		Tn=tasks[i]['period']
@@ -482,10 +479,10 @@ def Burst_HP(Cn,Sn,Tn,HPTasks):
 def BURST_RM(tasks):
 	#sorting tasks by increasing period
 	sortedTasksRM=sorted(tasks, key=lambda item:item['period']) 
-	#print sortedTasksLM
-	for i in xrange(len(sortedTasksRM)):
+	#print(sortedTasksLM)
+	for i in range(len(sortedTasksRM)):
 		HPTasks=sortedTasksRM[:i]
-		#print HPTasks
+		#print(HPTasks)
 		Cn=sortedTasksRM[i]['execution']
 		Sn=sortedTasksRM[i]['sslength']
 		Tn=sortedTasksRM[i]['period']
@@ -501,10 +498,10 @@ def XM(tasks,scheme):
 		sortedTasksLM=sorted(tasks, key=lambda item:item['period']) 
 	else:
 		sys.exit(2)
-	#print sortedTasksLM
-	for i in xrange(len(sortedTasksLM)):
+	#print(sortedTasksLM)
+	for i in range(len(sortedTasksLM)):
 		HPTasks=sortedTasksLM[:i]
-		#print HPTasks
+		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']
 		Tn=sortedTasksLM[i]['period']
@@ -516,11 +513,11 @@ def LM(tasks,blk=False):
 	
 	#sorting tasks by increasing T-S
 	sortedTasksLM=sorted(tasks,cmp=dm_cmp)
-	#print sortedTasksLM
-	for i in xrange(len(sortedTasksLM)):
+	#print(sortedTasksLM)
+	for i in range(len(sortedTasksLM)):
 		result=0
 		HPTasks=sortedTasksLM[:i]
-		#print HPTasks
+		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']
 		Tn=sortedTasksLM[i]['period']

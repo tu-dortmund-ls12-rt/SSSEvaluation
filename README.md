@@ -24,10 +24,47 @@ The framework already includes schedulability tests for multiple algorithms:
 * PASS: Wen-Hung Huang, Jian-Jia Chen, Husheng Zhou, and Cong Liu. PASS: Priority assignment of real-time tasks with dynamic suspending behavior under fixed-priority scheduling. In DAC 2015.
 
 # Framework Usage
-![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/framework_gui-1.jpg)
+![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/framework_gui-2.jpg)
 
 # How to integrate your algorithms?
 
 The framework can be extended with other scheduling algorithms written in Python or C++. The integration is in twofold:
 * Make sure the content of task is consistent to your existed algorithms. This is a bit tricky: Each task is formed as a dictionary in Python, which consists of its period ['period'], worst case execution time ['execution'], utilization ['utilization'], relative deadline ['deadline'], the possible suspension time ['sslength'], the set of execution segements ['Cseg'], the set of suspension segements ['Sseg']. For the other keys in the dictionary, they are the intermediate variables for task generations.
 * Based on the same format of tasks, the targeted algorithm in Python should be implemented accordingly (recommended to store in the folder of schedTest). If the algorithm is written in C++, an executable binary needs to be pre-built so that the process can be called from the main python script. The properties of tasks and the result of the analysis are transmitted in the form of csv or txt file.
+
+# Framework Installation
+
+To activate the full feature set of the framework, you need to install the Gurobi Optimizer, found at https://www.gurobi.com/. For research purposes you can obtain an academic license, which is used for some of the scheduling algorithms. You can request a license at https://www.gurobi.com/academia/academic-program-and-licenses/. The installation guide can be found at https://www.gurobi.com/documentation/9.1/quickstart_linux/software_installation_guid.html.
+
+# Schedulability Tests
+
+Name | Paper | File name | Method name
+---|---|---|---
+SEIFDA-minD- | | SEIFDA.py | SEIFDA
+SEIFDA-maxD- | | SEIFDA.py | SEIFDA
+SEIFDA-PBminD- | | SEIFDA.py | SEIFDA
+EDA | | EDA.py | SEIFDA
+PROPORTIONAL | | PROPORTIONAL.py | PROPORTIONAL
+SEIFDA-MILP | | mipx.py | mip
+GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
+Oblivious-IUB | | PATH.py | SEIFDApath
+Clairvoyant-SSSD | | PATH.py | SEIFDApath
+Oblivious-MP | | PATH.py | SEIFDApath
+Clairvoyant-PDAB | | PATH.py | SEIFDApath
+SCEDF | | SCEDF.py | SC_EDF
+SCRM | | SEIFDA.py | SC_RM
+SCAIR-RM | | rad.py | scair_dm
+SCAIR-OPA | | rad.py | Audsley
+Biondi RTSS 16 | | rt.py | Biondi
+PASS-OPA | | Audsley.py | Audsley
+NC | | NC.py | NC
+RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
+UDLEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | UDLEDF.py | UDLEDF_improved
+WLAEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | WLAEDF.py | WLAEDF
+RTEDF  | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Algorithm1 | RTEDF.py | RTEDF
+Uniframework | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
+SuspObl | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspObl
+SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
+SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
+GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
+SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR

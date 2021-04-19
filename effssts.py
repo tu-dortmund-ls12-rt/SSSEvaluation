@@ -3,11 +3,11 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority
 from effsstsPlot import effsstsPlot
 import os
 import datetime
-import ConfigParser as cp
+import configparser as cp
 
 
 
@@ -63,8 +63,8 @@ def main():
 				x = np.arange(0, int(100/UStep)+1) 
 				y = np.zeros(int(100/UStep)+1)
 				ifskip=False
-				for u in xrange(0,len(y),1):
-					print "Scheme:",ischeme,"N:",totBucket,"U:",u*UStep, "MinSSLength:",str(minsstype), "MaxSSLength:",str(maxsstype),"OffType:",ssofftypes,"prop: ", issprop
+				for u in range(0,len(y),1):
+					print("Scheme:",ischeme,"N:",totBucket,"U:",u*UStep, "MinSSLength:",str(minsstype), "MaxSSLength:",str(maxsstype),"OffType:",ssofftypes,"prop: ", issprop)
 					if u == 0:
 						y[u] = 1
 						continue
@@ -73,11 +73,11 @@ def main():
 						continue
 					numfail = 0
 					if ifskip == True:
-						print "acceptanceRatio:", 0
+						print("acceptanceRatio:", 0)
 						y[u] = 0
 						continue 
 
-					for i in xrange(0, totBucket, 1):									
+					for i in range(0, totBucket, 1):									
 						percentageU = u*UStep/100
 						prop = int(issprop)/10
 						tasks = tgPath.taskGeneration_p(tasksinBkt, percentageU,minsstype,maxsstype, vRatio=prop, seed=i, numLog=int(iplog), numsegs=ssofftypes)
@@ -116,11 +116,35 @@ def main():
 						elif ischeme == 'SCAIR-OPA':
 							if rad.Audsley(sortedTasks,ischeme) == False:
 								numfail+=1
+						elif ischeme == 'RSS':
+							if RSS.SC2EDF(sortedTasks) == False:
+								numfail+=1	
+						elif ischeme == 'RTEDF':
+							if RTEDF.RTEDF(sortedTasks) == False:
+								numfail+=1
+						elif ischeme == 'UDLEDF':
+							if UDLEDF.UDLEDF_improved(sortedTasks) == False:
+								numfail+=1
+						elif ischeme == 'WLAEDF':
+							if WLAEDF.WLAEDF(sortedTasks) == False:
+								numfail+=1
+						elif ischeme == 'UNIFRAMEWORK':
+							if UNIFRAMEWORK.UniFramework(sortedTasks) == False:
+								numfail+=1
+						elif ischeme == 'SuspObl':
+							if FixedPriority.SuspObl(sortedTasks) == False:
+								numfail+=1	
+						elif ischeme == 'SuspJit':
+							if FixedPriority.SuspJit(sortedTasks) == False:
+								numfail+=1	
+						elif ischeme == 'SuspBlock':
+							if FixedPriority.SuspBlock(sortedTasks) == False:
+								numfail+=1	
 						else:
 							assert ischeme, 'not vaild ischeme'
 			
 					acceptanceRatio=1-(numfail/totBucket)
-					print "acceptanceRatio:",acceptanceRatio
+					print("acceptanceRatio:",acceptanceRatio)
 					y[u]=acceptanceRatio
 					if acceptanceRatio == 0:
 						ifskip=True
@@ -130,7 +154,7 @@ def main():
 
 				if not os.path.exists(plotPath):
 					os.makedirs(plotPath)
-				
+
 				np.save(plotfile,np.array([x,y]))
 				#effsstsPlot.effsstsPlot(ischeme)
 
@@ -179,7 +203,7 @@ def usage():
 	[Schedulability Tests]
 	schemes = SCAIR-OPA, EDA
 	"""
-	print howToUse
+	print(howToUse)
 if __name__ == '__main__':
 	args = sys.argv
 	if len(args) < 2:

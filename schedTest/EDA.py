@@ -1,4 +1,4 @@
-from functions import *
+from schedTest import functions
 
 
 # def dbfEDA(t,task):
@@ -10,8 +10,8 @@ from functions import *
 
 	
 # def EDA(tasks):
-# 	sortedTasks=sorted(tasks,cmp=lm_cmp)
-# 	for i in xrange(len(sortedTasks)):
+# 	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
+# 	for i in range(len(sortedTasks)):
 # 		task=sortedTasks[i]
 # 		D=(task['period']-task['sslength'])/2
 # 		dbf=0
@@ -22,9 +22,12 @@ from functions import *
 # 			return False
 # 	return True
 
+def test():
+	return 1
+
 def dbfEDA(t,task,ssofftypes):
 	sum=0
-	for i in xrange(ssofftypes):
+	for i in range(ssofftypes):
 		sum+=task['Cseg'][i]
 
 	D=(task['period']-task['sslength'])/ssofftypes
@@ -35,8 +38,8 @@ def dbfEDA(t,task,ssofftypes):
 
 	
 def EDA(tasks, ssofftypes):
-	sortedTasks=sorted(tasks,cmp=lm_cmp)
-	for i in xrange(len(sortedTasks)):
+	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
+	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		D=(task['period']-task['sslength'])/ssofftypes
 		dbf=0
