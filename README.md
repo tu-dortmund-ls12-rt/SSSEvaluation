@@ -68,6 +68,8 @@ SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | Fi
 SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
 GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
 SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
+WATI | https://ieeexplore.ieee.org/document/7176028 | WATI.py | WATI
 
 # Acknowledgements
 We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng and Morteza Mohaqeqi for providing the source code of their work.
+=======

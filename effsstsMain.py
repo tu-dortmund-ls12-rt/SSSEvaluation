@@ -6,7 +6,7 @@ import sys
 import getopt
 import numpy as np
 from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions
-from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, WATI
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -413,6 +413,11 @@ class Ui_MainWindow(object):
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
         self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
         
+        #self.frdgmfopa = QtWidgets.QCheckBox(self.groupBox_4)
+        #self.frdgmfopa.setObjectName("frdgmfopa")
+        #self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
+        #self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
+        
         self.biondi = QtWidgets.QCheckBox(self.groupBox_4)
         self.biondi.setObjectName("Biondi")
         self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
@@ -534,6 +539,11 @@ class Ui_MainWindow(object):
         self.srsr.setObjectName("srsr")
         self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
         self.formLayout_6.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.srsr)
+
+        self.wati = QtWidgets.QCheckBox(self.groupBox_6)
+        self.wati.setObjectName("wati")
+        self.wati.setToolTip('Worst-Case-Response-Time Approximation by task interference')
+        self.formLayout_6.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.wati)
 
 
 
@@ -952,6 +962,8 @@ class Ui_MainWindow(object):
                 gSchemes.append('SCAIR-RM')
             if self.scairopa.isChecked():
                 gSchemes.append('SCAIR-OPA')
+            #if self.frdgmfopa.isChecked():
+            #    gSchemes.append('FRDGMF-OPA')
             if self.pathminddd.isChecked():
                 gSchemes.append(
                     'PATH-minD-' + str(self.pathmindddg.value()) + '-D=D')
@@ -992,6 +1004,8 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('SRSR')
+            if self.wati.isChecked():
+                gSchemes.append('WATI')
 
             if gRuntest:
                 #khchen
@@ -1169,6 +1183,7 @@ class Ui_MainWindow(object):
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
         self.srsr.setText(_translate("MainWindow", "SRSR"))
+        self.wati.setText(_translate("MainWindow", "WATI"))
         self.biondi.setText(_translate("MainWindow", "Biondi RTSS 16"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
@@ -1190,6 +1205,7 @@ class Ui_MainWindow(object):
         self.suspblock.setText(_translate("MainWindow", "SuspBlock"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
+        #self.frdgmfopa.setText(_translate("MainWindow", "FRDGMF-OPA"))
         self.groupBox_5.setTitle(_translate("MainWindow", "FRD Segmented"))
         self.proportional.setText(_translate("MainWindow", "Proportional"))
         self.seifdamind.setText(_translate("MainWindow", "SEIFDA-minD-"))
@@ -1248,10 +1264,16 @@ def switchTest(tasksets,ischeme):
         elif ischeme == 'SRSR':
             if SRSR.SRSR(tasks) == False:
                 counter += 1
+        elif ischeme == 'WATI':
+            if WATI.WATI(tasks) == False:
+                counter += 1
         elif ischeme == 'SCAIR-RM':
             if rad.scair_dm(tasks) == False:
                 counter += 1
         elif ischeme == 'SCAIR-OPA':
+            if rad.Audsley(tasks, ischeme) == False:
+                counter += 1
+        elif ischeme == 'FRDGMF-OPA':
             if rad.Audsley(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'Biondi':
