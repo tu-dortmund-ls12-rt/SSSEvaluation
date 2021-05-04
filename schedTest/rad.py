@@ -441,6 +441,54 @@ def NCSC(tasks):
 		if canLevel == 0:			
 			return False 
 	return True
+
+def FRDRTA(task,HPTasks,ischeme,D):
+	C=max(task["Cseg"])
+	R=C
+	while True:
+		dm=0
+		if ischeme == 'FRDRTALM' or ischeme == 'FRDRTA-OPA':
+			for itask in HPTasks:
+				dm+=(itask['execution'])*math.ceil((R)/itask['period'])	
+		elif  ischeme == 'FRDGMF-OPA' or ischeme == 'FRDGMFLM':
+			for itask in HPTasks:
+				dm+=iGMF(R,itask)
+		if R>D:
+			return R
+		if R < dm+C:
+			R=dm+C
+		else:
+			return R
+
+def iGMF(t,itask):
+	C=0
+	m=len(itask['Cseg'])
+	if int(t/itask['period'])>=2:
+		t=t-(int(t/itask['period'])-1)*itask['period']
+		C=(int(t/itask['period'])-1)*itask['execution']
+	maxI=0
+	for i in range(m):
+		I=accGMFh(t,i,itask)
+		if I > maxI:
+			maxI=I 
+	return maxI+C
+
+
+def accGMFh(t,h,itask):
+	d=(itask['deadline']-itask['sslength'])/len(itask['Cseg'])
+	sumT=d+itask['Sseg'][h]
+	sumC=itask['Cseg'][h]
+	M=len(itask['Cseg'])
+	j=h
+
+	while sumT<t:
+		j+=1
+		sumT+=d+itask['Sseg'][j%M]
+		sumC+=itask['Cseg'][j%M]
+		
+	return sumC
+
+
 def Audsley(tasks,scheme):
 	#print(tasks)
 	#Optimal Priority Assignment
@@ -454,7 +502,7 @@ def Audsley(tasks,scheme):
 				continue	
 			itask=tasks[i]
 			
-			## get higher prioirty tasks
+			## get higher priority tasks
 			primeTasks=[]
 			for j in range(len(tasks)):
 				if priortyassigned[j]==0 and i != j:
@@ -468,6 +516,7 @@ def Audsley(tasks,scheme):
 			Tn=itask['period']
 			Cn=itask['execution']
 			Sn=itask['sslength']
+			D=(itask['period']-itask['sslength'])/len(itask['Cseg'])
 			if scheme == "SUM":
 				if SUMTest(itask,primeTasks) == True:
 					priortyassigned[i]=1
@@ -492,6 +541,12 @@ def Audsley(tasks,scheme):
 					canLevel=1
 					tasks[i]['priority']=len(tasks)-plevel
 					break	
+			elif scheme == "FRDGMF-OPA":
+				if FRDRTA(itask,primeTasks,scheme,D)==True:
+					priortyassigned[i]=1
+					canLevel=1
+					tasks[i]['priority']=len(tasks)-plevel
+					break	
 			else:
 				sys.exit(2)
 
@@ -500,6 +555,7 @@ def Audsley(tasks,scheme):
 			return False 
 	
 	return True
+
 
 def scair_dm(tasks):
 	# shortest period first
