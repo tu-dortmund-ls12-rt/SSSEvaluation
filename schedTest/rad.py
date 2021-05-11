@@ -440,53 +440,73 @@ def NCSC(tasks):
 
 		if canLevel == 0:			
 			return False 
+	return True		
+
+def FRDGMF(task,HPTasks,D):
+	# For each execution segment, calculate the interfering workload from higher priority tasks
+	mi = len(task['Cseg'])
+	for j in range(mi):
+		# Current time point t
+		t = 0
+		# Workload at time point t
+		wl = task['Cseg'][j]
+		while t <= D and wl > t:
+			# Set t to current workload time
+			t = wl
+			# Set workload to c_i^j + interfering workload from higher priority tasks
+			wl = 0
+			for hptask in HPTasks:
+				wl += workload(hptask,mi,t,D)
+			wl += task['Cseg'][j]
+		# Not schedulable if workload greater than time or time greater than deadline
+		if wl > t or t > D:
+			return False
+	# Every computation segment schedulable
 	return True
 
-def FRDRTA(task,HPTasks,ischeme,D):
-	C=max(task["Cseg"])
-	R=C
-	while True:
-		dm=0
-		if ischeme == 'FRDRTALM' or ischeme == 'FRDRTA-OPA':
-			for itask in HPTasks:
-				dm+=(itask['execution'])*math.ceil((R)/itask['period'])	
-		elif  ischeme == 'FRDGMF-OPA' or ischeme == 'FRDGMFLM':
-			for itask in HPTasks:
-				dm+=iGMF(R,itask)
-		if R>D:
-			return R
-		if R < dm+C:
-			R=dm+C
-		else:
-			return R
+def workload(hptask,mi,t,D):
 
-def iGMF(t,itask):
-	C=0
-	m=len(itask['Cseg'])
-	if int(t/itask['period'])>=2:
-		t=t-(int(t/itask['period'])-1)*itask['period']
-		C=(int(t/itask['period'])-1)*itask['execution']
-	maxI=0
-	for i in range(m):
-		I=accGMFh(t,i,itask)
-		if I > maxI:
-			maxI=I 
-	return maxI+C
+	c_segs = hptask['Cseg']
+	s_segs = hptask['Sseg']
+	s_segs.append(hptask['period']-hptask['deadline'])
+	t_segs = [D+s_segs[i] for i in range(mi)]
 
+	# Determine maximum interference from higher priority tasks
+	max_sum_h = 0
 
-def accGMFh(t,h,itask):
-	d=(itask['deadline']-itask['sslength'])/len(itask['Cseg'])
-	sumT=d+itask['Sseg'][h]
-	sumC=itask['Cseg'][h]
-	M=len(itask['Cseg'])
-	j=h
+	# Test each segment as starting point
+	for h in range(mi):
 
-	while sumT<t:
-		j+=1
-		sumT+=d+itask['Sseg'][j%M]
-		sumC+=itask['Cseg'][j%M]
+		# Determine upper bound l of execution-segments of hptask
+		t_sum = 0
+		# Determine sum of periods of hptask
+		l = 0
+		while t >= t_sum:
+			t_sum += t_segs[(h+l)%mi]
+			if t >= t_sum:
+				l += 1
 		
-	return sumC
+		t_sum -= t_segs[(h+l)%mi]
+		
+		#Calculate sum of execution segments
+		l_temp = l
+		c_sum = 0
+		while l_temp > 0:
+			c_sum += c_segs[(h+l_temp-1)%mi]
+			l_temp -= 1
+
+		# Determine minimum interference from execution segment or remaining time
+		c_min = min(c_segs[(h+l)%mi], t-t_sum)
+
+		# Interference as sum of execution segments
+		eih = c_sum + c_min
+
+		# Replace maximum interference if necessary
+		if eih > max_sum_h:
+			max_sum_h = eih
+			
+	# Return maximum interference of higher priority task
+	return max_sum_h
 
 
 def Audsley(tasks,scheme):
@@ -516,7 +536,8 @@ def Audsley(tasks,scheme):
 			Tn=itask['period']
 			Cn=itask['execution']
 			Sn=itask['sslength']
-			D=(itask['period']-itask['sslength'])/len(itask['Cseg'])
+			#Set Deadline as (D_i-S_i)/m_i for FRDGMF-OPA
+			D=(itask['deadline']-itask['sslength'])/len(itask['Cseg'])
 			if scheme == "SUM":
 				if SUMTest(itask,primeTasks) == True:
 					priortyassigned[i]=1
@@ -542,7 +563,7 @@ def Audsley(tasks,scheme):
 					tasks[i]['priority']=len(tasks)-plevel
 					break	
 			elif scheme == "FRDGMF-OPA":
-				if FRDRTA(itask,primeTasks,scheme,D)==True:
+				if FRDGMF(itask,primeTasks,D)==True:
 					priortyassigned[i]=1
 					canLevel=1
 					tasks[i]['priority']=len(tasks)-plevel
@@ -579,3 +600,5 @@ def scair_dm(tasks):
 		if (segTest(Cn, Sn, Tn, primeTasks) or SUMTest(sortedTasks[i], primeTasks)) != True:
 			accept = False
 	return accept
+
+Audsley([],"")
