@@ -413,15 +413,15 @@ class Ui_MainWindow(object):
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
         self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
         
-        #self.frdgmfopa = QtWidgets.QCheckBox(self.groupBox_4)
-        #self.frdgmfopa.setObjectName("frdgmfopa")
-        #self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
-        #self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
+        self.frdgmfopa = QtWidgets.QCheckBox(self.groupBox_4)
+        self.frdgmfopa.setObjectName("frdgmfopa")
+        self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
+        self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
         
         self.biondi = QtWidgets.QCheckBox(self.groupBox_4)
         self.biondi.setObjectName("Biondi")
         self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
-        self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.biondi)
+        self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.biondi)
 
 
 
@@ -962,8 +962,8 @@ class Ui_MainWindow(object):
                 gSchemes.append('SCAIR-RM')
             if self.scairopa.isChecked():
                 gSchemes.append('SCAIR-OPA')
-            #if self.frdgmfopa.isChecked():
-            #    gSchemes.append('FRDGMF-OPA')
+            if self.frdgmfopa.isChecked():
+                gSchemes.append('FRDGMF-OPA')
             if self.pathminddd.isChecked():
                 gSchemes.append(
                     'PATH-minD-' + str(self.pathmindddg.value()) + '-D=D')
@@ -1205,7 +1205,7 @@ class Ui_MainWindow(object):
         self.suspblock.setText(_translate("MainWindow", "SuspBlock"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
-        #self.frdgmfopa.setText(_translate("MainWindow", "FRDGMF-OPA"))
+        self.frdgmfopa.setText(_translate("MainWindow", "FRDGMF-OPA"))
         self.groupBox_5.setTitle(_translate("MainWindow", "FRD Segmented"))
         self.proportional.setText(_translate("MainWindow", "Proportional"))
         self.seifdamind.setText(_translate("MainWindow", "SEIFDA-minD-"))
