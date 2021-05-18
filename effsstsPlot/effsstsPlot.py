@@ -7,110 +7,79 @@ import math
 
 def pickColor(ischeme):
     color = ''
-    if ischeme == 'EDA':
-        color = '#000000'
-    elif ischeme == 'PROPORTIONAL':
-        color = '#800000'
-    elif ischeme == 'PASS-OPA':
-        color = '#000080'
-    elif ischeme == 'SCEDF':
-        color = '#808000'
-    elif ischeme == 'SCRM':
-        color = '#FF69B4'
-    elif ischeme == 'SCAIR':
-        color = '#008000'
-    elif ischeme == 'MIP':
-        color = '#42F4AA'
-    elif ischeme == 'SCAIR-RM':
-        color = '#A742F4'
-    elif ischeme == 'SCAIR-OPA':
-        color = '#C97089'
-    elif ischeme == 'RSS':
-        color = '#816000'
-    elif ischeme == 'UDLEDF':
-        color = '#824000'
-    elif ischeme == 'WLAEDF':
-        color = '#832000'
-    elif ischeme == 'RTEDF':
-        color = '#832000'
-    elif ischeme == 'UNIFRAMEWORK':
-        color = '#840000'
-    elif ischeme == 'SUSPOBL':
-        color = '#840000'
-    elif ischeme == 'SUSPJIT':
-        color = '#840000'
-    elif ischeme == 'SUSPBLOCK':
-        color = '#840000'
-    elif ischeme.__contains__('SEIFDA-minD'):
-        color = '#0000FF'
-    elif ischeme.__contains__('SEIFDA-PBminD'):
-        color = '#BC4968'
-    elif ischeme.__contains__('SEIFDA-maxD'):
-        color = '#00FFFF'
-    elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('DnD'):
-        color = '#808080'
-    elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('D=D'):
-        color = '#FF0000'
-    elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('DnD'):
-        color = '#800080'
-    elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
-        color = '#00FF00'
+    schemes = [
+        'EDA','PROPORTIONAL','SEIFDA-MILP',
+        'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','FRDGMF-OPA','Biondi','SRSR',
+        'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK',
+        'NC']
+    colors = [
+        '#0ff1ce','#696969','#bada55',
+        '#7fe5f0','#ff0000','#ff80ed','#407294','#c39797','#420420','#133337',
+        '#065535','#f08080','#5ac18e','#666666','#dcedc1','#f7347a','#576675','#ffc0cb','#ffe4e1',
+        '#008080',
+        '#696966','#ffd700','#ffa500','#8a2be2','#00ffff','#ff7373','#40e0d0','#0000ff',
+        '#d3ffce','#c6e2ff','#b0e0e6','#fa8072','#003366','#ffff00','#ffb6c1','#8b0000',
+        '#800000','#800080','#7fffd4','#00ff00','#cccccc','#0a75ad','#ffff66','#000080',
+        '#ffc3a0','#20b2aa','#ac25e2','#333333','#66cdaa','#ff6666','#ff00ff','#ff7f50',
+        '#4ca3dd','#468499','#047806','#008000','#f6546a','#cbbeb5','#00ced1','#81d8d0',
+        '#660066','#b6fcd5','#daa520','#990000','#0e2f44','#808080','#088da5','#b4eeb4',
+        '#6897bb','#101010']
+    if ischeme in schemes:
+        index = schemes.index(ischeme)
+        color = colors[index]
     else:
-        color = '#008080'
+        if ischeme.__contains__('SEIFDA-minD'):
+            color = '#0F00FF'
+        elif ischeme.__contains__('SEIFDA-PBminD'):
+            color = '#0F0F00'
+        elif ischeme.__contains__('SEIFDA-maxD'):
+            color = '#0F0F0F'
+        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('DnD'):
+            color = '#0F0FF0'
+        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('D=D'):
+            color = '#0F0FFF'
+        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('DnD'):
+            color = '#0FF000'
+        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
+            color = '#0FF00F'
+        else:
+            color = '#0FF0F0'
     return color
 
 def pickMarker(ischeme):
     marker = ''
-    if ischeme == 'EDA':
-        marker = 's'
-    elif ischeme == 'PROPORTIONAL':
-        marker = '1'
-    elif ischeme == 'PASS-OPA':
-        marker = '8'
-    elif ischeme == 'SCEDF':
-        marker = '>'
-    elif ischeme == 'SCRM':
-        marker = '^'
-    elif ischeme == 'SCAIR':
-        marker = 'h'
-    elif ischeme == 'MIP':
-        marker = 'p'
-    elif ischeme == 'SCAIR-RM':
-        marker = '2'
-    elif ischeme == 'SCAIR-OPA':
-        marker = '3'
-    elif ischeme == 'RSS':
-        marker = 'p'
-    elif ischeme == 'UDLEDF':
-        marker = 'o'
-    elif ischeme == 'WLAEDF':
-        marker = 'H'
-    elif ischeme == 'RTEDF':
-        marker = 'x'
-    elif ischeme == 'UNIFRAMEWORK':
-        marker = 'D'
-    elif ischeme == 'SUSPOBL':
-        marker = '*'
-    elif ischeme == 'SUSPJIT':
-        marker = 'v'
-    elif ischeme == 'SUSPBLOCK':
-        marker = 's'
-    elif ischeme.__contains__('SEIFDA-minD'):
-        marker = 'o'
-    elif ischeme.__contains__('SEIFDA-PBminD'):
-        marker = 'H'
-    elif ischeme.__contains__('SEIFDA-maxD'):
-        marker = 'x'
-    elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('DnD'):
-        marker = 'D'
-    elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('D=D'):
-        marker = '*'
-    elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('DnD'):
-        marker = '+'
-    elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
-        marker = 'v'
-    else:
-        marker = '<'
+    schemes = [
+        'EDA','PROPORTIONAL','SEIFDA-MILP',
+        'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','FRDGMF-OPA','Biondi','SRSR',
+        'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK',
+        'NC']
+    markers = [
+        ".",",","o",
+        "v","^","<",">","1","2","3",
+        "4","8","s","p","P","*","h","H","+",
+        "x",
+        "X","D","d","|","_","0"]
+
+    if ischeme in schemes:
+        index = schemes.index(ischeme)
+        marker = markers[index]
+    else: 
+        if ischeme.__contains__('SEIFDA-minD'):
+            marker = "X"
+        elif ischeme.__contains__('SEIFDA-PBminD'):
+            marker = "D"
+        elif ischeme.__contains__('SEIFDA-maxD'):
+            marker = "d"
+        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('DnD'):
+            marker = "|"
+        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('D=D'):
+            marker = "_"
+        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('DnD'):
+            marker = "0"
+        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
+            marker = "."
+        else:
+            marker = "o"
     return marker
 
 def pickName(ischeme):
