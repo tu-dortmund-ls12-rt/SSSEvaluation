@@ -47,15 +47,15 @@ EDA | | EDA.py | SEIFDA
 PROPORTIONAL | | PROPORTIONAL.py | PROPORTIONAL
 SEIFDA-MILP | | mipx.py | mip
 GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
-Oblivious-IUB | | PATH.py | SEIFDApath
-Clairvoyant-SSSD | | PATH.py | SEIFDApath
-Oblivious-MP | | PATH.py | SEIFDApath
-Clairvoyant-PDAB | | PATH.py | SEIFDApath
+Oblivious-IUB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+Clairvoyant-SSSD | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+Oblivious-MP | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+Clairvoyant-PDAB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
 SCEDF | | SCEDF.py | SC_EDF
 SCRM | | SEIFDA.py | SC_RM
-SCAIR-RM | | rad.py | scair_dm
-SCAIR-OPA | | rad.py | Audsley
-Biondi RTSS 16 | | rt.py | Biondi
+SCAIR-RM | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | scair_dm
+SCAIR-OPA | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | Audsley
+Biondi RTSS 16 | https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
 PASS-OPA | | Audsley.py | Audsley
 NC | | NC.py | NC
 RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
@@ -68,7 +68,6 @@ SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | Fi
 SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
 GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
 SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
-WATI | https://ieeexplore.ieee.org/document/7176028 | WATI.py | WATI
 
 # Acknowledgements
 We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng and Morteza Mohaqeqi for providing the source code of their work.

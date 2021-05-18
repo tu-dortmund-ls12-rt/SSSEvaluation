@@ -5,8 +5,8 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, rt, functions
-from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, WATI
+from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, functions
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -422,6 +422,11 @@ class Ui_MainWindow(object):
         self.biondi.setObjectName("Biondi")
         self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
         self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.biondi)
+        
+        self.srsr = QtWidgets.QCheckBox(self.groupBox_4)
+        self.srsr.setObjectName("srsr")
+        self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
+        self.formLayout_4.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.srsr)
 
 
 
@@ -534,16 +539,6 @@ class Ui_MainWindow(object):
         self.nc.setObjectName("nc")
         self.nc.setToolTip('Necessary Condition')
         self.formLayout_6.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.nc)
-
-        self.srsr = QtWidgets.QCheckBox(self.groupBox_6)
-        self.srsr.setObjectName("srsr")
-        self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
-        self.formLayout_6.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.srsr)
-
-        self.wati = QtWidgets.QCheckBox(self.groupBox_6)
-        self.wati.setObjectName("wati")
-        self.wati.setToolTip('Worst-Case-Response-Time Approximation by task interference')
-        self.formLayout_6.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.wati)
 
 
 
@@ -1004,8 +999,6 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('SRSR')
-            if self.wati.isChecked():
-                gSchemes.append('WATI')
 
             if gRuntest:
                 #khchen
@@ -1183,7 +1176,6 @@ class Ui_MainWindow(object):
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
         self.srsr.setText(_translate("MainWindow", "SRSR"))
-        self.wati.setText(_translate("MainWindow", "WATI"))
         self.biondi.setText(_translate("MainWindow", "Biondi RTSS 16"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
@@ -1264,9 +1256,6 @@ def switchTest(tasksets,ischeme):
         elif ischeme == 'SRSR':
             if SRSR.SRSR(tasks) == False:
                 counter += 1
-        elif ischeme == 'WATI':
-            if WATI.WATI(tasks) == False:
-                counter += 1
         elif ischeme == 'SCAIR-RM':
             if rad.scair_dm(tasks) == False:
                 counter += 1
@@ -1277,7 +1266,7 @@ def switchTest(tasksets,ischeme):
             if rad.Audsley(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'Biondi':
-            if rt.Biondi(tasks) == False:
+            if Biondi.Biondi(tasks) == False:
                 counter += 1
         elif ischeme == 'RSS':
             if RSS.SC2EDF(tasks) == False:
