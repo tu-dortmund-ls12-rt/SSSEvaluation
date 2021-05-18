@@ -3,39 +3,29 @@ import gurobipy as gp
 from gurobipy import GRB
 import numpy as np
 
-import time
-
 # Generalized multiframe mode schedulability test with parameter adaptation as milp-epsilon
 # From: https://link.springer.com/article/10.1007/s11241-017-9279-2
 # Input: Task set
 # Output: Schedulability of the Task Set under GMFPA
 def GMFPA(tasks,ischeme):
-
     #Calculate n and N_i
     len_tasks = len(tasks)
-    len_segs = 2*len(tasks[0]['Cseg'])-1
+    len_segs = 2*len(tasks[0]['Cseg'])-1y
 
     #Calculate U_cap
-    U_cap = 0
-    for i in range(len_tasks):
-        U_cap += tasks[i]['utilization']
+    U_cap = sum([task['utilization'] for task in tasks])
 
     #Calculate H
-    P_max = 0
-    for i in range(len_tasks):
-        task = tasks[i]
-        if(task['period']-min(task['Cseg']) > P_max):
-            P_max = task['period']-min(task['Cseg'])
+    P_max = max([task['period']-min(task['Cseg']) for task in tasks])
 
     H = 0
     if U_cap < 1:
         H = math.ceil(U_cap/(1-U_cap) * P_max)
     else:
-        periods = list(range(len_tasks))
-        for i in range(len_tasks):
-            periods[i] = tasks[i]['period']
+        periods = [task['period'] for task in tasks]
         #print(periods)
         H = np.lcm(periods)
+
 
     #Approximation of H to Ha
     Ha = []
@@ -43,10 +33,8 @@ def GMFPA(tasks,ischeme):
     epsilon = 1+(float)(ischeme.split('-')[1])
     if epsilon != 1:
         len_Ha = math.ceil(math.log(H,epsilon))+1
-        Ha = list(range(len_Ha))
-        for i in range(len_Ha):
-            Ha[i] = 1*math.pow(epsilon,i)
-        Ha[len_Ha-1]=H
+        Ha = [1*math.pow(epsilon,i) for i in range(len_Ha)]
+        Ha[len_Ha-1] = H
     else:
         len_Ha = H
         Ha = list(range(H))
@@ -55,21 +43,10 @@ def GMFPA(tasks,ischeme):
     realmin = np.finfo(float).tiny
     
     #Set Constants
-    Pi = list(range(len_tasks))
-    Eik = list(range(len_tasks))
-    Di = list(range(len_tasks))
+    Pi = [task['period'] for task in tasks]
+    Eik = [[tasks[i]['Cseg'][int(k/2)] if k%2 == 0 else 0 for k in range(len_segs)] for i in range(len_tasks)]
 
-    for i in range(len_tasks):
-        Pi[i] = tasks[i]['period']
-        Di[i] = tasks[i]['deadline']
-        Eik[i] = list(range(len_segs))
-        for k in range(len_segs):
-            if k%2 == 0:
-                Eik[i][k] = tasks[i]['Cseg'][int(k/2)]
-            else:
-                Eik[i][k] = 0
-
-    # print("Tasks: ",tasks)
+    #print("Tasks: ",tasks)
     # print("Number of tasks n: ",len_tasks)
     # print("Number of Segments Ni: ",len_segs)
     # print("Utilization: ",U_cap)
@@ -170,4 +147,5 @@ def GMFPA(tasks,ischeme):
         m.write("gmfpa.ilp") 
         return False
 
+GMFPA([],'GMFPA-1')
 
