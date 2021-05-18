@@ -4,11 +4,11 @@ from gurobipy import GRB
 import numpy as np
 
 
-# WCRT-Approximation by task interference
-# From: https://ieeexplore.ieee.org/document/7176028
+# WCRT-Approximation by task interference applied on Real-Time Applications on Dynamic Reconfigurable FPGAs
+# From: https://ieeexplore.ieee.org/document/7176028 and https://ieeexplore.ieee.org/document/7809838
 # Input: Task set
-# Output: Schedulability of the Task Set under WATI
-def WATI(tasks):
+# Output: Schedulability of the Task Set under Biondi
+def Biondi(tasks):
     len_tasks = len(tasks)
     #wcrt of each task
     wcrt = [0] * len_tasks
@@ -188,7 +188,7 @@ def WATI(tasks):
         else:
             # MILP is unfeasible and task set cant be scheduled
             m.computeIIS()
-            m.write("wati.ilp")
+            m.write("Biondi.ilp")
             return False
     #Everything is schedulable
     return True
