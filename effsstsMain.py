@@ -5,7 +5,7 @@ import random
 import sys
 import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, functions
+from schedTest import tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, functions
 from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi
 from effsstsPlot import effsstsPlot
 import os
@@ -1230,7 +1230,7 @@ def switchTest(tasksets,ischeme):
             if SCEDF.SC_EDF(tasks) == False:
                 counter += 1
         elif ischeme == 'SCRM':
-            if SEIFDA.SC_RM(tasks) == False:
+            if SCRM.SC_RM(tasks) == False:
                 counter += 1
         elif ischeme == 'PASS-OPA':
             if Audsley.Audsley(tasks) == False:
