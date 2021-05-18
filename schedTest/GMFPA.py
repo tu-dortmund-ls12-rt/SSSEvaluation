@@ -10,7 +10,7 @@ import numpy as np
 def GMFPA(tasks,ischeme):
     #Calculate n and N_i
     len_tasks = len(tasks)
-    len_segs = 2*len(tasks[0]['Cseg'])-1y
+    len_segs = 2*len(tasks[0]['Cseg'])-1
 
     #Calculate U_cap
     U_cap = sum([task['utilization'] for task in tasks])
@@ -25,7 +25,6 @@ def GMFPA(tasks,ischeme):
         periods = [task['period'] for task in tasks]
         #print(periods)
         H = np.lcm(periods)
-
 
     #Approximation of H to Ha
     Ha = []
@@ -146,6 +145,4 @@ def GMFPA(tasks,ischeme):
         m.computeIIS()
         m.write("gmfpa.ilp") 
         return False
-
-GMFPA([],'GMFPA-1')
 
