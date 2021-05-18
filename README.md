@@ -40,23 +40,23 @@ To activate the full feature set of the framework, you need to install the Gurob
 
 Name | Paper | File name | Method name
 ---|---|---|---
-SEIFDA-minD- | | SEIFDA.py | SEIFDA
-SEIFDA-maxD- | | SEIFDA.py | SEIFDA
-SEIFDA-PBminD- | | SEIFDA.py | SEIFDA
+SEIFDA-minD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
+SEIFDA-maxD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
+SEIFDA-PBminD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
+SEIFDA-MILP | https://dl.acm.org/doi/10.1145/2997465.2997497 | mipx.py | mip
 EDA | | EDA.py | SEIFDA
 PROPORTIONAL | | PROPORTIONAL.py | PROPORTIONAL
-SEIFDA-MILP | | mipx.py | mip
 GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
 Oblivious-IUB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
 Clairvoyant-SSSD | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
 Oblivious-MP | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
 Clairvoyant-PDAB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
-SCEDF | | SCEDF.py | SC_EDF
-SCRM | | SEIFDA.py | SC_RM
+SCEDF | https://link.springer.com/content/pdf/10.1007/s11241-018-9316-9.pdf Section 7.1 | SCEDF.py | SC_EDF
+SCRM | https://link.springer.com/content/pdf/10.1007/s11241-018-9316-9.pdf Section 4.2.4 | SCRM.py | SC_RM
 SCAIR-RM | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | scair_dm
 SCAIR-OPA | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | Audsley
 Biondi RTSS 16 | https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
-PASS-OPA | | Audsley.py | Audsley
+PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | Audsley.py | Audsley
 NC | | NC.py | NC
 RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
 UDLEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | UDLEDF.py | UDLEDF_improved
