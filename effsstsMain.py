@@ -1272,7 +1272,7 @@ def switchTest(tasksets,ischeme):
             if RSS.SC2EDF(tasks) == False:
                 counter += 1
         elif ischeme == 'UDLEDF':
-            if UDLEDF.UDLEDF_improved(tasks) == False:
+            if UDLEDF.UDLEDF(tasks) == False:
                 counter += 1
         elif ischeme == 'WLAEDF':
             if WLAEDF.WLAEDF(tasks) == False:

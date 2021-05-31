@@ -12,6 +12,9 @@
 
 from mip import *
 from gurobipy import *
+import gurobipy as gp
+import math
+import numpy as np
 
 import gurobipy
 def sumDBF(t,tasks,d):
@@ -27,10 +30,10 @@ def sumDBF(t,tasks,d):
             dbf=task['Cseg'][0]+task['Cseg'][1]+((t-d[j].x)*task['Cseg'][0]/task['period'])+(t-d2)*task['Cseg'][1]/task['period']
         sumd+=dbf
     return sumd
+
 def mip(tasks):
     
     for itask in tasks:
-
         if itask['Cseg'][0]>itask['Cseg'][1]:
             k=itask['Cseg'][0]
             itask['Cseg'][0]=itask['Cseg'][1]
@@ -242,6 +245,3 @@ def mip(tasks):
         return True
     #print(m.Status)
     return False
-
-    
-
