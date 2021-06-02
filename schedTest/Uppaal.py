@@ -79,7 +79,7 @@ def uppaal_schedulability(input_file_name):
     q_file = open(q_file_name, "w+")
     q_file.write(q_file_content)
     q_file.close()
-    result = verify_xml_file(N, xml_file_name, q_file_name, min_period, max_period, str(number_of_jobs), input_file_name, "1m")
+    result = verify_xml_file(N, xml_file_name, q_file_name, min_period, max_period, str(number_of_jobs), input_file_name, "1h")
 
     if result != 'Timedout':
         if result == "1":
