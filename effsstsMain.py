@@ -6,7 +6,7 @@ import sys
 import getopt
 import numpy as np
 from schedTest import tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, functions
-from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi, Uppaal
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -504,6 +504,11 @@ class Ui_MainWindow(object):
         self.suspblock.setToolTip('Schedulability with Suspension as Blocking Time')
         self.formLayout_8.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.suspblock)
 
+        self.uppaal = QtWidgets.QCheckBox(self.groupBox_8)
+        self.uppaal.setObjectName("uppaal")
+        self.uppaal.setToolTip('Exact Schedulability Test for Non-Preemptive Self-Suspending Real-Time Tasks with UPPAAL model checker')
+        self.formLayout_8.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.uppaal)
+
 
 
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #General
@@ -986,6 +991,8 @@ class Ui_MainWindow(object):
                 gSchemes.append('SUSPJIT')
             if self.suspblock.isChecked():
                 gSchemes.append('SUSPBLOCK')
+            if self.uppaal.isChecked():
+                gSchemes.append('UPPAAL')
             if self.gmfpa.isChecked():
                 gSchemes.append('GMFPA-' + str(self.gmfpag.value()))
             if self.srsr.isChecked():
@@ -1126,7 +1133,7 @@ class Ui_MainWindow(object):
                     
                     numfail = 0
                     splitTasks = np.array_split(tasksets,gthread)
-                    results = [pool.apply_async(switchTest, args=(tasks,ischeme,)) for tasks in splitTasks]
+                    results = [pool.apply_async(switchTest, args=(splitTasks[i],ischeme,i,)) for i in range(len(splitTasks))]
                     output = [p.get() for p in results]
                     numfail = sum(output)
 
@@ -1195,6 +1202,7 @@ class Ui_MainWindow(object):
         self.suspobl.setText(_translate("MainWindow", "SuspObl"))
         self.suspjit.setText(_translate("MainWindow", "SuspJit"))
         self.suspblock.setText(_translate("MainWindow", "SuspBlock"))
+        self.uppaal.setText(_translate("MainWindow", "UPPAAL"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
         self.frdgmfopa.setText(_translate("MainWindow", "FRDGMF-OPA"))
@@ -1222,9 +1230,8 @@ class Ui_MainWindow(object):
         self.actionAbout_Framework.setText(_translate("MainWindow", "About Framework"))
 
  
-def switchTest(tasksets,ischeme):
+def switchTest(tasksets,ischeme,i):
     counter = 0
-    
     for tasks in tasksets:
         if ischeme == 'SCEDF':
             if SCEDF.SC_EDF(tasks) == False:
@@ -1291,6 +1298,9 @@ def switchTest(tasksets,ischeme):
                 counter += 1
         elif ischeme == 'SUSPBLOCK':
             if FixedPriority.SuspBlock(tasks) == False:
+                counter += 1
+        elif ischeme == 'UPPAAL':
+            if Uppaal.Uppaal(tasks,i) == False:
                 counter += 1
         elif ischeme.split('-')[0] == 'GMFPA':
             if GMFPA.GMFPA(tasks,ischeme) == False:
