@@ -34,8 +34,56 @@ The framework can be extended with other scheduling algorithms written in Python
 
 # Framework Installation
 
-To activate the full feature set of the framework, you need to install the Gurobi Optimizer, found at https://www.gurobi.com/. For research purposes you can obtain an academic license, which is used for some of the scheduling algorithms. You can request a license at https://www.gurobi.com/academia/academic-program-and-licenses/. The installation guide can be found at https://www.gurobi.com/documentation/9.1/quickstart_linux/software_installation_guid.html.
+##Requirements
 
+The following software should be installed:
+```
+sudo apt-get install git python3
+pip install PyQt5 numpy mip gurobipy matplotlib
+```
+
+To activate the full feature set of the framework, you also need to install the Gurobi Optimizer, found at https://www.gurobi.com/. For research purposes you can obtain an academic license, which is used for some of the scheduling algorithms. You can request a license at https://www.gurobi.com/academia/academic-program-and-licenses/. The installation guide can be found at https://www.gurobi.com/documentation/9.1/quickstart_linux/software_installation_guid.html.
+
+## File Structure
+
+    .
+    ├── effsstsPlot			# Placeholder for outputs
+    │   ├── Data			# Includes all output graphs
+    │   └── effsstsPlot.py		# Output graph generation
+    ├── schedTest			# Contains all schedulability tests
+    │   ├── inputs			# Temporary Inputs for schedulability tests
+    │   └── temp_models		# Temporary models for schedulability tests
+    ├── effssts.py			# Framework executable without GUI
+    ├── effsstsMain.py			# Framework executable with GUI
+    ├── gurobi.env			# Settings for Gurobi optimizer
+    ├── README.md
+    
+## Deployment
+
+The following steps explain how to deploy this framework on the machine:
+
+First, clone the git repository or download the [zip file](https://github.com/tu-dortmund-ls12-rt/end-to-end/archive/refs/heads/master.zip):
+```
+git clone https://github.com/tu-dortmund-ls12-rt/SSSEvaluation.git
+```
+Move into the end-to-end folder and start the framework with python:
+```
+cd SSSEvaluation
+python3 effsstsMain.py
+```
+
+You can now select the parameters for the schedulability analysis.
+
+In the **General** tab you can select the path of your task sets, and if you want to generate, save or load the task sets for the analysis. Additionally you can select the number of threads for the execution of the analysis and the seed for the task generation.
+
+After that you can select the parameters for the task set in the **Configuration** tab. This includes the number of tasks per set, the number of task sets, the utilization values, the number of computation segments, and the ratio between computation and suspension time.
+
+In the **Schedulability tests** tab you can select any of the schedulability tests which are implemented in the framework. Additionally you can set custom parameters for some of the tests.
+
+After that, the **Plots** tab lets you specify how to plot the schedulability tests. You can plot each test individually, combine all selected tests or combine available tests, if they were previously plotted and their data is available in the **effsstsPlot/Data/\*** folder.
+
+After running the schedulability analysis, you can find the results in the **effsstsPlot/Data** folder.
+    
 # Schedulability Tests
 
 Name | Paper | File name | Method name
@@ -71,4 +119,4 @@ SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
 
 # Acknowledgements
 
-We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng and Morteza Mohaqeqi for providing the source code of their work.
+We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng, Morteza Mohaqeqi, Alessandro Biondi and Beyazit Yalcinkaya for providing the source code and additonal information of their work.
