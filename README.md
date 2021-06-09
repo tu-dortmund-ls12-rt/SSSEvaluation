@@ -109,9 +109,16 @@ SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
     
 ## How to integrate your algorithms?
 
-The framework can be extended with other scheduling algorithms written in Python or C++. The integration is in twofold:
-* Make sure the content of task is consistent to your existed algorithms. This is a bit tricky: Each task is formed as a dictionary in Python, which consists of its period ['period'], worst case execution time ['execution'], utilization ['utilization'], relative deadline ['deadline'], the possible suspension time ['sslength'], the set of execution segements ['Cseg'], the set of suspension segements ['Sseg']. For the other keys in the dictionary, they are the intermediate variables for task generations.
-* Based on the same format of tasks, the targeted algorithm in Python should be implemented accordingly (recommended to store in the folder of schedTest). If the algorithm is written in C++, an executable binary needs to be pre-built so that the process can be called from the main python script. The properties of tasks and the result of the analysis are transmitted in the form of csv or txt file.
+You can extend the framework with other scheduling algorithms written in Python or C++.
+* First get an overview of the task structure. Each task is implemented as a dictionary in Python, which includes its period ['period'], execution time ['execution'], utilization ['utilization'], deadline ['deadline'], suspension length ['sslength'] and the set of computation segments ['Cseg'] and suspension segments ['Sseg']. 
+* To integrate your algorithms, you need to include your Python implementation in the schedTest folder. Alternatively for C++-algorithms, you need a pre-built binary, which can be executed from a Python script. 
+* Then you need to extend the framework interface, so that you can select your schedulability test in the GUI. In order to do so, you need to add several things in the effsstsMain.py file:
+    1.  Import your Python file.
+    2.  Add an entry to the GUI, which you can later select. 
+    3.  Each selected test adds a scheme to a list, which includes all tests that will be executed. In case your schedulability test gets selected, you need to add your scheme, so that the algorithm is later called.
+    4.  Set a text for the label, so that the name of your test will be displayed in the GUI
+    5.  At an additional case to the switchTest method, which will select and execute your schedulability test, if you added your scheme correctly.
+* In order to make the implementation easier, you can search for an existing implementation, for example 'RSS' and copy each step to implement your own algorithm. 
 
 ## Acknowledgements
 We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng, Morteza Mohaqeqi, Alessandro Biondi and Beyazit Yalcinkaya for providing the source code and additonal information of their work.
