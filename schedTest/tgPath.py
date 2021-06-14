@@ -71,15 +71,15 @@ def seg_UUniFast(n,total):
 		seg.append(sumU-nextSumU)
 		sumU=nextSumU
 	seg.append(sumU)
-
 	return seg
+
 def SSS_seg_gen(vRatio,minCtune,maxCtune,maxnumsegs,minSratio,numpaths,scalef):
 	global PSet
 	numV=int(len(PSet)*vRatio)
 	i=0
 
 	for itask in PSet:
-		if i< numV:
+		if i < numV:
 			UB=itask['period']-itask['execution']
 			s=random.uniform(minCtune*UB,maxCtune*UB)
 
@@ -164,10 +164,10 @@ def init():
 	USet=[]
 	PSet=[]
 
-def taskGeneration_p(numTasks,uTotal,minsslength,maxsslength,Pmin=100,numLog=1,vRatio=1,seed=1,numsegs=2,minSratio=1,numpaths=2,scalef=0.8):
+def taskGeneration_p(NumberOfTasksPerSet,uTotal,minsslength,maxsslength,Pmin=100,numLog=1,vRatio=1,seed=1,numsegs=2,minSratio=1,numpaths=2,scalef=0.8):
     init()
     #random.seed() This is called before this function is called
-    UUniFast(numTasks,uTotal)
+    UUniFast(NumberOfTasksPerSet,uTotal)
     CSet_generate(Pmin,numLog)
     SSS_seg_gen(vRatio,minsslength,maxsslength,numsegs,minSratio,numpaths,scalef)
     return PSet

@@ -53,13 +53,15 @@ After running the schedulability analysis, you can find the results in the **eff
 
 ## Implementation Details
 
-To create the task sets, we use the UUnifast algorithm, which is used to generate the utilizations of each task. Each task set includes every information needed for the segmented, dynamic and hybrid task model and are generated as follows:
+To evaluate the schedulability tests, the framework implements a task model, that includes all the information needed for the analysis. Each task is implemented as a dictionary in Python, which includes its period ['period'], execution time ['execution'], utilization ['utilization'], deadline ['deadline'], suspension length ['sslength'], the set of computation segments ['Cseg'] and suspension segments ['Sseg'].
 
-1. For the dynamic model, the user specifies the suspension ratio, so that after generating the utilization, the total execution and suspension time are included in the task.
+The task creation is done in several steps. First the utilization ['utilization'] is computed, using the UUnifast algorithm. Then the period ['period'] and deadline ['deadline'] are drawn from a log-uniform distribution with two orders of magnitude, which are used to compute the execution time. The suspension time ['sslength'] is calculated with the difference between the period and execution time and the user-specified values.
 
-2. For the dynamic model, we generate different execution and suspension times for each task as individual paths and then include the upper bound of each computation and suspension segment in the task.
+After that, the hybrid model is generated. For each task, a path is generated, which consists of alternating computation and suspension segments, starting with a computation segment. For each path, the computation and suspension times are randomly drawn using the UUnifast algorithm.
 
-3. For the hybrid model, the task includes the maximum execution and suspension time, aswell as the number of computation and suspension segments.
+Then the segmented model is generated, which creates a worst-case path regarding each segment individually. The computation and suspension times of each segment are upper bounds of the corresponding segments of each path. The segments are saved in the tasks ['Cseg'] and ['Sseg'] keys.
+
+For the dynamic model, the total execution time ['execution'] and total suspension time ['sslength'] of each task are updated in the final step. For each path, the total computation and suspension time is computed and the maximum value of each is saved.
 
 ## Schedulability Tests
 
@@ -110,7 +112,6 @@ SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
 ## How to integrate your algorithms?
 
 You can extend the framework with other scheduling algorithms written in Python or C++.
-* First get an overview of the task structure. Each task is implemented as a dictionary in Python, which includes its period ['period'], execution time ['execution'], utilization ['utilization'], deadline ['deadline'], suspension length ['sslength'] and the set of computation segments ['Cseg'] and suspension segments ['Sseg']. 
 * To integrate your algorithms, you need to include your Python implementation in the schedTest folder. Alternatively for C++-algorithms, you need a pre-built binary, which can be executed from a Python script. 
 * Then you need to extend the framework interface, so that you can select your schedulability test in the GUI. In order to do so, you need to add several things in the effsstsMain.py file:
     1.  Import your Python file.
