@@ -57,7 +57,7 @@ To evaluate the schedulability tests, the framework implements a task model, tha
 
 The task creation is done in several steps. First the utilization ['utilization'] is computed, using the UUnifast algorithm. Then the period ['period'] and deadline ['deadline'] are drawn from a log-uniform distribution with two orders of magnitude, which are used to compute the execution time. The suspension time ['sslength'] is calculated with the difference between the period and execution time and the user-specified values.
 
-After that, the hybrid model is generated. For each task, a path is generated, which consists of alternating computation and suspension segments, starting with a computation segment. For each path, the computation and suspension times are randomly drawn using the UUnifast algorithm.
+After that, the hybrid model is generated. For each task, multiple paths are generated, which consist of alternating computation and suspension segments, starting with a computation segment. For each path, the computation and suspension times are randomly generated using the same method as the UUnifast algorithm. This results in the sum of the computation and suspension segments being equal to the total execution and segmentation time of each task.
 
 Then the segmented model is generated, which creates a worst-case path regarding each segment individually. The computation and suspension times of each segment are upper bounds of the corresponding segments of each path. The segments are saved in the tasks ['Cseg'] and ['Sseg'] keys.
 
@@ -65,7 +65,7 @@ For the dynamic model, the total execution time ['execution'] and total suspensi
 
 ## Schedulability Tests
 
-### Segmented
+### Segmented Suspension
 
 #### Implicit-Deadline
 
@@ -91,7 +91,7 @@ Name | Paper | File name | Method name
 ---|---|---|---
 GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
 
-### Dynamic
+### Dynamic Suspension
 
 #### Implicit-Deadline
 
@@ -122,7 +122,7 @@ SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | 
 Name | Paper | File name | Method name
 ---|---|---|---
 
-### Hybrid
+### Hybrid Suspension
 
 #### Implicit-Deadline
 
