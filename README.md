@@ -65,36 +65,84 @@ For the dynamic model, the total execution time ['execution'] and total suspensi
 
 ## Schedulability Tests
 
+### Segmented
+
+#### Implicit-Deadline
+
 Name | Paper | File name | Method name
 ---|---|---|---
 SEIFDA-minD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
 SEIFDA-maxD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
 SEIFDA-PBminD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
 SEIFDA-MILP | https://dl.acm.org/doi/10.1145/2997465.2997497 | mipx.py | mip
-EDA | https://ieeexplore.ieee.org/document/7010483 | EDA.py | SEIFDA
 PROPORTIONAL | https://ieeexplore.ieee.org/document/6881366 | PROPORTIONAL.py | PROPORTIONAL
-GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
-Oblivious-IUB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
-Clairvoyant-SSSD | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
-Oblivious-MP | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
-Clairvoyant-PDAB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+NC | https://dl.acm.org/doi/10.1145/2997465.2997497 | NC.py | NC
+SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
+
+#### Constrained-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
+Biondi RTSS 16 | https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
+
+#### Arbitrary-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
+GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
+
+### Dynamic
+
+#### Implicit-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
+EDA | https://ieeexplore.ieee.org/document/7010483 | EDA.py | SEIFDA
+RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
+UDLEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | UDLEDF.py | UDLEDF_improved
+WLAEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | WLAEDF.py | WLAEDF
+RTEDF  | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Algorithm 1 | RTEDF.py | RTEDF
+
+#### Constrained-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
 SCEDF | https://link.springer.com/content/pdf/10.1007/s11241-018-9316-9.pdf Section 7.1 | SCEDF.py | SC_EDF
 SCRM | https://link.springer.com/content/pdf/10.1007/s11241-018-9316-9.pdf Section 4.2.4 | SCRM.py | SC_RM
 SCAIR-RM | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | scair_dm
 SCAIR-OPA | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | Audsley
-Biondi RTSS 16 | https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
 PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | Audsley.py | Audsley
-NC | https://dl.acm.org/doi/10.1145/2997465.2997497 | NC.py | NC
-RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
-UDLEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | UDLEDF.py | UDLEDF_improved
-WLAEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | WLAEDF.py | WLAEDF
-RTEDF  | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Algorithm1 | RTEDF.py | RTEDF
 Uniframework | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
 SuspObl | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspObl
 SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
 SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
-GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
-SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
+
+#### Arbitrary-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
+
+### Hybrid
+
+#### Implicit-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
+Oblivious-IUB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+Clairvoyant-SSSD | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+Oblivious-MP | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+Clairvoyant-PDAB | https://ieeexplore.ieee.org/abstract/document/8046328 | PATH.py | SEIFDApath
+
+#### Constrained-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
+
+#### Arbitrary-Deadline
+
+Name | Paper | File name | Method name
+---|---|---|---
+
 
 ## File Structure
     .
