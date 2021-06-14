@@ -20,15 +20,15 @@ gRuntest = True
 gPlotdata = True
 gPlotall = True
 gTaskChoice = ''
-gTotBucket = 100
-gTasksinBkt = 10
+gNumberOfTaskSets = 100
+gNumberOfTasksPerSet = 10
 gUStart = 0
 gUEnd = 100
 gUStep = 5
-gSSofftypes = 2
+gNumberOfSegs = 2
 gSchemes = []
-gMinsstype = 0.01
-gMaxsstype = 0.1
+gSLenMinValue = 0.01
+gSLenMaxValue = 0.1
 gNumberofruns = 1
 garwrap = []
 gthread = 1
@@ -738,15 +738,15 @@ class Ui_MainWindow(object):
             global gPrefixdata
             global gRuntest
             global gPlotdata
-            global gTotBucket
-            global gTasksinBkt
+            global gNumberOfTaskSets
+            global gNumberOfTasksPerSet
             global gUStart
             global gUEnd
             global gUStep
-            global gSSofftypes
+            global gNumberOfSegs
             global gSchemes
-            global gMinsstype
-            global gMaxsstype
+            global gSLenMinValue
+            global gSLenMaxValue
             global gPlotall
             global gTaskChoice
             global gmpCheck
@@ -843,15 +843,15 @@ class Ui_MainWindow(object):
             global gTasksetpath
             global gRuntest
             global gPlotdata
-            global gTotBucket
-            global gTasksinBkt
+            global gNumberOfTaskSets
+            global gNumberOfTasksPerSet
             global gUStart
             global gUEnd
             global gUStep
-            global gSSofftypes
+            global gNumberOfSegs
             global gSchemes
-            global gMinsstype
-            global gMaxsstype
+            global gSLenMinValue
+            global gSLenMaxValue
             global gPlotall
             global gSeed
             global gTaskChoice
@@ -871,14 +871,14 @@ class Ui_MainWindow(object):
             gTasksetpath = self.tasksetdatapath.text()
 
             ###CONFIGURATION###
-            gTotBucket = self.tasksetsperconfig.value()
-            gTasksinBkt = self.tasksperset.value()
+            gNumberOfTaskSets = self.tasksetsperconfig.value()
+            gNumberOfTasksPerSet = self.tasksperset.value()
             gUStart = self.utilstart.value()
             gUEnd = self.utilend.value()
             gUStep = self.utilstep.value()
-            gSSofftypes = self.numberofsegs.value()
-            gMinsstype = self.slengthminvalue.value()
-            gMaxsstype = self.slengthmaxvalue.value()
+            gNumberOfSegs = self.numberofsegs.value()
+            gSLenMinValue = self.slengthminvalue.value()
+            gSLenMaxValue = self.slengthmaxvalue.value()
             if self.seed.text() != '':
                 gSeed = self.seed.text()
             else:
@@ -904,7 +904,7 @@ class Ui_MainWindow(object):
 
             ###SCHEDULABILITY TESTS###
             if self.seifdamind.isChecked():
-                if gSSofftypes > 2:
+                if gNumberOfSegs > 2:
                     self.seifdamind.setChecked(False)
                     error_msg.setWindowTitle("SEIFDA-minD test fails")
                     error_msg.setInformativeText('SEIFDA-minD does not work for more than two segements.')
@@ -912,7 +912,7 @@ class Ui_MainWindow(object):
                 else:
                     gSchemes.append('SEIFDA-minD-' + str(self.seifdamindg.value()))
             if self.seifdamaxd.isChecked():
-                if gSSofftypes > 2:
+                if gNumberOfSegs > 2:
                     self.seifdamaxd.setChecked(False)
                     error_msg.setWindowTitle("SEIFDA-maxD test fails")
                     error_msg.setInformativeText('SEIFDA-maxD does not work for more than two segements.')
@@ -920,7 +920,7 @@ class Ui_MainWindow(object):
                 else:
                     gSchemes.append('SEIFDA-maxD-' + str(self.seifdamaxdg.value()))
             if self.seifdapbmind.isChecked():
-                if gSSofftypes > 2:
+                if gNumberOfSegs > 2:
                     self.seifdapbmind.setChecked(False)
                     error_msg.setWindowTitle("SEIFDA-PBminD test fails")
                     error_msg.setInformativeText('SEIFDA-PBminD does not work for more than two segements.')
@@ -928,7 +928,7 @@ class Ui_MainWindow(object):
                 else:
                     gSchemes.append('SEIFDA-PBminD-' + str(self.seifdapbmindg.value()))
             if self.seifdamip.isChecked():
-                if gSSofftypes > 2:
+                if gNumberOfSegs > 2:
                     self.seifdamip.setChecked(False)
                     error_msg.setWindowTitle("SEIFDA-MILP test fails")
                     error_msg.setInformativeText('SEIFDA-MILP does not work for more than two segements.')
@@ -940,7 +940,7 @@ class Ui_MainWindow(object):
             if self.proportional.isChecked():
                 gSchemes.append('PROPORTIONAL')
             if self.nc.isChecked():
-                if gSSofftypes > 2:
+                if gNumberOfSegs > 2:
                     self.nc.setChecked(False)
                     error_msg = QtWidgets.QMessageBox()
                     error_msg.setIcon(QtWidgets.QMessageBox.Critical)
@@ -996,7 +996,7 @@ class Ui_MainWindow(object):
             if self.gmfpa.isChecked():
                 gSchemes.append('GMFPA-' + str(self.gmfpag.value()))
             if self.srsr.isChecked():
-                if gSSofftypes > 2:
+                if gNumberOfSegs > 2:
                     self.srsr.setChecked(False)
                     error_msg = QtWidgets.QMessageBox()
                     error_msg.setIcon(QtWidgets.QMessageBox.Critical)
@@ -1023,8 +1023,8 @@ class Ui_MainWindow(object):
             if gPlotdata:
                 if len(gSchemes) != 0:
                     try:
-                        effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gMinsstype, gMaxsstype, gSSofftypes,
-                                                   gUStart, gUEnd, gUStep, gTasksinBkt)
+                        effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
+                                                   gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
                     except Exception as e:
                         MainWindow.statusBar().showMessage(str(e))
                 else:
@@ -1032,8 +1032,8 @@ class Ui_MainWindow(object):
             if gmpCheck:
                 if len(gSchemes) != 0:
                     try:
-                        effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gMinsstype, gMaxsstype, gSSofftypes,
-                                                   gUStart, gUEnd, gUStep, gTasksinBkt)
+                        effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
+                                                   gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
                     except Exception as e:
                         MainWindow.statusBar().showMessage(str(e))
                 else:
@@ -1043,14 +1043,14 @@ class Ui_MainWindow(object):
 
 
         def tasksetConfiguration():
-            global gTotBucket
-            global gTasksinBkt
+            global gNumberOfTaskSets
+            global gNumberOfTasksPerSet
             global gUStep
             global gUStart
             global gUEnd
-            global gMaxsstype
-            global gMinsstype
-            global gSSofftypes
+            global gSLenMaxValue
+            global gSLenMinValue
+            global gNumberOfSegs
             global gSeed
 
             tasksets_difutil = []
@@ -1067,21 +1067,21 @@ class Ui_MainWindow(object):
 
                 for u in range(gUStart, gUEnd, gUStep):
                     tasksets = []
-                    for i in range(0, gTotBucket, 1):
+                    for i in range(0, gNumberOfTaskSets, 1):
                         #percentageU = u * gUStep / 100
                         percentageU = u / 100
-                        tasks = tgPath.taskGeneration_p(gTasksinBkt, percentageU, gMinsstype, gMaxsstype, vRatio=1,
-                                                        seed=gSeed, numLog=int(2), numsegs=gSSofftypes)
+                        tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
+                                                        seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
                         sortedTasks = sorted(tasks, key=lambda item: item['period'])
                         tasksets.append(sortedTasks)
                     tasksets_difutil.append(tasksets)
                 if gTaskChoice == 'Generate and Save Tasksets':
-                    file_name = 'TspCon_'+ str(gTotBucket) + '_TpTs_' \
-                                + str(gTasksinBkt) + '_Utilst_' + str(gUStep) +\
-                                '_Minss_' + str(gMinsstype) + '_Maxss_' + \
-                                str(gMaxsstype) + '_Seg_'+str(gSSofftypes)+'_.pkl'
+                    file_name = 'TspCon_'+ str(gNumberOfTaskSets) + '_TpTs_' \
+                                + str(gNumberOfTasksPerSet) + '_Utilst_' + str(gUStep) +\
+                                '_Minss_' + str(gSLenMinValue) + '_Maxss_' + \
+                                str(gSLenMaxValue) + '_Seg_'+str(gNumberOfSegs)+'_.pkl'
                     MainWindow.statusBar().showMessage('File saved as: ' + file_name)
-                    info = [gTotBucket, gTasksinBkt, gUStep, gMinsstype, gMaxsstype, gSSofftypes, gSeed ]
+                    info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
                     with open('./genTasksets/'+file_name, 'wb') as f:
                         pickle.dump([tasksets_difutil,info] , f)
             elif gTaskChoice == 'Load Tasksets':
@@ -1091,12 +1091,12 @@ class Ui_MainWindow(object):
                      data = pickle.load(f)
                 tasksets_difutil = data[0]
                 info = data[1]
-                gTotBucket = int(info[0])
-                gTasksinBkt = int(info[1])
+                gNumberOfTaskSets = int(info[0])
+                gNumberOfTasksPerSet = int(info[1])
                 gUStep = int(info[2])
-                gMinsstype = float(info[3])
-                gMaxsstype = float(info[4])
-                gSSofftypes = int(info[5])
+                gSLenMinValue = float(info[3])
+                gSLenMaxValue = float(info[4])
+                gNumberOfSegs = int(info[5])
                 gSeed = info[6]
             return tasksets_difutil
 
@@ -1118,8 +1118,8 @@ class Ui_MainWindow(object):
                 # print(Tasksets_util)
                 # print("Hello")
                 for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
-                    print("Scheme:", ischeme, "Task-sets:", gTotBucket, "Tasks per Set:", gTasksinBkt, "U:", gUStart + u * gUStep, "SSLength:", str(
-                        gMinsstype), " - ", str(gMaxsstype), "Num. of segments:", gSSofftypes)
+                    print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gUStart + u * gUStep, "SSLength:", str(
+                        gSLenMinValue), " - ", str(gSLenMaxValue), "Num. of segments:", gNumberOfSegs)
                     if u == 0:
                         y[u] = 1
                         continue
@@ -1137,15 +1137,15 @@ class Ui_MainWindow(object):
                     output = [p.get() for p in results]
                     numfail = sum(output)
 
-                    acceptanceRatio = 1 - (numfail / gTotBucket)
+                    acceptanceRatio = 1 - (numfail / gNumberOfTaskSets)
                     print("acceptanceRatio:", acceptanceRatio)
                     y[u] = acceptanceRatio
                     if acceptanceRatio == 0:
                         ifskip = True
 
-                plotPath = gPrefixdata + '/' + str(gMinsstype) + '-' + str(gMaxsstype) + '/' + str(gSSofftypes) + '/'
-                plotfile = gPrefixdata + '/' + str(gMinsstype) + '-' + str(gMaxsstype) + '/' + str(
-                    gSSofftypes) + '/' + ischeme + str(gTasksinBkt)
+                plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gNumberOfSegs) + '/'
+                plotfile = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(
+                    gNumberOfSegs) + '/' + ischeme + str(gNumberOfTasksPerSet)
 
                 if not os.path.exists(plotPath):
                     os.makedirs(plotPath)
@@ -1252,10 +1252,10 @@ def switchTest(tasksets,ischeme,i):
             if PATH.PATH(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'EDA':
-            if EDA.EDA(tasks, gSSofftypes) == False:
+            if EDA.EDA(tasks, gNumberOfSegs) == False:
                 counter += 1
         elif ischeme == 'PROPORTIONAL':
-            if PROPORTIONAL.PROPORTIONAL(tasks, gSSofftypes) == False:
+            if PROPORTIONAL.PROPORTIONAL(tasks, gNumberOfSegs) == False:
                 counter += 1
         elif ischeme == 'NC':
             if NC.NC(tasks) == False:
