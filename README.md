@@ -43,7 +43,7 @@ You can now select the parameters for the schedulability analysis.
 
 In the **General** tab you can select the path of your task sets, and if you want to generate, save or load the task sets for the analysis. Additionally you can select the number of threads for the execution of the analysis and the seed for the task generation.
 
-After that you can select the parameters for the task set in the **Configuration** tab. This includes the number of tasks per set, the number of task sets, the utilization values, the number of computation segments, and the ratio between computation and suspension time.
+After that you can select the parameters for the task set in the **Configuration** tab. This includes the number of tasks per set, the number of task sets, the utilization values and the number of computation segments. Moreover, minimal and maximal value for the maximal suspension time can be set, i.e., the maximal suspension time is between the minimum suspension length value and maximum suspension length value multiplied with the difference between the period and execution time.
 
 In the **Schedulability tests** tab you can select any of the schedulability tests which are implemented in the framework. Additionally you can set custom parameters for some of the tests.
 
@@ -55,9 +55,9 @@ After running the schedulability analysis, you can find the results in the **eff
 
 To evaluate the schedulability tests, the framework implements a task model, that includes all the information needed for the analysis. Each task is implemented as a dictionary in Python, which includes its period ['period'], execution time ['execution'], utilization ['utilization'], deadline ['deadline'], suspension length ['sslength'], the set of computation segments ['Cseg'] and suspension segments ['Sseg'].
 
-The task creation is done in several steps. First the utilization ['utilization'] is computed, using the UUnifast algorithm. Then the period ['period'] and deadline ['deadline'] are drawn from a log-uniform distribution with two orders of magnitude, which are used to compute the execution time. The suspension time ['sslength'] is calculated with the difference between the period and execution time and the user-specified values.
+The task creation is done in several steps. First the utilization ['utilization'] is computed, using the UUnifast algorithm. Then the period ['period'] and deadline ['deadline'] are drawn from a log-uniform distribution with two orders of magnitude, which are used to compute the execution time. The suspension time ['sslength'] is drawn uniformly from the interval between the minimum suspension length value and maximum suspension length value, which are specified in the GUI, multiplied with the difference between period and execution time.
 
-After that, the hybrid model is generated. For each task, multiple paths are generated, which consist of alternating computation and suspension segments, starting with a computation segment. For each path, the computation and suspension times are randomly generated using the same method as the UUnifast algorithm. This results in the sum of the computation and suspension segments being equal to the total execution and segmentation time of each task.
+After that, the hybrid model is generated. For each task, multiple paths are generated, which consist of alternating computation and suspension segments, starting with a computation segment. For each path, the UUniFast algorithm is used to segment the total computation and total suspension time. This results in the sum of the computation and suspension segments being equal to the total execution and segmentation time of each task.
 
 Then the segmented model is generated, which creates a worst-case path regarding each segment individually. The computation and suspension times of each segment are upper bounds of the corresponding segments of each path. The segments are saved in the tasks ['Cseg'] and ['Sseg'] keys.
 

@@ -1,11 +1,9 @@
 from __future__ import division
 from PyQt5 import QtCore, QtGui, QtWidgets
-import effssts
 import random
 import sys
-import getopt
 import numpy as np
-from schedTest import tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, combo, functions
+from schedTest import tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx
 from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi, Uppaal
 from effsstsPlot import effsstsPlot
 import os
@@ -1313,7 +1311,7 @@ def switchTest(tasksets,ischeme,i):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon('icon.png'))
+    app.setWindowIcon(QtGui.QIcon('images/icon.png'))
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
