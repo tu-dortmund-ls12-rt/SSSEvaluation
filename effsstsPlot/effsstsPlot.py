@@ -58,7 +58,7 @@ def pickMarker(ischeme):
         "v","^","<",">","1","2","3",
         "4","8","s","p","P","*","h","H","+",
         "x",
-        "X","D","d","|","_","0"]
+        "X","D","d","|","_","."]
 
     if ischeme in schemes:
         index = schemes.index(ischeme)
@@ -75,9 +75,9 @@ def pickMarker(ischeme):
         elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('D=D'):
             marker = "_"
         elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('DnD'):
-            marker = "0"
-        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
             marker = "."
+        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
+            marker = ","
         else:
             marker = "o"
     return marker
