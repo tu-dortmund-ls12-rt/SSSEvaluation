@@ -12,7 +12,7 @@ This framework support the Self-Suspending Task models:
 2. The dynamic model, where the self-suspension behaviour is described by two upper bounds on the total worst-case execution time (WCET) and the total suspension time. It assumes that a task can suspend itself an infinity amount of times as long as the upper bound on the total suspension time is respected.
 3. The hybrid models, that provide different tradeoffs between the overly flexible dynamic model and the overly restrictive segmented model, assuming different levels of information in addition to the bounds on WCET and suspension time, i.e., at least the number of suspensions.#
 
-![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/framework_gui-2.jpg)
+![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/images/framework_gui.jpg)
 
 ## Framework Setup and Overview
 
@@ -148,14 +148,14 @@ Name | Paper | File name | Method name
     .
     ├── effsstsPlot	
     │   ├── Data			# Includes all output graphs
-    │   └── effsstsPlot.py		# Output graph generation
+    │   └── effsstsPlot.py	# Output graph generation
+    ├── images              # Framework icons and images	
     ├── schedTest			# Contains all schedulability tests
     │   ├── inputs			# Temporary Inputs for schedulability tests
     │   └── temp_models		# Temporary models for schedulability tests
-    ├── effssts.py			# Framework executable without GUI
-    ├── effsstsMain.py			# Framework executable with GUI
+    ├── effsstsMain.py		# Framework executable
     ├── gurobi.env			# Settings for Gurobi optimizer
-    ├── README.md
+    └── README.md
     
 ## How to integrate your algorithms?
 
