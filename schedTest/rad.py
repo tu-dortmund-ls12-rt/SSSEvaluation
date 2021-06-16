@@ -440,7 +440,75 @@ def NCSC(tasks):
 
 		if canLevel == 0:			
 			return False 
+	return True		
+
+def FRDGMF(task,HPTasks,D):
+	# For each execution segment, calculate the interfering workload from higher priority tasks
+	mi = len(task['Cseg'])
+	for j in range(mi):
+		# Current time point t
+		t = 0
+		# Workload at time point t
+		wl = task['Cseg'][j]
+		while t <= D and wl > t:
+			# Set t to current workload time
+			t = wl
+			# Set workload to c_i^j + interfering workload from higher priority tasks
+			wl = 0
+			for hptask in HPTasks:
+				wl += workload(hptask,mi,t,D)
+			wl += task['Cseg'][j]
+		# Not schedulable if workload greater than time or time greater than deadline
+		if wl > t or t > D:
+			return False
+	# Every computation segment schedulable
 	return True
+
+def workload(hptask,mi,t,D):
+
+	c_segs = hptask['Cseg']
+	s_segs = hptask['Sseg']
+	s_segs.append(hptask['period']-hptask['deadline'])
+	t_segs = [D+s_segs[i] for i in range(mi)]
+
+	# Determine maximum interference from higher priority tasks
+	max_sum_h = 0
+
+	# Test each segment as starting point
+	for h in range(mi):
+
+		# Determine upper bound l of execution-segments of hptask
+		t_sum = 0
+		# Determine sum of periods of hptask
+		l = 0
+		while t >= t_sum:
+			t_sum += t_segs[(h+l)%mi]
+			if t >= t_sum:
+				l += 1
+		
+		t_sum -= t_segs[(h+l)%mi]
+		
+		#Calculate sum of execution segments
+		l_temp = l
+		c_sum = 0
+		while l_temp > 0:
+			c_sum += c_segs[(h+l_temp-1)%mi]
+			l_temp -= 1
+
+		# Determine minimum interference from execution segment or remaining time
+		c_min = min(c_segs[(h+l)%mi], t-t_sum)
+
+		# Interference as sum of execution segments
+		eih = c_sum + c_min
+
+		# Replace maximum interference if necessary
+		if eih > max_sum_h:
+			max_sum_h = eih
+			
+	# Return maximum interference of higher priority task
+	return max_sum_h
+
+
 def Audsley(tasks,scheme):
 	#print(tasks)
 	#Optimal Priority Assignment
@@ -454,7 +522,7 @@ def Audsley(tasks,scheme):
 				continue	
 			itask=tasks[i]
 			
-			## get higher prioirty tasks
+			## get higher priority tasks
 			primeTasks=[]
 			for j in range(len(tasks)):
 				if priortyassigned[j]==0 and i != j:
@@ -468,6 +536,8 @@ def Audsley(tasks,scheme):
 			Tn=itask['period']
 			Cn=itask['execution']
 			Sn=itask['sslength']
+			#Set Deadline as (D_i-S_i)/m_i for FRDGMF-OPA
+			D=(itask['deadline']-itask['sslength'])/len(itask['Cseg'])
 			if scheme == "SUM":
 				if SUMTest(itask,primeTasks) == True:
 					priortyassigned[i]=1
@@ -492,6 +562,12 @@ def Audsley(tasks,scheme):
 					canLevel=1
 					tasks[i]['priority']=len(tasks)-plevel
 					break	
+			elif scheme == "FRDGMF-OPA":
+				if FRDGMF(itask,primeTasks,D)==True:
+					priortyassigned[i]=1
+					canLevel=1
+					tasks[i]['priority']=len(tasks)-plevel
+					break	
 			else:
 				sys.exit(2)
 
@@ -500,6 +576,7 @@ def Audsley(tasks,scheme):
 			return False 
 	
 	return True
+
 
 def scair_dm(tasks):
 	# shortest period first
@@ -523,3 +600,5 @@ def scair_dm(tasks):
 		if (segTest(Cn, Sn, Tn, primeTasks) or SUMTest(sortedTasks[i], primeTasks)) != True:
 			accept = False
 	return accept
+
+Audsley([],"")

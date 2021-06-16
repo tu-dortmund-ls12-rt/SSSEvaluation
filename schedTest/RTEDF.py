@@ -6,8 +6,7 @@ import time
 # Input: Task set
 # Output: Sorted task set by period
 def sort_by_period(tasks): 
-    newlist = sorted(tasks, key=lambda k: k['period'])
-    return newlist
+    return sorted(tasks, key=lambda k: k['period'])
 
 # Calls RTEDF
 # Input: Task set
@@ -101,9 +100,7 @@ def RTEDF_with_improv(tasks):
 
         Rtildek = [0]*(n) # Compute Rtilde_k(j) for all j
 
-
-        R = 0.0
-        R += Ck+Sk
+        R = Ck+Sk
         for i in ik:
             R += (math.floor(Tk/htasks[i]['period'])+1)*htasks[i]['execution']
         Rtildek[k] = R
@@ -121,7 +118,6 @@ def RTEDF_with_improv(tasks):
                     R += min(math.floor(htasks[k]['period']/htasks[i]['period']), math.ceil((htasks[k]['period'] - mjk)/htasks[i]['period']))*htasks[i]['execution']
             R += Ck + Sk + mjk
             Rtildek[j] = R
-
 
         Rtilde[k] = min(Rtildek)
         # print('Rtilde')

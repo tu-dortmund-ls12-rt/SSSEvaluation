@@ -230,41 +230,12 @@ def sssDT(Cn,Sn,Tn,HPTasks):
 				return True
 
 
-def LLB(n,U):
-	if U>n*(2**(1/n)-1):
-		return False
-	else:
-		return True
-def EDFB(U):
-	if U>1:
-		return False
-	else:
-		return True
-def SC_RM(tasks):
-	U=0
-	for itask in tasks:
-		U+=(itask['execution']+itask['sslength'])/itask['period']
-	n=len(tasks)
-	return LLB(n,U)
-def SC_EDF(tasks):
-	U=0
-	for itask in tasks:
-		U+=(itask['execution']+itask['sslength'])/itask['period']
-	
-	return EDFB(U)
 def dbfEDA(t,task):
 	D=(task['period']-task['sslength'])/2
 	if t<D:
 		return 0
 	else:
 		return task['Cseg'][0]+task['Cseg'][1]+(t-D)*(task['Cseg'][0]+task['Cseg'][1])/task['period']
-def dbfNC1(task,t):
-	return int((t+task['sslength'])/task['period'])*task['Cseg'][1]+int((t-(task['period']-task['sslength']))/task['period'])*task['Cseg'][0]
-def dbfNC2(task,t):
-	return int((t+(task['sslength']))/task['period'])*task['Cseg'][0]+int((t)/task['period'])*task['Cseg'][1]
-def dbfNC(t,task):
-	return max(dbfNC1(task,t),dbfNC2(task,t))
-	
 
 def dbf1(task,t,d):
 	return int((t+task['period']-d)/task['period'])*task['Cseg'][0]+int(t/task['period'])*task['Cseg'][1]
@@ -282,28 +253,7 @@ def dbf2FPTAS(task,t,d,k):
 		return (t+task['sslength'])*(task['Cseg'][0]+task['Cseg'][1])/task['period']+d*task['Cseg'][1]/task['period']
 	else:
 		return dbf2(task,t,d)
-def NC(tasks):
-	
-	for i in range(len(tasks)):
-		task=tasks[i]
-		D=(task['period']-task['sslength'])
 
-		dbf=0
-		
-		for jtask in tasks:
-			dbf+=dbfNC(D,jtask)
-		if dbf>D:
-			return False
-
-		D=(task['period'])
-		
-		dbf=0
-		HEPTasks=tasks[:i+1]
-		for jtask in tasks:
-			dbf+=dbfNC(D,jtask)
-		if dbf>D:
-			return False
-	return True
 def SEIFDA(task,HindexTasks,k,scheme):
 	if scheme=='minD':
 		if task['Cseg'][0]<task['Cseg'][1]:

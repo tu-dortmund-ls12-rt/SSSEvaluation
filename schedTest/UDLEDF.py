@@ -4,11 +4,10 @@
 import math # math.ceil(), math.floor()
 import itertools
 
-
 def UDLEDF(tasks):
 	return UDLEDF_improved(tasks)
 
-# Lemma 4 but with suspension oblivious if the test fails
+# Theorem 1 but with suspension oblivious if the test fails
 # Input: Task set
 # Output: Schedulability test under UDLEDF
 def UDLEDF_simple(tasks):
@@ -77,17 +76,17 @@ def UDLEDF_ret(tasks):  # returns the checkval without totalutil
 	return checkval  # <= 1
 
 
-# Improved utilization-based schedulability test from lemma 6
+# Improved utilization-based schedulability test from theorem 2
 # Input: Task set
 # Output: Schedulability test under UDLEDF
-def UDLEDF_improved(tasks): 
+def UDLEDF_improved(tasks):
 	E = []
 	v = []
 	totalutil = 0
 	for i in range(len(tasks)):
 		v.append(tasks[i]['sslength']/tasks[i]['period'])
 		totalutil += tasks[i]['execution'] / tasks[i]['period']
-
+	
 	# test susp obl
 	checkval = 0
 	checkval += totalutil
@@ -98,33 +97,31 @@ def UDLEDF_improved(tasks):
 
 
 	# test with subsets of T:
-	indiceslist = getsubindices(len(tasks))
-	for ind in indiceslist:
-		htasks = []
+	indicesList = [0] * len(tasks)
+	counter = 0
+	while counter < pow(2,len(tasks)):
+		htasks = [tasks[i] for i in range(len(indicesList)) if indicesList[i] == 1]
 		checkval = 0
 		# add total utilization
 		checkval += totalutil
 		# add the suspension ratios from the subset
-		for i in ind:
-			htasks.append(tasks[i])
 		checkval += UDLEDF_ret(htasks)
 		# add the suspension ratios from the original set - subset
-		for i in range(len(tasks)):
-			if i not in ind:
-				checkval += v[i]
+		checkval += sum([v[i] for i in range(len(indicesList)) if indicesList[i] == 0])
 		if checkval <=1:
 			return True
+		counter += 1
+		indicesList = nextIndicesList(indicesList)
 	return False
 
-
-# Returns all possible sets of an array of length n
-# Input: Array Length
-# Output: Array of subarray-indices
-def getsubindices(n):
-	indices = []
-	for i in range(n):
-		indices.append(i)
-	indiceslist = []
-	for i in range(1,n+1):
-		indiceslist.extend(list(itertools.combinations(indices, i)))
-	return indiceslist
+# Returns the next combination of the list
+# Input: Previous list of indices
+# Output: Next step of indices 
+def nextIndicesList(indicesList):
+    for i in range(0, len(indicesList)):
+        if indicesList[i]== 0:
+            indicesList[i]=1
+            break
+        else:
+            indicesList[i]=0
+    return indicesList
