@@ -27,7 +27,7 @@ git clone https://github.com/tu-dortmund-ls12-rt/SSSEvaluation.git
 Then install the following software:
 ```
 sudo apt-get install git python3
-pip install PyQt5 numpy mip gurobipy matplotlib
+pip install PyQt5 numpy mip gurobipy matplotlib scipy
 ```
 To activate the full feature set of the framework, you also need to install the Gurobi Optimizer, found at https://www.gurobi.com/. For research purposes you can obtain an academic license, which is used for some of the scheduling algorithms. You can request a license at https://www.gurobi.com/academia/academic-program-and-licenses/. The installation guide can be found at https://www.gurobi.com/documentation/9.1/quickstart_linux/software_installation_guid.html.
 
