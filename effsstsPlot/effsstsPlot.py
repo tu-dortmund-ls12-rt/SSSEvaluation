@@ -102,9 +102,9 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
     """
     # sstype= ['S','M','L','0.15']
     # ssofftypes = [2, 3, 5]
-    ssoprops = ['2', '5', '8']
+    #ssoprops = ['2', '5', '8']
 
-    figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    #figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
     # prefix="effsstsPlot/data/"
 
     # for three sub-plot, fixed
@@ -129,8 +129,6 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
         data = np.load(ifile)
         x = data[0][0::1]
         y = data[1][0::1]
-        us = int(math.ceil(ustart/ustep))
-        ue = int(math.floor(uend/ustep))
         print(x)
         print(y)
         ax.plot(x, y,
@@ -174,9 +172,9 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
     """
     # sstype= ['S','M','L','0.15']
     # ssofftypes = [2, 3, 5]
-    ssoprops = ['2', '5', '8']
+    #ssoprops = ['2', '5', '8']
 
-    figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    #figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
     # prefix="effsstsPlot/data/"
 
     # for three sub-plot, fixed
@@ -300,4 +298,4 @@ if __name__ == '__main__':
     testSchemes = ['EDA', 'NC', 'SCEDF', 'PASS-OPA']
     testSelfSuspendingType= ['S','M','L']
     testNumberofSegments = [2]
-    effsstsPlotAll(args[1], True, testSchemes, testSelfSuspendingType, testNumberofSegments, 1, 99, 5, 10)
+    effsstsPlotAll(args[1], True, testSchemes, testSelfSuspendingType, testNumberofSegments, 1, 99, 5, 10,10)

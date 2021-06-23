@@ -257,7 +257,6 @@ def SC_EDF(tasks):
 def RM(tasks):
 	
 	for i in range(len(tasks)):
-		result=0
 		HPTasks=tasks[:i]
 		#print(HPTasks)u
 		Cn=tasks[i]['execution']
@@ -299,8 +298,6 @@ def BURST_RM(tasks):
 	sortedTasksRM=sorted(tasks, key=lambda item:item['period']) 
 	#print(sortedTasksLM)
 	for i in range(len(sortedTasksRM)):
-		HPTasks=sortedTasksRM[:i]
-		#print(HPTasks)
 		Cn=sortedTasksRM[i]['execution']
 		Sn=sortedTasksRM[i]['sslength']
 		Tn=sortedTasksRM[i]['period']
@@ -318,8 +315,6 @@ def XM(tasks,scheme):
 		sys.exit(2)
 	#print(sortedTasksLM)
 	for i in range(len(sortedTasksLM)):
-		HPTasks=sortedTasksLM[:i]
-		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']
 		Tn=sortedTasksLM[i]['period']
@@ -333,9 +328,6 @@ def LM(tasks,blk=False):
 	sortedTasksLM=sorted(tasks,cmp=dm_cmp)
 	#print(sortedTasksLM)
 	for i in range(len(sortedTasksLM)):
-		result=0
-		HPTasks=sortedTasksLM[:i]
-		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']
 		Tn=sortedTasksLM[i]['period']
@@ -355,7 +347,7 @@ def LM(tasks,blk=False):
 def NC(tasks):
 	#Optimal Priority Assignment
 	priortyassigned=[0 for i in range(len(tasks))]
-	for plevel in range(len(tasks)): 
+	for _ in range(len(tasks)): 
 		canLevel=0
 		## check whether task i can be assigned with the priority level plevel
 		for i in range(len(tasks)):	
@@ -390,7 +382,7 @@ def NCSC(tasks):
 	#Optimal Priority Assignment
 	priortyassigned=[0 for i in range(len(tasks))]
 	numnctasks=0
-	for plevel in range(len(tasks)): 
+	for _ in range(len(tasks)): 
 		canLevel=0
 		
 		## check whether task i can be assigned with the priority level plevel
@@ -400,7 +392,7 @@ def NCSC(tasks):
 				if priortyassigned[i]==2:
 					continue	
 				itask=tasks[i]
-				canAssign=1	
+				#canAssign=1	
 				## get higher prioirty tasks
 				primeTasks=[]
 				for j in range(len(tasks)):
@@ -431,7 +423,7 @@ def NCSC(tasks):
 				Tn=itask['period']
 				Cn=itask['execution']
 				Sn=itask['sslength']
-				if sssDT(itask,primeTasks) == True:					
+				if sssDT(Cn,Sn,Tn,primeTasks) == True:					
 					priortyassigned[i]=2
 					canLevel=1
 					numnctasks-=1

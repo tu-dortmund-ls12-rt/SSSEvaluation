@@ -46,7 +46,7 @@ def ExpDist(limit,U_mean):
 		taskSet.append(uBkt)
 def UniDist(n,U_min,U_max):
 	taskSet=[]
-	for i in range(n-1):
+	for _ in range(n-1):
 		uBkt=random.uniform(U_min, U_max)
 		taskSet.append(uBkt)
 def CSet_generate(Pmin,numLog):

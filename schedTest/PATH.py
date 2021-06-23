@@ -1,6 +1,7 @@
 from __future__ import division
 import math
 from schedTest import functions
+import sys
 
 def dbfpath1(task,t,k):
 	
@@ -12,8 +13,7 @@ def dbfpath1(task,t,k):
 			continue
 		else:
 			if task['paths'][p]['Cseg'][0]>maxG:
-				maxG=task['paths'][p]['Cseg'][0]
-	maxd=0		
+				maxG=task['paths'][p]['Cseg'][0]	
 
 	if t>=k*task['period']:
 		return (t/task['period'])*task['execution']+maxG
