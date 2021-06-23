@@ -82,7 +82,7 @@ def compute_vec_lin_approx(tasks, index):
 # Output: Assignment vector
 def vec_dominate_eq2(tasks, index):
     vec_x = []
-    for idx in range(index):
+    for _ in range(index):
         vec_x.append(0)
     return vec_x
 

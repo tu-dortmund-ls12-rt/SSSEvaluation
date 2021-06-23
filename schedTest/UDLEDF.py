@@ -80,7 +80,7 @@ def UDLEDF_ret(tasks):  # returns the checkval without totalutil
 # Input: Task set
 # Output: Schedulability test under UDLEDF
 def UDLEDF_improved(tasks):
-	E = []
+	#E = []
 	v = []
 	totalutil = 0
 	for i in range(len(tasks)):

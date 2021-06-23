@@ -1056,15 +1056,9 @@ class Ui_MainWindow(object):
 
             if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
                 random.seed(gSeed)
-                # khchen original code
-                #y = np.zeros(int(100 / gUStep) + 1)
-                #for u in range(0, len(y), 1):
-
-                y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
-
                 for u in range(gUStart, gUEnd+gUStep, gUStep):
                     tasksets = []
-                    for i in range(0, gNumberOfTaskSets):
+                    for _ in range(0, gNumberOfTaskSets):
                         #percentageU = u * gUStep / 100
                         percentageU = u / 100
                         tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
@@ -1107,8 +1101,8 @@ class Ui_MainWindow(object):
 
         def schedulabilityTest(Tasksets_util):
             pool = Pool(gthread)
-            sspropotions = ['10']
-            periodlogs = ['2']
+            #sspropotions = ['10']
+            #periodlogs = ['2']
             for ischeme in gSchemes:
                 x = np.arange(gUStart, gUEnd+gUStep, gUStep)
                 #y = np.zeros(int(100 / gUStep) + 1)

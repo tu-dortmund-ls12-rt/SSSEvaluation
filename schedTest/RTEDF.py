@@ -28,7 +28,6 @@ def RTEDF_wo_improv(tasks):
                 Tk = htasks[k]['period']
                 Ti = htasks[i]['period']
                 Ck = htasks[k]['execution']
-                Ci = htasks[i]['execution']
                 Sk = htasks[k]['sslength']
 
                 if i<k:
