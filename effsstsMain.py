@@ -10,6 +10,7 @@ import os
 import datetime
 import pickle
 from multiprocessing import Pool
+from pathlib import Path
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -27,7 +28,6 @@ gNumberOfSegs = 2
 gSchemes = []
 gSLenMinValue = 0.01
 gSLenMaxValue = 0.1
-gNumberofruns = 1
 garwrap = []
 gthread = 1
 
@@ -40,9 +40,14 @@ class Ui_MainWindow(object):
         choice_plot = ['Tasks per Set', 'Number of Segments', 'Suspension Length']
 
 
-
+        VerticalSize = 1024
+        HorizontalSize = 660
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1024, 660)
+        MainWindow.resize(VerticalSize, HorizontalSize)
+        MainWindow.setMaximumWidth(VerticalSize)
+        MainWindow.setMaximumHeight(HorizontalSize)
+        MainWindow.setMinimumWidth(VerticalSize)
+        MainWindow.setMinimumHeight(HorizontalSize)
 
 
 
@@ -65,6 +70,16 @@ class Ui_MainWindow(object):
         self.combobox_input.setObjectName("combobox_input")
         self.combobox_input.addItems(choice_list)
         self.combobox_input.currentIndexChanged.connect(lambda: selectionchange(self.combobox_input))
+
+        self.loadtasks_title = QtWidgets.QLabel(self.groupBox_general)
+        self.loadtasks_title.setGeometry(QtCore.QRect(345, 32, 90, 25))
+        self.loadtasks_title.setObjectName("loadtasks_title")
+        self.loadtasks_title.hide()
+
+        self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_general)
+        self.tasksetdatapath.setGeometry(QtCore.QRect(425, 32, 365, 25))
+        self.tasksetdatapath.setObjectName("tasksetdatapath")
+        self.tasksetdatapath.hide()
 
         self.label_threadcount = QtWidgets.QLabel(self.groupBox_general)
         self.label_threadcount.setGeometry(QtCore.QRect(800, 32, 100, 25))
@@ -90,17 +105,7 @@ class Ui_MainWindow(object):
         self.seed.setGeometry(QtCore.QRect(845, 65, 145, 25))
         self.seed.setObjectName("seed")
 
-        self.loadtasks_title = QtWidgets.QLabel(self.groupBox_general)
-        self.loadtasks_title.setGeometry(QtCore.QRect(350, 32, 140, 25))
-        self.loadtasks_title.setObjectName("loadtasks_title")
-        self.loadtasks_title.hide()
 
-        self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_general)
-        self.tasksetdatapath.setGeometry(QtCore.QRect(490, 32, 500, 25))
-        self.tasksetdatapath.setObjectName("tasksetdatapath")
-        self.tasksetdatapath.hide()
-
-        
 
         self.groupbox_configurations = QtWidgets.QGroupBox(self.centralwidget)
         self.groupbox_configurations.setGeometry(QtCore.QRect(12, 122, 1000, 100))
@@ -730,31 +735,6 @@ class Ui_MainWindow(object):
         self.actionAbout_Framework.setObjectName("actionAbout_Framework")
 
 
-
-
-        def clickMethod(self):
-            global gPrefixdata
-            global gRuntest
-            global gPlotdata
-            global gNumberOfTaskSets
-            global gNumberOfTasksPerSet
-            global gUStart
-            global gUEnd
-            global gUStep
-            global gNumberOfSegs
-            global gSchemes
-            global gSLenMinValue
-            global gSLenMaxValue
-            global gPlotall
-            global gTaskChoice
-            global gmpCheck
-
-            del gSchemes[:]
-            setSchemes()
-
-            #print gSchemes
-
-
         def selectionchange(com_b):
             if com_b.currentText() == 'Load Tasksets':
                 self.loadtasks_title.show()
@@ -826,6 +806,28 @@ class Ui_MainWindow(object):
                         aslmin.show()
                         anums.hide()
                         anumt.hide()   
+
+        def clickMethod(self):
+            global gPrefixdata
+            global gRuntest
+            global gPlotdata
+            global gNumberOfTaskSets
+            global gNumberOfTasksPerSet
+            global gUStart
+            global gUEnd
+            global gUStep
+            global gNumberOfSegs
+            global gSchemes
+            global gSLenMinValue
+            global gSLenMaxValue
+            global gPlotall
+            global gTaskChoice
+            global gmpCheck
+
+            del gSchemes[:]
+            setSchemes()
+
+            #print gSchemes
 
         def clickexit(self):
             app.quit()
@@ -972,7 +974,6 @@ class Ui_MainWindow(object):
                 gSchemes.append('PATH-PBminD-' + str(self.pathpbmindddg.value()) + '-D=D')
             if self.pathpbminddnd.isChecked():
                 gSchemes.append('PATH-PBminD-' + str(self.pathpbminddndg.value()) + '-DnD')
-            #hteper
             if self.rss.isChecked():
                 gSchemes.append('RSS')
             if self.udledf.isChecked():
@@ -1053,19 +1054,17 @@ class Ui_MainWindow(object):
 
             tasksets_difutil = []
 
-            
-            random.seed(gSeed)
-
             if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
+                random.seed(gSeed)
                 # khchen original code
                 #y = np.zeros(int(100 / gUStep) + 1)
                 #for u in range(0, len(y), 1):
 
                 y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
 
-                for u in range(gUStart, gUEnd, gUStep):
+                for u in range(gUStart, gUEnd+gUStep, gUStep):
                     tasksets = []
-                    for i in range(0, gNumberOfTaskSets, 1):
+                    for i in range(0, gNumberOfTaskSets):
                         #percentageU = u * gUStep / 100
                         percentageU = u / 100
                         tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
@@ -1074,42 +1073,47 @@ class Ui_MainWindow(object):
                         tasksets.append(sortedTasks)
                     tasksets_difutil.append(tasksets)
                 if gTaskChoice == 'Generate and Save Tasksets':
-                    file_name = 'TspCon_'+ str(gNumberOfTaskSets) + '_TpTs_' \
-                                + str(gNumberOfTasksPerSet) + '_Utilst_' + str(gUStep) +\
-                                '_Minss_' + str(gSLenMinValue) + '_Maxss_' + \
-                                str(gSLenMaxValue) + '_Seg_'+str(gNumberOfSegs)+'_.pkl'
+                    file_name = 'Ts-'+ str(gNumberOfTaskSets) + '-Tn-' \
+                                + str(gNumberOfTasksPerSet) + '-Ust-' + str(gUStep) +\
+                                '-Ssl-' + str(gSLenMinValue) + '-' + \
+                                str(gSLenMaxValue) + '-Seg-'+str(gNumberOfSegs)+'-.pkl'
                     MainWindow.statusBar().showMessage('File saved as: ' + file_name)
-                    info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
-                    with open('./genTasksets/'+file_name, 'wb') as f:
+                    info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gUStart, gUEnd, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
+                    with open('./Tasksets/'+file_name, 'wb') as f:
                         pickle.dump([tasksets_difutil,info] , f)
             elif gTaskChoice == 'Load Tasksets':
                 # if len(gTasksetpath) != 0:
                 file_name = gTasksetpath
-                with open('./genTasksets/'+file_name, 'rb') as f:
+                with open('./Tasksets/'+file_name, 'rb') as f:
                      data = pickle.load(f)
                 tasksets_difutil = data[0]
                 info = data[1]
                 gNumberOfTaskSets = int(info[0])
                 gNumberOfTasksPerSet = int(info[1])
                 gUStep = int(info[2])
-                gSLenMinValue = float(info[3])
-                gSLenMaxValue = float(info[4])
-                gNumberOfSegs = int(info[5])
-                gSeed = info[6]
+                gUStart = int(info[3])
+                gUEnd = int(info[4])
+                gSLenMinValue = float(info[5])
+                gSLenMaxValue = float(info[6])
+                gNumberOfSegs = int(info[7])
+                gSeed = info[8]
+
+                
+            print(tasksets_difutil)
+            random.seed(gSeed)
             return tasksets_difutil
 
 
 
         def schedulabilityTest(Tasksets_util):
             pool = Pool(gthread)
-
             sspropotions = ['10']
             periodlogs = ['2']
             for ischeme in gSchemes:
-                x = np.arange(gUStart, gUEnd+1, gUStep)
+                x = np.arange(gUStart, gUEnd+gUStep, gUStep)
                 #y = np.zeros(int(100 / gUStep) + 1)
                 print(x)
-                y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
+                y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
                 print(y)
                 ifskip = False
                 # print("Hello")
@@ -1157,12 +1161,12 @@ class Ui_MainWindow(object):
         self.groupBox_general.setTitle(_translate("MainWindow", "General"))
         self.prefixdatapath.setText(_translate("MainWindow", "effsstsPlot/Data"))
         self.threadcount.setText(_translate("MainWindow", "1"))
-        self.tasksetdatapath.setText(_translate("MainWindow", "TspCon_100_TpTs_10_Utilst_5_Minss_0.01_Maxss_0.1_Seg_2_.pkl"))
+        self.tasksetdatapath.setText(_translate("MainWindow", "Ts-100-Tn-10-Ust-5-Ssl-0.01-0.1-Seg-2-.pkl"))
         self.runtests.setText(_translate("MainWindow", "Run Tests"))
         self.plotdata.setText(_translate("MainWindow", "Plot selected Tests"))
         self.plotall.setText(_translate("MainWindow", "Combine selected Tests"))
         self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
-        self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
+        self.loadtasks_title.setText(_translate("MainWindow", "File Name:"))
         self.label_threadcount.setText(_translate("MainWindow", "Threadcount:"))
         self.label_seed.setText(_translate("MainWindow", "Seed:"))
         self.groupbox_configurations.setTitle(_translate("MainWindow", "Configurations"))

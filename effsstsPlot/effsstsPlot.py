@@ -133,8 +133,6 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
         ue = int(math.floor(uend/ustep))
         print(x)
         print(y)
-        x=x[us:ue+1]
-        y=y[us:ue+1]
         ax.plot(x, y,
                 '-',
                 color=pickColor(ischeme),
