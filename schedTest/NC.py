@@ -5,7 +5,6 @@ def dbfNC2(task,t):
 def dbfNC(t,task):
 	return max(dbfNC1(task,t),dbfNC2(task,t))
 def NC(tasks):
-	
 	for i in range(len(tasks)):
 		task=tasks[i]
 		D=(task['period']-task['sslength'])
