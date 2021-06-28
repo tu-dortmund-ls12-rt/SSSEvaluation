@@ -61,6 +61,14 @@ You need to prepare a csv-file containing all task sets for all utilization valu
 
 After generating your serialized file, you can select the **Load Taskset** option in the **General** tab of the framework and enter the name of the saved task set. After that you can select any number of schedulability tests to run and evaluate.
 
+### How to integrate the framework into your code
+
+You can integrate the evaluation functionality of this framework into your code. In order to do so, you need to import the **effsstsMain** package which provides three functions to use:
+
+1. evaluate_single_taskset_single_scheme: Takes a single taskset as a dictionary and a single scheme and returns the schedulability result.
+2. evaluate_single_taskset_multiple_schemes: Takes a single taskset as a dictionary and a list of schemes and returns the schedulability result for each scheme.
+3. evaluate_multiple_tasksets_multiple_schemes: Takes a list of tasksets as dictionaries and a list of schemes and returns the schedulability result for each taskset under each schedulability test.
+
 ## Implementation Details
 
 To evaluate the schedulability tests, the framework implements a task model, that includes all the information needed for the analysis. Each task is implemented as a dictionary in Python, which includes its period ['period'], execution time ['execution'], utilization ['utilization'], deadline ['deadline'], suspension length ['sslength'], the set of computation segments ['Cseg'] and suspension segments ['Sseg'].
