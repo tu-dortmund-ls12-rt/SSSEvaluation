@@ -51,6 +51,16 @@ After that, the **Plots** tab lets you specify how to plot the schedulability te
 
 After running the schedulability analysis, you can find the results in the **effsstsPlot/Data** folder.
 
+### How to load and evaluate your own task sets
+
+You can load individually created task sets into the framework to evaluate them with the implemented schedulability tests. 
+
+To load task sets, you need to create a serialized file of your task sets and the parameters that were used to create them. In order to make the process easier, you can use the **SaveTaskSet** script in **Tasksets** folder, which will guide you through the process of saving your task set in a serialized format. 
+
+You need to prepare a csv-file containing all task sets for all utilization values you want to evaluate. You can find an example file and the description for it in the **Tasksets/input** folder. Copy your csv-file into the **Tasksets/input** folder and execute the script. The output file should be in the **Tasksets/output** folder.
+
+After generating your serialized file, you can select the **Load Taskset** option in the **General** tab of the framework and enter the name of the saved task set. After that you can select any number of schedulability tests to run and evaluate.
+
 ## Implementation Details
 
 To evaluate the schedulability tests, the framework implements a task model, that includes all the information needed for the analysis. Each task is implemented as a dictionary in Python, which includes its period ['period'], execution time ['execution'], utilization ['utilization'], deadline ['deadline'], suspension length ['sslength'], the set of computation segments ['Cseg'] and suspension segments ['Sseg'].
@@ -62,10 +72,6 @@ After that, the hybrid model is generated. For each task, multiple paths are gen
 Then the segmented model is generated, which creates a worst-case path regarding each segment individually. The computation and suspension times of each segment are upper bounds of the corresponding segments of each path. The segments are saved in the tasks ['Cseg'] and ['Sseg'] keys.
 
 For the dynamic model, the total execution time ['execution'] and total suspension time ['sslength'] of each task are updated in the final step. For each path, the total computation and suspension time is computed and the maximum value of each is saved.
-
-## How to load and evaluate your own task sets
-
-You can load individually created task sets into the framework to evaluate them with the implemented schedulability tests. To load task sets, you need to create a serialized file of your task sets and the parameters that were used to create them. In order to make the process easier, you can use the SaveTaskSet script in Taskset folder, which will guide you through the process of saving your task set in a serialized format. You need to prepare a csv-file containing all task sets for all utilization values you want to evaluate. You can find an example for a valid csv-file in the Taskset folder. After generating your serialized file, you can select the **Load Taskset** option in the **General** tab of the framework and enter the name of the saved task set. After that you can select any number of schedulability tests to run and evaluate.
 
 ## Schedulability Tests
 
