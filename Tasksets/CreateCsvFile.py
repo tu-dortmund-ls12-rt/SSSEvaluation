@@ -11,7 +11,7 @@ input_file = [[[
     [{'period': 201, 'execution': 8, 'deadline': 201, 'utilization': 0.047963404256682454, 'sslength': 17, 'minSr': 1, 'paths': [{'Cseg': [5, 2], 'Sseg': [17], 'deadline': [-1, -1]}, {'Cseg': [4, 4], 'Sseg': [16], 'deadline': [-1, -1]}], 'Cseg': [5, 4], 'Sseg': [17]}, 
     {'period': 6948, 'execution': 708, 'deadline': 6948, 'utilization': 0.10203659574331754, 'sslength': 345, 'minSr': 1, 'paths': [{'Cseg': [278, 430], 'Sseg': [345], 'deadline': [-1, -1]}, {'Cseg': [91, 488], 'Sseg': [331], 'deadline': [-1, -1]}], 'Cseg': [278, 488], 'Sseg': [345]}]]]
 
-with open(str(pathlib.Path(__file__).parent.absolute())+'/'+'example_csv_task_set.csv', 'w') as f:
+with open(str(pathlib.Path(__file__).parent.absolute())+'/input/example_csv_task_set.csv', 'w') as f:
     w = csv.DictWriter(f, input_file[0][0][0].keys())
     w.writeheader()
     for utilizations in input_file:

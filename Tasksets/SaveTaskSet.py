@@ -7,12 +7,12 @@ print("Please enter number of task sets (Ts)")
 gNumberOfTaskSets = int(input())
 print("Please enter number of tasks per task sets (Tn)")
 gNumberOfTasksPerSet = int(input())
-print("Please enter utilization step value (gUStep)")
-gUStep = int(input())
 print("Please enter utilization start value (gUStart)")
 gUStart = int(input())
 print("Please enter utilization end value (gUEnd)")
 gUEnd = int(input())
+print("Please enter utilization step value (gUStep)")
+gUStep = int(input())
 print("Please enter minimum suspension length")
 gSLenMinValue = float(input())
 print("Please enter maximum suspension length")
@@ -21,9 +21,8 @@ print("Please enter number of computation segments")
 gNumberOfSegs = int(input())
 print("Please enter seed for randomizer")
 gSeed = int(input())
-print("Please enter the file name (including .csv) containing the task information. The data array needs to be of dimensions ((Tn) * (int((gUEnd-gUStart) / gUStep)+1+Ts))")
+print("Please enter the file name from the input folder (including .csv) containing the task information. The data array needs to be of dimensions ((Tn) * (int((gUEnd-gUStart) / gUStep)+1+Ts))")
 input_file_name = input()
-
 
 info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gUStart, gUEnd, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
 
@@ -34,7 +33,7 @@ file_name = 'Ts-'+ str(gNumberOfTaskSets) + '-Tn-' \
 
 tasksets_utils = []
 
-with open(str(pathlib.Path(__file__).parent.absolute())+'/'+input_file_name, 'r') as file:
+with open(str(pathlib.Path(__file__).parent.absolute())+'/input/'+input_file_name, 'r') as file:
     reader = csv.DictReader(file)
     for utilization in range(gUStart,gUEnd+1,gUStep):
         utilization = []
@@ -55,7 +54,8 @@ with open(str(pathlib.Path(__file__).parent.absolute())+'/'+input_file_name, 'r'
             utilization.append(taskset)
         tasksets_utils.append(utilization)
 
-
-
-with open(str(pathlib.Path(__file__).parent.absolute())+'/'+file_name, 'wb') as f:
+with open(str(pathlib.Path(__file__).parent.absolute())+'/output/'+file_name, 'wb') as f:
     pickle.dump([tasksets_utils,info] , f)
+
+def test():
+    print("test")

@@ -1040,115 +1040,6 @@ class Ui_MainWindow(object):
 
             #MainWindow.statusBar().showMessage('Ready')
 
-
-        def tasksetConfiguration():
-            global gNumberOfTaskSets
-            global gNumberOfTasksPerSet
-            global gUStep
-            global gUStart
-            global gUEnd
-            global gSLenMaxValue
-            global gSLenMinValue
-            global gNumberOfSegs
-            global gSeed
-
-            tasksets_difutil = []
-
-            if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
-                random.seed(gSeed)
-                for u in range(gUStart, gUEnd+gUStep, gUStep):
-                    tasksets = []
-                    for _ in range(0, gNumberOfTaskSets):
-                        #percentageU = u * gUStep / 100
-                        percentageU = u / 100
-                        tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
-                                                        seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
-                        sortedTasks = sorted(tasks, key=lambda item: item['period'])
-                        tasksets.append(sortedTasks)
-                    tasksets_difutil.append(tasksets)
-                if gTaskChoice == 'Generate and Save Tasksets':
-                    file_name = 'Ts-'+ str(gNumberOfTaskSets) + '-Tn-' \
-                                + str(gNumberOfTasksPerSet) + '-Ust-' + str(gUStep) +\
-                                '-Ssl-' + str(gSLenMinValue) + '-' + \
-                                str(gSLenMaxValue) + '-Seg-'+str(gNumberOfSegs)+'-.pkl'
-                    MainWindow.statusBar().showMessage('File saved as: ' + file_name)
-                    info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gUStart, gUEnd, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
-                    with open('./Tasksets/'+file_name, 'wb') as f:
-                        pickle.dump([tasksets_difutil,info] , f)
-            elif gTaskChoice == 'Load Tasksets':
-                # if len(gTasksetpath) != 0:
-                file_name = gTasksetpath
-                with open('./Tasksets/'+file_name, 'rb') as f:
-                     data = pickle.load(f)
-                tasksets_difutil = data[0]
-                info = data[1]
-                gNumberOfTaskSets = int(info[0])
-                gNumberOfTasksPerSet = int(info[1])
-                gUStep = int(info[2])
-                gUStart = int(info[3])
-                gUEnd = int(info[4])
-                gSLenMinValue = float(info[5])
-                gSLenMaxValue = float(info[6])
-                gNumberOfSegs = int(info[7])
-                gSeed = info[8]
-
-                
-            print(tasksets_difutil)
-            random.seed(gSeed)
-            return tasksets_difutil
-
-
-
-        def schedulabilityTest(Tasksets_util):
-            pool = Pool(gthread)
-            #sspropotions = ['10']
-            #periodlogs = ['2']
-            for ischeme in gSchemes:
-                x = np.arange(gUStart, gUEnd+gUStep, gUStep)
-                #y = np.zeros(int(100 / gUStep) + 1)
-                print(x)
-                y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
-                print(y)
-                ifskip = False
-                # print("Hello")
-                # print(Tasksets_util)
-                # print("Hello")
-                for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
-                    print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gUStart + u * gUStep, "SSLength:", str(
-                        gSLenMinValue), " - ", str(gSLenMaxValue), "Num. of segments:", gNumberOfSegs)
-                    if u == 0:
-                        y[u] = 1
-                        continue
-                    if u * gUStep == 100:
-                        y[u] = 0
-                        continue
-                    if ifskip == True:
-                        print("acceptanceRatio:", 0)
-                        y[u] = 0
-                        continue
-                    
-                    numfail = 0
-                    splitTasks = np.array_split(tasksets,gthread)
-                    results = [pool.apply_async(switchTest, args=(splitTasks[i],ischeme,i,)) for i in range(len(splitTasks))]
-                    output = [p.get() for p in results]
-                    numfail = sum(output)
-
-                    acceptanceRatio = 1 - (numfail / gNumberOfTaskSets)
-                    print("acceptanceRatio:", acceptanceRatio)
-                    y[u] = acceptanceRatio
-                    if acceptanceRatio == 0:
-                        ifskip = True
-
-                plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gNumberOfSegs) + '/'
-                plotfile = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(
-                    gNumberOfSegs) + '/' + ischeme + str(gNumberOfTasksPerSet)
-
-                if not os.path.exists(plotPath):
-                    os.makedirs(plotPath)
-                np.save(plotfile, np.array([x, y]))
-       
-
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Evaluation Framework for Self-Suspending Task Systems"))
@@ -1179,7 +1070,7 @@ class Ui_MainWindow(object):
         self.groupBox_6.setTitle(_translate("MainWindow", "General"))
         self.nc.setText(_translate("MainWindow", "NC"))
         self.srsr.setText(_translate("MainWindow", "SRSR"))
-        self.biondi.setText(_translate("MainWindow", "Biondi RTSS 16"))
+        self.biondi.setText(_translate("MainWindow", "BIONDI"))
         self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
         self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
         self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
@@ -1194,16 +1085,16 @@ class Ui_MainWindow(object):
         self.rtedf.setText(_translate("MainWindow", "RTEDF"))
         self.udledf.setText(_translate("MainWindow", "UDLEDF"))
         self.wlaedf.setText(_translate("MainWindow", "WLAEDF"))
-        self.uniframework.setText(_translate("MainWindow", "UniFramework"))
-        self.suspobl.setText(_translate("MainWindow", "SuspObl"))
-        self.suspjit.setText(_translate("MainWindow", "SuspJit"))
-        self.suspblock.setText(_translate("MainWindow", "SuspBlock"))
+        self.uniframework.setText(_translate("MainWindow", "UNIFRAMEWORK"))
+        self.suspobl.setText(_translate("MainWindow", "SUSPOBL"))
+        self.suspjit.setText(_translate("MainWindow", "SUSPJIT"))
+        self.suspblock.setText(_translate("MainWindow", "SUSPBLOCK"))
         self.uppaal.setText(_translate("MainWindow", "UPPAAL"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
         self.frdgmfopa.setText(_translate("MainWindow", "FRDGMF-OPA"))
         self.groupBox_5.setTitle(_translate("MainWindow", "FRD Segmented"))
-        self.proportional.setText(_translate("MainWindow", "Proportional"))
+        self.proportional.setText(_translate("MainWindow", "PROPORTIONAL"))
         self.seifdamind.setText(_translate("MainWindow", "SEIFDA-minD-"))
         self.seifdamaxd.setText(_translate("MainWindow", "SEIFDA-maxD-"))
         self.seifdapbmind.setText(_translate("MainWindow", "SEIFDA-PBminD-"))
@@ -1225,6 +1116,106 @@ class Ui_MainWindow(object):
         self.actionFramework_Help.setText(_translate("MainWindow", "Framework Help"))
         self.actionAbout_Framework.setText(_translate("MainWindow", "About Framework"))
 
+def tasksetConfiguration():
+    global gNumberOfTaskSets
+    global gNumberOfTasksPerSet
+    global gUStep
+    global gUStart
+    global gUEnd
+    global gSLenMaxValue
+    global gSLenMinValue
+    global gNumberOfSegs
+    global gSeed
+
+    tasksets_difutil = []
+
+    if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
+        random.seed(gSeed)
+        for u in range(gUStart, gUEnd+gUStep, gUStep):
+            tasksets = []
+            for _ in range(0, gNumberOfTaskSets):
+                #percentageU = u * gUStep / 100
+                percentageU = u / 100
+                tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
+                                                seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
+                sortedTasks = sorted(tasks, key=lambda item: item['period'])
+                tasksets.append(sortedTasks)
+            tasksets_difutil.append(tasksets)
+        if gTaskChoice == 'Generate and Save Tasksets':
+            file_name = 'Ts-'+ str(gNumberOfTaskSets) + '-Tn-' \
+                        + str(gNumberOfTasksPerSet) + '-Ust-' + str(gUStep) +\
+                        '-Ssl-' + str(gSLenMinValue) + '-' + \
+                        str(gSLenMaxValue) + '-Seg-'+str(gNumberOfSegs)+'-.pkl'
+            MainWindow.statusBar().showMessage('File saved as: ' + file_name)
+            info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gUStart, gUEnd, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
+            with open('./Tasksets/'+file_name, 'wb') as f:
+                pickle.dump([tasksets_difutil,info] , f)
+    elif gTaskChoice == 'Load Tasksets':
+        # if len(gTasksetpath) != 0:
+        file_name = gTasksetpath
+        with open('./Tasksets/output/'+file_name, 'rb') as f:
+                data = pickle.load(f)
+        tasksets_difutil = data[0]
+        info = data[1]
+        gNumberOfTaskSets = int(info[0])
+        gNumberOfTasksPerSet = int(info[1])
+        gUStep = int(info[2])
+        gUStart = int(info[3])
+        gUEnd = int(info[4])
+        gSLenMinValue = float(info[5])
+        gSLenMaxValue = float(info[6])
+        gNumberOfSegs = int(info[7])
+        gSeed = info[8]
+    random.seed(gSeed)
+    return tasksets_difutil
+
+def schedulabilityTest(Tasksets_util):
+    pool = Pool(gthread)
+    #sspropotions = ['10']
+    #periodlogs = ['2']
+    for ischeme in gSchemes:
+        x = np.arange(gUStart, gUEnd+gUStep, gUStep)
+        #y = np.zeros(int(100 / gUStep) + 1)
+        print(x)
+        y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
+        print(y)
+        ifskip = False
+        # print("Hello")
+        # print(Tasksets_util)
+        # print("Hello")
+        for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
+            print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gUStart + u * gUStep, "SSLength:", str(
+                gSLenMinValue), " - ", str(gSLenMaxValue), "Num. of segments:", gNumberOfSegs)
+            if u == 0:
+                y[u] = 1
+                continue
+            if u * gUStep == 100:
+                y[u] = 0
+                continue
+            if ifskip == True:
+                print("acceptanceRatio:", 0)
+                y[u] = 0
+                continue
+            
+            numfail = 0
+            splitTasks = np.array_split(tasksets,gthread)
+            results = [pool.apply_async(switchTest, args=(splitTasks[i],ischeme,i,)) for i in range(len(splitTasks))]
+            output = [p.get() for p in results]
+            numfail = sum(output)
+
+            acceptanceRatio = 1 - (numfail / gNumberOfTaskSets)
+            print("acceptanceRatio:", acceptanceRatio)
+            y[u] = acceptanceRatio
+            if acceptanceRatio == 0:
+                ifskip = True
+
+        plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gNumberOfSegs) + '/'
+        plotfile = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(
+            gNumberOfSegs) + '/' + ischeme + str(gNumberOfTasksPerSet)
+
+        if not os.path.exists(plotPath):
+            os.makedirs(plotPath)
+        np.save(plotfile, np.array([x, y]))
  
 def switchTest(tasksets,ischeme,i):
     counter = 0
@@ -1305,6 +1296,15 @@ def switchTest(tasksets,ischeme,i):
             assert ischeme, 'not vaild ischeme'
     return counter
 
+def evaluate_tasksets(tasksets, ischemes):
+    result = [[(1-switchTest([taskset],ischeme,0)) for ischeme in ischemes] for taskset in tasksets]
+    #print(result)
+    return result
+
+def evaluate_taskset(taskset, ischemes):
+    result = [(1-switchTest([taskset],ischeme,0)) for ischeme in ischemes]
+    #print(result)
+    return result
 
 if __name__ == "__main__":
     import sys
