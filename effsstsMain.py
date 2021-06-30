@@ -793,7 +793,7 @@ class Ui_MainWindow(object):
             del gSchemes[:]
             setSchemes()
 
-            #print gSchemes
+            #print(gSchemes)
 
         def clickexit(self):
             app.quit()
@@ -917,7 +917,7 @@ class Ui_MainWindow(object):
                 else:
                     gSchemes.append('NC')
             if self.biondi.isChecked():
-                gSchemes.append('Biondi')
+                gSchemes.append('BIONDI')
             if self.passopa.isChecked():
                 gSchemes.append('PASS-OPA')
             if self.scedf.isChecked():
@@ -931,15 +931,13 @@ class Ui_MainWindow(object):
             if self.frdgmfopa.isChecked():
                 gSchemes.append('FRDGMF-OPA')
             if self.pathminddd.isChecked():
-                gSchemes.append(
-                    'PATH-minD-' + str(self.pathmindddg.value()) + '-D=D')
+                gSchemes.append('Oblivious-IUB-' + str(self.pathmindddg.value()))
             if self.pathminddnd.isChecked():
-                gSchemes.append(
-                    'PATH-minD-' + str(self.pathminddndg.value()) + '-DnD')
+                gSchemes.append('Clairvoyant-SSSD-' + str(self.pathminddndg.value()))
             if self.pathpbminddd.isChecked():
-                gSchemes.append('PATH-PBminD-' + str(self.pathpbmindddg.value()) + '-D=D')
+                gSchemes.append('Oblivious-MP-' + str(self.pathpbmindddg.value()))
             if self.pathpbminddnd.isChecked():
-                gSchemes.append('PATH-PBminD-' + str(self.pathpbminddndg.value()) + '-DnD')
+                gSchemes.append('Clairvoyant-PDAB-' + str(self.pathpbminddndg.value()))
             if self.rss.isChecked():
                 gSchemes.append('RSS')
             if self.udledf.isChecked():
@@ -971,7 +969,6 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('SRSR')
-
             if gRuntest:
                 #khchen
                 if len(gSchemes) != 0:
@@ -1033,17 +1030,17 @@ class Ui_MainWindow(object):
         self.exit.setText(_translate("MainWindow", "Exit"))
         self.groupbox_schedulability_tests.setTitle(_translate("MainWindow", "Schedulability tests"))
         self.groupbox_plots.setTitle(_translate("MainWindow", "Plots"))
-        self.gmfpa.setText(_translate("MainWindow", "GMF-PA"))
+        self.gmfpa.setText(_translate("MainWindow", "GMFPA-"))
         self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
         self.proportional.setText(_translate("MainWindow", "PROPORTIONAL"))
         self.seifdamind.setText(_translate("MainWindow", "SEIFDA-minD-"))
         self.seifdamaxd.setText(_translate("MainWindow", "SEIFDA-maxD-"))
         self.seifdapbmind.setText(_translate("MainWindow", "SEIFDA-PBminD-"))
         self.eda.setText(_translate("MainWindow", "EDA"))
-        self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
-        self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
-        self.pathpbminddd.setText(_translate("MainWindow", "Oblivious-MP"))
-        self.pathpbminddnd.setText(_translate("MainWindow", "Clairvoyant-PDAB"))
+        self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB-"))
+        self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD-"))
+        self.pathpbminddd.setText(_translate("MainWindow", "Oblivious-MP-"))
+        self.pathpbminddnd.setText(_translate("MainWindow", "Clairvoyant-PDAB-"))
         self.srsr.setText(_translate("MainWindow", "SRSR"))
         self.biondi.setText(_translate("MainWindow", "BIONDI"))
         self.scedf.setText(_translate("MainWindow", "SCEDF"))
@@ -1109,12 +1106,12 @@ def tasksetConfiguration():
                         str(gSLenMaxValue) + '-Seg-'+str(gNumberOfSegs)+'-.pkl'
             MainWindow.statusBar().showMessage('File saved as: ' + file_name)
             info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gUStart, gUEnd, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
-            with open('./Tasksets/'+file_name, 'wb') as f:
+            with open('./Tasksets/Saves/'+file_name, 'wb') as f:
                 pickle.dump([tasksets_difutil,info] , f)
     elif gTaskChoice == 'Load Tasksets':
         # if len(gTasksetpath) != 0:
         file_name = gTasksetpath
-        with open('./Tasksets/output/'+file_name, 'rb') as f:
+        with open('./Tasksets/Saves/'+file_name, 'rb') as f:
                 data = pickle.load(f)
         tasksets_difutil = data[0]
         info = data[1]
@@ -1137,7 +1134,6 @@ def schedulabilityTest(Tasksets_util):
     for ischeme in gSchemes:
         x = np.arange(gUStart, gUEnd+gUStep, gUStep)
         #y = np.zeros(int(100 / gUStep) + 1)
-        print(x)
         y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
         print(y)
         ifskip = False
@@ -1188,7 +1184,7 @@ def switchTest(tasksets,ischeme,i):
             if SCRM.SC_RM(tasks) == False:
                 counter += 1
         elif ischeme == 'PASS-OPA':
-            if Audsley.Audsley(tasks) == False:
+            if Audsley.Audsley(tasks,ischeme) == False:
                 counter += 1
         elif ischeme == 'SEIFDA-MILP':
             if mipx.mip(tasks) == False:
@@ -1196,7 +1192,7 @@ def switchTest(tasksets,ischeme,i):
         elif ischeme.split('-')[0] == 'SEIFDA':
             if SEIFDA.greedy(tasks, ischeme) == False:
                 counter += 1
-        elif ischeme.split('-')[0] == 'PATH':
+        elif ischeme.split('-')[0] == 'Oblivious' or ischeme.split('-')[0] == 'Clairvoyant'  :
             if PATH.PATH(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'EDA':
@@ -1215,16 +1211,16 @@ def switchTest(tasksets,ischeme,i):
             if rad.scair_dm(tasks) == False:
                 counter += 1
         elif ischeme == 'SCAIR-OPA':
-            if rad.Audsley(tasks, ischeme) == False:
+            if Audsley.Audsley(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'FRDGMF-OPA':
-            if rad.Audsley(tasks, ischeme) == False:
+            if Audsley.Audsley(tasks, ischeme) == False:
                 counter += 1
-        elif ischeme == 'Biondi':
+        elif ischeme == 'BIONDI':
             if Biondi.Biondi(tasks) == False:
                 counter += 1
         elif ischeme == 'RSS':
-            if RSS.SC2EDF(tasks) == False:
+            if RSS.RSS(tasks) == False:
                 counter += 1
         elif ischeme == 'UDLEDF':
             if UDLEDF.UDLEDF(tasks) == False:
@@ -1267,8 +1263,8 @@ def evaluate_single_taskset_multiple_schemes(taskset, ischemes):
     #print(result)
     return result
 
-def evaluate_single_taskset_single_scheme(taskset, ischemes):
-    result = True if switchTest([taskset],ischemes,0)==0 else False
+def evaluate_single_taskset_single_scheme(taskset, ischeme):
+    result = True if switchTest([taskset],ischeme,0)==0 else False
     #print(result)
     return result
 

@@ -38,10 +38,6 @@ for i in range(0, 1000, 1):
 axx.scatter(ax, ay, az, c='r', marker='1', )
 axx.view_init(20, 45)
 
-# print ax
-# print ay
-# print az
-
 axx.set_xlabel('X Label')
 axx.set_ylabel('Y Label')
 axx.set_zlabel('Z Label')
