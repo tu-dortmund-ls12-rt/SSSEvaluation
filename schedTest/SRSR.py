@@ -63,7 +63,7 @@ def contains(a, x):
 def RespTime(tasks, task, offset, NIup, syn, processedNI):
     # to avoid redundant calls
     if contains(processedNI, NIup) == True:
-        # print 'already processed ' + str(len(processedNI))
+        # print('already processed ' + str(len(processedNI)))
         return 0
     insort_left(processedNI, NIup)
 

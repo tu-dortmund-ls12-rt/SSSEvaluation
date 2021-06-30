@@ -53,11 +53,11 @@ After running the schedulability analysis, you can find the results in the **eff
 
 ### How to load and evaluate your own task sets
 
-You can load individually created task sets into the framework to evaluate them with the implemented schedulability tests. 
+You can load individually created task sets into the framework to evaluate them with the implemented schedulability tests.
 
-To load task sets, you need to create a serialized file of your task sets and the parameters that were used to create them. In order to make the process easier, you can use the **SaveTaskSet** script in **Tasksets** folder, which will guide you through the process of saving your task set in a serialized format. 
+To load task sets, you need to create a serialized file of your task sets and the parameters that were used to create them. In order to make the process easier, you can use the **SaveTaskSet** script in **Tasksets** folder, which will guide you through the process of saving your task set in a serialized format.
 
-You need to prepare a csv-file containing all task sets for all utilization values you want to evaluate. You can find an example file and the description for it in the **Tasksets/input** folder. Copy your csv-file into the **Tasksets/input** folder and execute the script. The output file should be in the **Tasksets/output** folder.
+You need to prepare a csv-file containing all task sets for all utilization values you want to evaluate. You can find an example file and the description for it in the **Tasksets/Input** folder. Copy your csv-file into the **Tasksets/Input** folder and execute the script. The output file should be in the **Tasksets/Saves** folder.
 
 After generating your serialized file, you can select the **Load Taskset** option in the **General** tab of the framework and enter the name of the saved task set. After that you can select any number of schedulability tests to run and evaluate.
 
@@ -65,9 +65,11 @@ After generating your serialized file, you can select the **Load Taskset** optio
 
 You can integrate the evaluation functionality of this framework into your code. In order to do so, you need to import the **effsstsMain** package which provides three functions to use:
 
-1. evaluate_single_taskset_single_scheme: Takes a single taskset as a dictionary and a single scheme and returns the schedulability result.
-2. evaluate_single_taskset_multiple_schemes: Takes a single taskset as a dictionary and a list of schemes and returns the schedulability result for each scheme.
-3. evaluate_multiple_tasksets_multiple_schemes: Takes a list of tasksets as dictionaries and a list of schemes and returns the schedulability result for each taskset under each schedulability test.
+1. evaluate_single_taskset_single_scheme: Takes a single task set as a dictionary and a single scheme and returns the schedulability result.
+2. evaluate_single_taskset_multiple_schemes: Takes a single task set as a dictionary and a list of schemes and returns the schedulability result for each scheme.
+3. evaluate_multiple_tasksets_multiple_schemes: Takes a list of task sets as dictionaries and a list of schemes and returns the schedulability result for each task set under each schedulability test.
+
+The names for the schedulability tests schemes are identical as the ones in the GUI. For some tests you additionally need to add the parameters at the end of the scheme. For float parameters, please use the decimal point as a separator.
 
 ## Implementation Details
 
@@ -101,13 +103,13 @@ SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
 
 Name | Paper | File name | Method name
 ---|---|---|---
-Biondi RTSS 16 | https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
+BIONDI | https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
 
 #### Arbitrary-Deadline
 
 Name | Paper | File name | Method name
 ---|---|---|---
-GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
+GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
 
 ### Dynamic Suspension
 
@@ -116,7 +118,7 @@ GMF-PA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py 
 Name | Paper | File name | Method name
 ---|---|---|---
 EDA | https://ieeexplore.ieee.org/document/7010483 | EDA.py | SEIFDA
-RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | SC2EDF
+RSS | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section V | RSS.py | RSS
 UDLEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | UDLEDF.py | UDLEDF_improved
 WLAEDF | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Section III | WLAEDF.py | WLAEDF
 RTEDF  | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9211430 Algorithm 1 | RTEDF.py | RTEDF
@@ -130,10 +132,10 @@ SCRM | https://link.springer.com/content/pdf/10.1007/s11241-018-9316-9.pdf Secti
 SCAIR-RM | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | scair_dm
 SCAIR-OPA | https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/2015-technical-report-multi-seg-Kevin.pdf | rad.py | Audsley
 PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | Audsley.py | Audsley
-Uniframework | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
-SuspObl | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspObl
-SuspJit | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
-SuspBlock | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
+UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
+SUSPOBL | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspObl
+SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
+SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
 
 #### Arbitrary-Deadline
 

@@ -10,7 +10,7 @@ def sort_by_ex_and_susp(tasks): # lowest ex + susp first
 # From: https://ieeexplore.ieee.org/abstract/document/9211430 Section V
 # Input: Task set
 # Output: Schedulability of the Task Set under RSS
-def SC2EDF(tasks):
+def RSS(tasks):
     htasks = sort_by_ex_and_susp(tasks)
 
     n = len(htasks)
