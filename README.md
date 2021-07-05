@@ -57,7 +57,7 @@ You can load individually created task sets into the framework to evaluate them 
 
 To load task sets, you need to create a serialized file of your task sets and the parameters that were used to create them. In order to make the process easier, you can use the **SaveTaskSet** script in **Tasksets** folder, which will guide you through the process of saving your task set in a serialized format.
 
-You need to prepare a csv-file containing all task sets for all utilization values you want to evaluate. You can find an example file and the description for it in the **Tasksets/Input** folder. Copy your csv-file into the **Tasksets/Input** folder and execute the script. The output file should be in the **Tasksets/Saves** folder.
+You need to prepare a csv-file containing all task sets for all utilization values you want to evaluate. You can find an example file and the description for it in the **tasksets/input** folder. Copy your csv-file into the **tasksets/input** folder and execute the script. The output file should be in the **tasksets/saves** folder.
 
 After generating your serialized file, you can select the **Load Taskset** option in the **General** tab of the framework and enter the name of the saved task set. After that you can select any number of schedulability tests to run and evaluate.
 
