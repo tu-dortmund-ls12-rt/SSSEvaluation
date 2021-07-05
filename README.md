@@ -171,3 +171,5 @@ You can extend the framework with other scheduling algorithms written in Python 
 
 ## Acknowledgements
 We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng, Morteza Mohaqeqi, Alessandro Biondi and Beyazit Yalcinkaya for providing the source code and additonal information of their work.
+
+This work has been supported by Deutsche Forschungsgemeinschaft (DFG), as part of Sus-Aware (Project No. 398602212), and by SFB 876.
