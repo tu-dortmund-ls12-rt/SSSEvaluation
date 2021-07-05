@@ -43,6 +43,7 @@ class Ui_MainWindow(object):
         VerticalSize = 1024
         HorizontalSize = 660
         MainWindow.setObjectName("MainWindow")
+        MainWindow.setWindowTitle("Evaluation Framework for Self-Suspending Task Systems")
         MainWindow.resize(VerticalSize, HorizontalSize)
         MainWindow.setMaximumWidth(VerticalSize)
         MainWindow.setMaximumHeight(HorizontalSize)
@@ -59,11 +60,13 @@ class Ui_MainWindow(object):
         self.groupBox_general = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_general.setGeometry(QtCore.QRect(12, 12, 1000, 100))
         self.groupBox_general.setObjectName("groupBox_general")
+        self.groupBox_general.setTitle("General")
 
         self.runtests = QtWidgets.QCheckBox(self.groupBox_general)
         self.runtests.setGeometry(QtCore.QRect(12, 32, 91, 25))
         self.runtests.setChecked(True)
         self.runtests.setObjectName("runtests")
+        self.runtests.setText("Run Tests")
 
         self.combobox_input = QtWidgets.QComboBox(self.groupBox_general)
         self.combobox_input.setGeometry(QtCore.QRect(110, 32, 225, 25))
@@ -74,32 +77,39 @@ class Ui_MainWindow(object):
         self.loadtasks_title = QtWidgets.QLabel(self.groupBox_general)
         self.loadtasks_title.setGeometry(QtCore.QRect(345, 32, 90, 25))
         self.loadtasks_title.setObjectName("loadtasks_title")
+        self.loadtasks_title.setText("File Name:")
         self.loadtasks_title.hide()
 
         self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_general)
         self.tasksetdatapath.setGeometry(QtCore.QRect(425, 32, 365, 25))
         self.tasksetdatapath.setObjectName("tasksetdatapath")
+        self.tasksetdatapath.setText("Ts-100-Tn-10-Ust-5-Ssl-0.01-0.1-Seg-2-.pkl")
         self.tasksetdatapath.hide()
 
         self.label_threadcount = QtWidgets.QLabel(self.groupBox_general)
         self.label_threadcount.setGeometry(QtCore.QRect(800, 32, 100, 25))
         self.label_threadcount.setObjectName("label_threadcount")
+        self.label_threadcount.setText("Threadcount:")
 
         self.threadcount = QtWidgets.QLineEdit(self.groupBox_general)
         self.threadcount.setGeometry(QtCore.QRect(895, 32, 95, 25))
         self.threadcount.setObjectName("threadcount")
+        self.threadcount.setText("1")
         
-        self.label_5 = QtWidgets.QLabel(self.groupBox_general)
-        self.label_5.setGeometry(QtCore.QRect(12, 65, 115, 25))
-        self.label_5.setObjectName("label_5")
+        self.label_prefixdatapath = QtWidgets.QLabel(self.groupBox_general)
+        self.label_prefixdatapath.setGeometry(QtCore.QRect(12, 65, 115, 25))
+        self.label_prefixdatapath.setObjectName("label_prefixdatapath")
+        self.label_prefixdatapath.setText("Prefix Data Path:")
 
         self.prefixdatapath = QtWidgets.QLineEdit(self.groupBox_general)
         self.prefixdatapath.setGeometry(QtCore.QRect(131, 65, 660, 25))
         self.prefixdatapath.setObjectName("prefixdatapath")
+        self.prefixdatapath.setText("effsstsPlot/Data")
 
         self.label_seed = QtWidgets.QLabel(self.groupBox_general)
         self.label_seed.setGeometry(QtCore.QRect(800, 65, 40, 25))
         self.label_seed.setObjectName("label_seed")
+        self.label_seed.setText("Seed:")
 
         self.seed = QtWidgets.QLineEdit(self.groupBox_general)
         self.seed.setGeometry(QtCore.QRect(845, 65, 145, 25))
@@ -110,10 +120,12 @@ class Ui_MainWindow(object):
         self.groupbox_configurations = QtWidgets.QGroupBox(self.centralwidget)
         self.groupbox_configurations.setGeometry(QtCore.QRect(12, 122, 1000, 100))
         self.groupbox_configurations.setObjectName("groupbox_configurations")
+        self.groupbox_configurations.setTitle("Configurations")
 
-        self.label_6 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_6.setGeometry(QtCore.QRect(12, 32, 198, 25))
-        self.label_6.setObjectName("label_6") # task sets per configuration
+        self.label_tasksetsperconfiguration = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_tasksetsperconfiguration.setGeometry(QtCore.QRect(12, 32, 198, 25))
+        self.label_tasksetsperconfiguration.setObjectName("label_tasksetsperconfiguration") # task sets per configuration
+        self.label_tasksetsperconfiguration.setText("Task Sets per Configuration:")
 
         self.tasksetsperconfig = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.tasksetsperconfig.setGeometry(QtCore.QRect(210, 32, 55, 25))
@@ -121,9 +133,10 @@ class Ui_MainWindow(object):
         self.tasksetsperconfig.setProperty("value", 100)
         self.tasksetsperconfig.setObjectName("tasksetsperconfig")
 
-        self.label_7 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_7.setGeometry(QtCore.QRect(12, 65, 198, 25))
-        self.label_7.setObjectName("label_7") # tasks per set
+        self.label_taskperset = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_taskperset.setGeometry(QtCore.QRect(12, 65, 198, 25))
+        self.label_taskperset.setObjectName("label_taskperset") # tasks per set
+        self.label_taskperset.setText("Tasks per Set:")
 
         self.tasksperset = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.tasksperset.setGeometry(QtCore.QRect(210, 65, 55, 25))
@@ -131,9 +144,10 @@ class Ui_MainWindow(object):
         self.tasksperset.setProperty("value", 10)
         self.tasksperset.setObjectName("tasksperset")
 
-        self.label_8 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_8.setGeometry(QtCore.QRect(275, 32, 155, 25))
-        self.label_8.setObjectName("label_8") # utilization start value
+        self.label_utilizationstartvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_utilizationstartvalue.setGeometry(QtCore.QRect(275, 32, 155, 25))
+        self.label_utilizationstartvalue.setObjectName("label_utilizationstartvalue") # utilization start value
+        self.label_utilizationstartvalue.setText("Utilization Start Value:")
 
         self.utilstart = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.utilstart.setGeometry(QtCore.QRect(435, 32, 55, 25))
@@ -141,9 +155,10 @@ class Ui_MainWindow(object):
         self.utilstart.setProperty("value", 0)
         self.utilstart.setObjectName("utilstart")
 
-        self.label_9 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_9.setGeometry(QtCore.QRect(275, 65, 155, 25))
-        self.label_9.setObjectName("label_9") # utilization end value
+        self.label_utilizationendvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_utilizationendvalue.setGeometry(QtCore.QRect(275, 65, 155, 25))
+        self.label_utilizationendvalue.setObjectName("label_utilizationendvalue") # utilization end value
+        self.label_utilizationendvalue.setText("Utilization End Value:")
 
         self.utilend = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.utilend.setGeometry(QtCore.QRect(435, 65, 55, 25)) #util end value
@@ -151,9 +166,10 @@ class Ui_MainWindow(object):
         self.utilend.setProperty("value", 100)
         self.utilend.setObjectName("utilend")
 
-        self.label_11 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_11.setGeometry(QtCore.QRect(500, 32, 160, 25))
-        self.label_11.setObjectName("label_11") # utilization step
+        self.label_utilizationstep = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_utilizationstep.setGeometry(QtCore.QRect(500, 32, 160, 25))
+        self.label_utilizationstep.setObjectName("label_utilizationstep") # utilization step
+        self.label_utilizationstep.setText("Utilization Step:")
         
         self.utilstep = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.utilstep.setGeometry(QtCore.QRect(660, 32, 55, 25))
@@ -161,9 +177,10 @@ class Ui_MainWindow(object):
         self.utilstep.setProperty("value", 5)
         self.utilstep.setObjectName("utilstep")
 
-        self.label_10 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_10.setGeometry(QtCore.QRect(500, 65, 155, 25))
-        self.label_10.setObjectName("label_10") # num_of_segment
+        self.label_numberofsegments = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_numberofsegments.setGeometry(QtCore.QRect(500, 65, 155, 25))
+        self.label_numberofsegments.setObjectName("label_numberofsegments") # num_of_segment
+        self.label_numberofsegments.setText("Number of Segments:")
 
         self.numberofsegs = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.numberofsegs.setGeometry(QtCore.QRect(660, 65, 55, 25))
@@ -171,9 +188,10 @@ class Ui_MainWindow(object):
         self.numberofsegs.setProperty("value", 2)
         self.numberofsegs.setObjectName("numberofsegs")
 
-        self.label = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label.setGeometry(QtCore.QRect(725, 32, 210, 25))
-        self.label.setObjectName("label") # suspension length min value
+        self.label_suspensionminvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_suspensionminvalue.setGeometry(QtCore.QRect(725, 32, 210, 25))
+        self.label_suspensionminvalue.setObjectName("label_suspensionminvalue") # suspension length min value
+        self.label_suspensionminvalue.setText("Suspension Length Min Value:")
         
         self.slengthminvalue = QtWidgets.QDoubleSpinBox(self.groupbox_configurations)
         self.slengthminvalue.setGeometry(QtCore.QRect(935, 32, 55, 25))
@@ -182,9 +200,10 @@ class Ui_MainWindow(object):
         self.slengthminvalue.setProperty("value", 0.01)
         self.slengthminvalue.setObjectName("slengthminvalue")
 
-        self.label_3 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_3.setGeometry(QtCore.QRect(725, 65, 210, 25)) 
-        self.label_3.setObjectName("label_3") # suspension length max
+        self.label_suspensionmaxvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_suspensionmaxvalue.setGeometry(QtCore.QRect(725, 65, 210, 25)) 
+        self.label_suspensionmaxvalue.setObjectName("label_suspensionmaxvalue") # suspension length max
+        self.label_suspensionmaxvalue.setText("Suspension Length Max Value:")
 
         self.slengthmaxvalue = QtWidgets.QDoubleSpinBox(self.groupbox_configurations)
         self.slengthmaxvalue.setGeometry(QtCore.QRect(935, 65, 55, 25))
@@ -198,6 +217,7 @@ class Ui_MainWindow(object):
         self.groupbox_schedulability_tests = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
         self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 232, 1000, 228))
         self.groupbox_schedulability_tests.setObjectName("groupbox_schedulability_tests")
+        self.groupbox_schedulability_tests.setTitle("Schedulability tests")
 
 
 
@@ -230,6 +250,7 @@ class Ui_MainWindow(object):
 
         self.seifdamind = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamind.setObjectName("seifdamind")
+        self.seifdamind.setText("SEIFDA-minD-")
         self.seifdamind.setToolTip('Shortest Execution Interval First Deadline Assignment - Picks the minimum x')
         self.formLayout_1.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.seifdamind)
 
@@ -241,6 +262,7 @@ class Ui_MainWindow(object):
 
         self.seifdamaxd = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamaxd.setObjectName("seifdamaxd")
+        self.seifdamaxd.setText("SEIFDA-maxD-")
         self.seifdamaxd.setToolTip('Shortest Execution Interval First Deadline Assignment - Picks the maximum x')
         self.formLayout_1.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.seifdamaxd)
 
@@ -252,6 +274,7 @@ class Ui_MainWindow(object):
 
         self.seifdapbmind = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdapbmind.setObjectName("seifdapbmind")
+        self.seifdapbmind.setText("SEIFDA-PBminD-")
         self.seifdapbmind.setToolTip('Shortest Execution Interval First Deadline Assignment - Proportionally-Bounded-Min x')
         self.formLayout_1.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.seifdapbmind)
         
@@ -263,21 +286,25 @@ class Ui_MainWindow(object):
 
         self.eda = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.eda.setObjectName("eda")
+        self.eda.setText("EDA")
         self.eda.setToolTip('Equal relative Deadline Assignment (EDA)') 
         self.formLayout_1.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.eda)
 
         self.proportional = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.proportional.setObjectName("proportional")
+        self.proportional.setText("PROPORTIONAL")
         self.proportional.setToolTip('Proportional relative deadline assignment')
         self.formLayout_1.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.proportional)
 
         self.seifdamip = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamip.setObjectName("seifdamip")
+        self.seifdamip.setText("SEIFDA-MILP")
         self.seifdamip.setToolTip('Shortest Execution Interval First Deadline Assignment - MILP')
         self.formLayout_1.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.seifdamip)
 
         self.gmfpa = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.gmfpa.setObjectName("gmfpa")
+        self.gmfpa.setText("GMFPA-")
         self.gmfpa.setToolTip('Generalized Multiframe Task Model with Parameter Adaptation - Set granularity of time steps')
         self.formLayout_1.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.gmfpa)
 
@@ -313,6 +340,7 @@ class Ui_MainWindow(object):
 
         self.pathminddd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathminddd.setObjectName("pathminddd")
+        self.pathminddd.setText("Oblivious-IUB-")
         self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.pathminddd)
 
         self.pathminddd.setToolTip('Pattern Oblivious Individual Upper Bounds')
@@ -324,6 +352,7 @@ class Ui_MainWindow(object):
 
         self.pathminddnd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathminddnd.setObjectName("pathminddnd")
+        self.pathminddnd.setText("Clairvoyant-SSSD-")
         self.pathminddnd.setToolTip('Pattern-Clairvoyant Shorter Segment Shorter Deadline')
         self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.pathminddnd)
 
@@ -335,6 +364,7 @@ class Ui_MainWindow(object):
 
         self.pathpbminddd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathpbminddd.setObjectName("pathpbminddd")
+        self.pathpbminddd.setText("Oblivious-MP-")
         self.pathpbminddd.setToolTip('Pattern-Oblivious Multiple Paths')
         self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.pathpbminddd)
 
@@ -346,6 +376,7 @@ class Ui_MainWindow(object):
 
         self.pathpbminddnd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathpbminddnd.setObjectName("pathpbminddnd")
+        self.pathpbminddnd.setText("Clairvoyant-PDAB-")
         self.pathpbminddnd.setToolTip('Pattern-Clairvoyant Proportional Deadline with A Bias')
         self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.pathpbminddnd)
 
@@ -380,36 +411,43 @@ class Ui_MainWindow(object):
 
         self.scedf = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.scedf.setObjectName("scedf")
+        self.scedf.setText("SCEDF")
         self.scedf.setToolTip('Suspension as Computation Earliest-Deadline-First (SCEDF)')
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.scedf)
 
         self.scrm = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.scrm.setObjectName("scrm")
+        self.scrm.setText("SCRM")
         self.scrm.setToolTip('Suspension as Computation Rate-Monotonic (SCRM)')
         self.formLayout_3.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.scrm)
         
         self.scairrm = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.scairrm.setObjectName("scairrm")
+        self.scairrm.setText("SCAIR-RM")
         self.scairrm.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Rate-Monotonic (RM)')
         self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.scairrm)
         
         self.scairopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.scairopa.setObjectName("scairopa")
+        self.scairopa.setText("SCAIR-OPA")
         self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
         self.formLayout_3.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
         
         self.frdgmfopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.frdgmfopa.setObjectName("frdgmfopa")
+        self.frdgmfopa.setText("FRDGMF-OPA")
         self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
         self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
         
         self.biondi = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.biondi.setObjectName("Biondi")
+        self.biondi.setText("BIONDI")
         self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
         self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.biondi)
         
         self.srsr = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.srsr.setObjectName("srsr")
+        self.srsr.setText("SRSR")
         self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
         self.formLayout_3.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.srsr)
 
@@ -438,51 +476,61 @@ class Ui_MainWindow(object):
 
         self.passopa = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.passopa.setObjectName("passopa")
+        self.passopa.setText("PASS-OPA")
         self.passopa.setToolTip('Priority Assignment algorithm for Self-Suspending Systems - Optimal-Priority Assignment')
         self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.passopa)
 
         self.rss = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.rss.setObjectName("rss")
+        self.rss.setText("RSS")
         self.rss.setToolTip('Utilization-based Schedulability Test')
         self.formLayout_4.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.rss)
         
         self.udledf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.udledf.setObjectName("udledf")
+        self.udledf.setText("UDLEDF")
         self.udledf.setToolTip('')
         self.formLayout_4.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.udledf)
         
         self.wlaedf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.wlaedf.setObjectName("wlaedf")
+        self.wlaedf.setText("WLAEDF")
         self.wlaedf.setToolTip('Workload-based Schedulability Test')
         self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.wlaedf)
         
         self.rtedf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.rtedf.setObjectName("rtedf")
+        self.rtedf.setText("RTEDF")
         self.rtedf.setToolTip('Response-Time-Based Schedulability Test')
         self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.rtedf)
         
         self.uniframework = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.uniframework.setObjectName("uniframework")
+        self.uniframework.setText("UNIFRAMEWORK")
         self.uniframework.setToolTip('Unified Response Time Analysis Framework')
         self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.uniframework)
         
         self.suspobl = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.suspobl.setObjectName("suspobl")
+        self.suspobl.setText("SUSPOBL")
         self.suspobl.setToolTip('Suspension Oblivious')
         self.formLayout_4.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.suspobl)
 
         self.suspjit = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.suspjit.setObjectName("suspjit")
+        self.suspjit.setText("SUSPJIT")
         self.suspjit.setToolTip('Schedulability with Suspension as Jitter')
         self.formLayout_4.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.suspjit)
 
         self.suspblock = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.suspblock.setObjectName("suspblock")
+        self.suspblock.setText("SUSPBLOCK")
         self.suspblock.setToolTip('Schedulability with Suspension as Blocking Time')
         self.formLayout_4.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.suspblock)
 
         self.uppaal = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.uppaal.setObjectName("uppaal")
+        self.uppaal.setText("UPPAAL")
         self.uppaal.setToolTip('Exact Schedulability Test for Non-Preemptive Self-Suspending Real-Time Tasks with UPPAAL model checker')
         self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.uppaal)
 
@@ -511,6 +559,7 @@ class Ui_MainWindow(object):
 
         self.nc = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_5)
         self.nc.setObjectName("nc")
+        self.nc.setText("NC")
         self.nc.setToolTip('Necessary Condition')
         self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.nc)
 
@@ -519,26 +568,31 @@ class Ui_MainWindow(object):
         self.groupbox_plots = QtWidgets.QGroupBox(self.centralwidget)  # multi plot
         self.groupbox_plots.setGeometry(QtCore.QRect(12, 470, 1000, 130))
         self.groupbox_plots.setObjectName("groupbox_plots")
+        self.groupbox_plots.setTitle("Plots")
         
         self.plotdata = QtWidgets.QCheckBox(self.groupbox_plots)
         self.plotdata.setGeometry(QtCore.QRect(12, 30, 160, 25))
         self.plotdata.setChecked(True)
         self.plotdata.setObjectName("plotdata")
+        self.plotdata.setText("Plot selected Tests")
 
         self.plotall = QtWidgets.QCheckBox(self.groupbox_plots)
         self.plotall.setGeometry(QtCore.QRect(172, 30, 180, 25))
         self.plotall.setChecked(True)
         self.plotall.setObjectName("plotall")
+        self.plotall.setText("Combine selected Tests")
 
         self.mp_check = QtWidgets.QCheckBox(self.groupbox_plots)
         self.mp_check.setGeometry(QtCore.QRect(12, 63, 190, 25))
         self.mp_check.setObjectName("mp_check")
+        self.mp_check.setText("Combine available Tests")
         self.mp_check.setToolTip('Plots')
         self.mp_check.stateChanged.connect(lambda: selectionchange_plot(self.combobox_plot))
 
         self.label_mp_control = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp_control.setGeometry(QtCore.QRect(211, 63, 130, 25))
         self.label_mp_control.setObjectName("label_mp")
+        self.label_mp_control.setText("Control Parameter:")
 
         self.combobox_plot = QtWidgets.QComboBox(self.groupbox_plots)
         self.combobox_plot.setGeometry(QtCore.QRect(351, 63, 180, 25))
@@ -549,6 +603,7 @@ class Ui_MainWindow(object):
         self.label_mp = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp.setGeometry(QtCore.QRect(12, 96, 50, 25))
         self.label_mp.setObjectName("label_mp")
+        self.label_mp.setText("Values:")
 
         self.tasksperset_p1 = QtWidgets.QSpinBox(self.groupbox_plots)
         self.tasksperset_p1.setGeometry(QtCore.QRect(74, 96, 50, 25))
@@ -589,6 +644,7 @@ class Ui_MainWindow(object):
         self.label_mp_max = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp_max.setGeometry(QtCore.QRect(12, 96, 80, 25))
         self.label_mp_max.setObjectName("label_mp_max")
+        self.label_mp_max.setText("Max Values:")
         self.label_mp_max.hide()
 
         self.slengthmaxvalue_p1 = QtWidgets.QDoubleSpinBox(self.groupbox_plots)
@@ -615,6 +671,7 @@ class Ui_MainWindow(object):
         self.label_mp_min = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp_min.setGeometry(QtCore.QRect(305, 96, 80, 25))
         self.label_mp_min.setObjectName("label_mp_max")
+        self.label_mp_min.setText("Min Values:")
         self.label_mp_min.hide()
 
         self.slengthminvalue_p1 = QtWidgets.QDoubleSpinBox(self.groupbox_plots)
@@ -672,10 +729,13 @@ class Ui_MainWindow(object):
         self.run.setToolTip('Button to run the settings')
         self.run.setGeometry(QtCore.QRect(812, 610, 200, 25))
         self.run.setObjectName("run")
+        self.run.setText("Run")
+
         self.exit = QtWidgets.QPushButton(self.centralwidget)
         self.exit.setToolTip('Exit the framework')
         self.exit.setGeometry(QtCore.QRect(12, 610, 200, 25))
         self.exit.setObjectName("exit")
+        self.exit.setText("Exit")
 
 
 
@@ -689,16 +749,25 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionOpen = QtWidgets.QAction(MainWindow)
         self.actionOpen.setObjectName("actionOpen")
+        self.actionOpen.setText("Open")
+        self.actionOpen.setShortcut("Ctrl+O")
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
+        self.actionSave.setText("Save")
+        self.actionSave.setShortcut("Ctrl+S")
         self.actionClose = QtWidgets.QAction(MainWindow)
         self.actionClose.setObjectName("actionClose")
+        self.actionClose.setText("Close")
+        self.actionClose.setShortcut("Ctrl+F4")
         self.actionQuit = QtWidgets.QAction(MainWindow)
         self.actionQuit.setObjectName("actionQuit")
+        self.actionQuit.setText("Quit")
         self.actionFramework_Help = QtWidgets.QAction(MainWindow)
         self.actionFramework_Help.setObjectName("actionFramework_Help")
+        self.actionFramework_Help.setText("Framework Help")
         self.actionAbout_Framework = QtWidgets.QAction(MainWindow)
         self.actionAbout_Framework.setObjectName("actionAbout_Framework")
+        self.actionAbout_Framework.setText("About Framework")
 
 
         def selectionchange(com_b):
@@ -801,7 +870,6 @@ class Ui_MainWindow(object):
         self.run.clicked.connect(clickMethod)
         self.exit.clicked.connect(clickexit)
 
-        self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         def setSchemes():
@@ -1003,77 +1071,6 @@ class Ui_MainWindow(object):
 
             #MainWindow.statusBar().showMessage('Ready')
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Evaluation Framework for Self-Suspending Task Systems"))
-        self.groupBox_general.setTitle(_translate("MainWindow", "General"))
-        self.prefixdatapath.setText(_translate("MainWindow", "effsstsPlot/Data"))
-        self.threadcount.setText(_translate("MainWindow", "1"))
-        self.tasksetdatapath.setText(_translate("MainWindow", "Ts-100-Tn-10-Ust-5-Ssl-0.01-0.1-Seg-2-.pkl"))
-        self.runtests.setText(_translate("MainWindow", "Run Tests"))
-        self.plotdata.setText(_translate("MainWindow", "Plot selected Tests"))
-        self.plotall.setText(_translate("MainWindow", "Combine selected Tests"))
-        self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
-        self.loadtasks_title.setText(_translate("MainWindow", "File Name:"))
-        self.label_threadcount.setText(_translate("MainWindow", "Threadcount:"))
-        self.label_seed.setText(_translate("MainWindow", "Seed:"))
-        self.groupbox_configurations.setTitle(_translate("MainWindow", "Configurations"))
-        self.label_6.setText(_translate("MainWindow", "Task Sets per Configuration:"))
-        self.label_7.setText(_translate("MainWindow", "Tasks per Set:"))
-        self.label_8.setText(_translate("MainWindow", "Utilization Start Value:"))
-        self.label_9.setText(_translate("MainWindow", "Utilization End Value:"))
-        self.label_10.setText(_translate("MainWindow", "Number of Segments:"))
-        self.label_11.setText(_translate("MainWindow", "Utilization Step:"))
-        self.label.setText(_translate("MainWindow", "Suspension Length Min Value:"))
-        self.label_3.setText(_translate("MainWindow", "Suspension Length Max Value:"))
-        self.run.setText(_translate("MainWindow", "Run"))
-        self.exit.setText(_translate("MainWindow", "Exit"))
-        self.groupbox_schedulability_tests.setTitle(_translate("MainWindow", "Schedulability tests"))
-        self.groupbox_plots.setTitle(_translate("MainWindow", "Plots"))
-        self.gmfpa.setText(_translate("MainWindow", "GMFPA-"))
-        self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
-        self.proportional.setText(_translate("MainWindow", "PROPORTIONAL"))
-        self.seifdamind.setText(_translate("MainWindow", "SEIFDA-minD-"))
-        self.seifdamaxd.setText(_translate("MainWindow", "SEIFDA-maxD-"))
-        self.seifdapbmind.setText(_translate("MainWindow", "SEIFDA-PBminD-"))
-        self.eda.setText(_translate("MainWindow", "EDA"))
-        self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB-"))
-        self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD-"))
-        self.pathpbminddd.setText(_translate("MainWindow", "Oblivious-MP-"))
-        self.pathpbminddnd.setText(_translate("MainWindow", "Clairvoyant-PDAB-"))
-        self.srsr.setText(_translate("MainWindow", "SRSR"))
-        self.biondi.setText(_translate("MainWindow", "BIONDI"))
-        self.scedf.setText(_translate("MainWindow", "SCEDF"))
-        self.scrm.setText(_translate("MainWindow", "SCRM"))
-        self.scairrm.setText(_translate("MainWindow", "SCAIR-RM"))
-        self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
-        self.frdgmfopa.setText(_translate("MainWindow", "FRDGMF-OPA"))
-        self.rss.setText(_translate("MainWindow", "RSS"))
-        self.rtedf.setText(_translate("MainWindow", "RTEDF"))
-        self.udledf.setText(_translate("MainWindow", "UDLEDF"))
-        self.wlaedf.setText(_translate("MainWindow", "WLAEDF"))
-        self.uniframework.setText(_translate("MainWindow", "UNIFRAMEWORK"))
-        self.suspobl.setText(_translate("MainWindow", "SUSPOBL"))
-        self.suspjit.setText(_translate("MainWindow", "SUSPJIT"))
-        self.suspblock.setText(_translate("MainWindow", "SUSPBLOCK"))
-        self.uppaal.setText(_translate("MainWindow", "UPPAAL"))
-        self.passopa.setText(_translate("MainWindow", "PASS-OPA"))
-        self.nc.setText(_translate("MainWindow", "NC"))
-        self.label_mp.setText(_translate("MainWindow", "Values:"))
-        self.label_mp_control.setText(_translate("MainWindow", "Control Parameter:"))
-        self.label_mp_min.setText(_translate("MainWindow", "Min Values:"))
-        self.label_mp_max.setText(_translate("MainWindow", "Max Values:"))
-        self.mp_check.setText(_translate("MainWindow", "Combine available Tests"))
-        self.actionOpen.setText(_translate("MainWindow", "Open"))
-        self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
-        self.actionSave.setText(_translate("MainWindow", "Save"))
-        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
-        self.actionClose.setText(_translate("MainWindow", "Close"))
-        self.actionClose.setShortcut(_translate("MainWindow", "Ctrl+F4"))
-        self.actionQuit.setText(_translate("MainWindow", "Quit"))
-        self.actionFramework_Help.setText(_translate("MainWindow", "Framework Help"))
-        self.actionAbout_Framework.setText(_translate("MainWindow", "About Framework"))
-
 def tasksetConfiguration():
     global gNumberOfTaskSets
     global gNumberOfTasksPerSet
@@ -1106,12 +1103,12 @@ def tasksetConfiguration():
                         str(gSLenMaxValue) + '-Seg-'+str(gNumberOfSegs)+'-.pkl'
             MainWindow.statusBar().showMessage('File saved as: ' + file_name)
             info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gUStart, gUEnd, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
-            with open('./Tasksets/Saves/'+file_name, 'wb') as f:
+            with open('./tasksets/saves/'+file_name, 'wb') as f:
                 pickle.dump([tasksets_difutil,info] , f)
     elif gTaskChoice == 'Load Tasksets':
         # if len(gTasksetpath) != 0:
         file_name = gTasksetpath
-        with open('./Tasksets/Saves/'+file_name, 'rb') as f:
+        with open('./tasksets/saves/'+file_name, 'rb') as f:
                 data = pickle.load(f)
         tasksets_difutil = data[0]
         info = data[1]
@@ -1137,9 +1134,6 @@ def schedulabilityTest(Tasksets_util):
         y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
         print(y)
         ifskip = False
-        # print("Hello")
-        # print(Tasksets_util)
-        # print("Hello")
         for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
             print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gUStart + u * gUStep, "SSLength:", str(
                 gSLenMinValue), " - ", str(gSLenMaxValue), "Num. of segments:", gNumberOfSegs)

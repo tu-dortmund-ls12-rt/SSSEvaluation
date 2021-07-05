@@ -33,7 +33,7 @@ file_name = 'Ts-'+ str(gNumberOfTaskSets) + '-Tn-' \
 
 tasksets_utils = []
 
-with open(str(pathlib.Path(__file__).parent.absolute())+'/Input/'+input_file_name, 'r') as file:
+with open(str(pathlib.Path(__file__).parent.absolute())+'/input/'+input_file_name, 'r') as file:
     reader = csv.DictReader(file)
     for utilization in range(gUStart,gUEnd+1,gUStep):
         utilization = []
@@ -54,10 +54,10 @@ with open(str(pathlib.Path(__file__).parent.absolute())+'/Input/'+input_file_nam
             utilization.append(taskset)
         tasksets_utils.append(utilization)
 
-with open(str(pathlib.Path(__file__).parent.absolute())+'/Saves/'+file_name, 'wb') as f:
+with open(str(pathlib.Path(__file__).parent.absolute())+'/saves/'+file_name, 'wb') as f:
     pickle.dump([tasksets_utils,info] , f)
     
-print("Task sets saved at "+str(pathlib.Path(__file__).parent.absolute())+'/Saves/'+file_name)
+print("Task sets saved at "+str(pathlib.Path(__file__).parent.absolute())+'/saves/'+file_name)
 
 def test():
     print("test")
