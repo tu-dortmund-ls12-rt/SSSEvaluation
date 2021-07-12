@@ -194,8 +194,5 @@ You can extend the framework with other scheduling algorithms written in Python 
 * In order to make the implementation easier, you can search for an existing implementation, for example 'RSS' and copy each step to implement your own algorithm. 
 
 ## Acknowledgements
-<<<<<<< HEAD
 
-=======
->>>>>>> 2f480e4c02041d09d44399f5ea2dfb3dd319d2e2
 We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng, Morteza Mohaqeqi, Alessandro Biondi and Beyazit Yalcinkaya for providing the source code and additonal information of their work.
