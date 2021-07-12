@@ -167,14 +167,19 @@ Name | Paper | File name | Method name
 ## File Structure
     .
     ├── effsstsPlot	
-    │   ├── Data			# Includes all output graphs
-    │   └── effsstsPlot.py	# Output graph generation
-    ├── images              # Framework icons and images	
-    ├── schedTest			# Contains all schedulability tests
-    │   ├── inputs			# Temporary Inputs for schedulability tests
-    │   └── temp_models		# Temporary models for schedulability tests
-    ├── effsstsMain.py		# Framework executable
-    ├── gurobi.env			# Settings for Gurobi optimizer
+    │   ├── Data			    # Includes all output graphs
+    │   └── effsstsPlot.py	    # Output graph generation
+    ├── images                  # Framework icons and images	
+    ├── schedTest			    # Contains all schedulability tests
+    │   ├── inputs			    # Temporary Inputs for schedulability tests
+    │   └── temp_models		    # Temporary models for schedulability tests
+    ├── tasksets			    # Contains all schedulability tests
+    │   ├── input			    # Contains the input files for the SaveTaskSet.py script
+    │   ├── saves			    # Contains the output files of the SaveTaskSet.py script, aswell as all saved task sets that can be loaded into the framework.
+    │   ├── CreateCsvFile.py	# Script to create a .csv file from a task set dictionary.
+    │   └── SaveTaskSet.py      # Script to create a task set dictionary from a .csv file.
+    ├── effsstsMain.py		    # Framework executable
+    ├── gurobi.env			    # Settings for Gurobi optimizer
     └── README.md
     
 ## How to integrate your algorithms?
