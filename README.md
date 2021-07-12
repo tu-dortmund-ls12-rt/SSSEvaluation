@@ -51,7 +51,7 @@ After that, the **Plots** tab lets you specify how to plot the schedulability te
 
 After running the schedulability analysis, you can find the results in the **effsstsPlot/Data** folder.
 
-### How to load and evaluate your own task sets
+### How to load and evaluate your own task sets?
 
 You can load individually created task sets into the framework to evaluate them with the implemented schedulability tests.
 
@@ -61,7 +61,7 @@ You need to prepare a csv-file containing all task sets for all utilization valu
 
 After generating your serialized file, you can select the **Load Taskset** option in the **General** tab of the framework and enter the name of the saved task set. After that you can select any number of schedulability tests to run and evaluate.
 
-### How to integrate the framework into your code
+### How to integrate the framework into your code?
 
 You can integrate the evaluation functionality of this framework into your code. In order to do so, you need to import the **effsstsMain** package which provides three functions to use:
 
