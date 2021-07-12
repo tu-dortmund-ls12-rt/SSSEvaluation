@@ -29,19 +29,19 @@ def pickColor(ischeme):
         color = colors[index]
     else:
         if ischeme.__contains__('SEIFDA-minD'):
-            color = '#0F00FF'
+            color = '#ffd700'
         elif ischeme.__contains__('SEIFDA-PBminD'):
-            color = '#0F0F00'
+            color = '#c6e2ff'
         elif ischeme.__contains__('SEIFDA-maxD'):
-            color = '#0F0F0F'
-        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('DnD'):
-            color = '#0F0FF0'
-        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('D=D'):
-            color = '#0F0FFF'
-        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('DnD'):
-            color = '#0FF000'
-        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
-            color = '#0FF00F'
+            color = '#800080'
+        elif ischeme.__contains__('Oblivious-IUB'):
+            color = '#20b2aa'
+        elif ischeme.__contains__('Clairvoyant-SSSD'):
+            color = '#66cdaa'
+        elif ischeme.__contains__('Oblivious-MP'):
+            color = '#ffa500'
+        elif ischeme.__contains__('Clairvoyant-PDAB'):
+            color = '#b0e0e6'
         else:
             color = '#0FF0F0'
     return color

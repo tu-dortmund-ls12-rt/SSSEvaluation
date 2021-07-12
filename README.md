@@ -7,10 +7,10 @@ An overview of the framework can be found in this [paper](https://ls12-www.cs.tu
 
 Our goal is to provide an easy to use evaluation framework with a pre-implemented task generator, some pre-implemented schedulability tests, and an integrated plotting tool to compare these schedulability tests under the same conditions.
 
-This framework support the Self-Suspending Task models:
+This framework supports the following Self-Suspending Task models:
 1. The segmented model, where the self-suspension behaviour is described by a precise pattern of interleaving execution segments and suspension intervals.
-2. The dynamic model, where the self-suspension behaviour is described by two upper bounds on the total worst-case execution time (WCET) and the total suspension time. It assumes that a task can suspend itself an infinity amount of times as long as the upper bound on the total suspension time is respected.
-3. The hybrid models, that provide different tradeoffs between the overly flexible dynamic model and the overly restrictive segmented model, assuming different levels of information in addition to the bounds on WCET and suspension time, i.e., at least the number of suspensions.
+2. The dynamic model, where the self-suspension behaviour is described by two upper bounds on the total worst-case execution time (WCET) and the total suspension time. It assumes that a task can suspend itself an infinite amount of times as long as the upper bound on the total suspension time is respected.
+3. The hybrid model, that provides different tradeoffs between the overly flexible dynamic model and the overly restrictive segmented model. It assumes different levels of information in addition to the bounds on WCET and suspension time, i.e., the number of suspension segments.
 
 ![GUI of the framework](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/blob/master/images/framework_gui.png)
 
@@ -18,13 +18,13 @@ This framework support the Self-Suspending Task models:
 
 ### Installation
 
-The following steps explain how to deploy this framework on the machine:
+The following steps explain how to deploy this framework on a machine:
 
 First, clone the git repository or download the [zip file](https://github.com/tu-dortmund-ls12-rt/SSSEvaluation/archive/refs/heads/master.zip):
 ```
 git clone https://github.com/tu-dortmund-ls12-rt/SSSEvaluation.git
 ```
-Then install the following software:
+Then install the following packages:
 ```
 sudo apt-get install git python3
 pip install PyQt5 numpy mip gurobipy matplotlib scipy
@@ -41,13 +41,13 @@ python3 effsstsMain.py
 
 You can now select the parameters for the schedulability analysis.
 
-In the **General** tab you can select the path of your task sets, and if you want to generate, save or load the task sets for the analysis. Additionally you can select the number of threads for the execution of the analysis and the seed for the task generation.
+In the **General** tab you can select whether you want to generate, save or load the task sets for the analysis. If you want to load a task set, you can specify the name of the file, which will be loaded from the **tasksets/saves** folder. Additionally you can select the number of threads for the execution of the analysis and the seed for the task generation.
 
 After that you can select the parameters for the task set in the **Configuration** tab. This includes the number of tasks per set, the number of task sets, the utilization values and the number of computation segments. Moreover, minimal and maximal value for the maximal suspension time can be set, i.e., the maximal suspension time is between the minimum suspension length value and maximum suspension length value multiplied with the difference between the period and execution time.
 
 In the **Schedulability tests** tab you can select any of the schedulability tests which are implemented in the framework. Additionally you can set custom parameters for some of the tests.
 
-After that, the **Plots** tab lets you specify how to plot the schedulability tests. You can plot each test individually, combine all selected tests or combine available tests, if they were previously plotted and their data is available in the **effsstsPlot/Data/\*** folder.
+After that, the **Plots** tab lets you specify how to plot the schedulability tests. You can plot each test individually, combine all selected tests or combine available tests, if they were previously plotted and their data is available in the **effsstsPlot/Data** folder.
 
 After running the schedulability analysis, you can find the results in the **effsstsPlot/Data** folder.
 
@@ -55,7 +55,7 @@ After running the schedulability analysis, you can find the results in the **eff
 
 You can load individually created task sets into the framework to evaluate them with the implemented schedulability tests.
 
-To load task sets, you need to create a serialized file of your task sets and the parameters that were used to create them. In order to make the process easier, you can use the **SaveTaskSet** script in **Tasksets** folder, which will guide you through the process of saving your task set in a serialized format.
+To load task sets, you need to create a serialized file of your task sets and the parameters that were used to create them. In order to make the process easier, you can use the **SaveTaskSet** script in **tasksets** folder, which will guide you through the process of saving your task sets in a serialized format.
 
 You need to prepare a csv-file containing all task sets for all utilization values you want to evaluate. You can find an example file and the description for it in the **tasksets/input** folder. Copy your csv-file into the **tasksets/input** folder and execute the script. The output file should be in the **tasksets/saves** folder.
 
@@ -79,7 +79,7 @@ The task creation is done in several steps. First the utilization ['utilization'
 
 After that, the hybrid model is generated. For each task, multiple paths are generated, which consist of alternating computation and suspension segments, starting with a computation segment. For each path, the UUniFast algorithm is used to segment the total computation and total suspension time. This results in the sum of the computation and suspension segments being equal to the total execution and segmentation time of each task.
 
-Then the segmented model is generated, which creates a worst-case path regarding each segment individually. The computation and suspension times of each segment are upper bounds of the corresponding segments of each path. The segments are saved in the tasks ['Cseg'] and ['Sseg'] keys.
+Then the segmented model is generated, which creates a worst-case path regarding each segment individually. The computation and suspension times of each segment are upper bounds of the corresponding segments of each path. The segments are saved in the task's ['Cseg'] and ['Sseg'] keys.
 
 For the dynamic model, the total execution time ['execution'] and total suspension time ['sslength'] of each task are updated in the final step. For each path, the total computation and suspension time is computed and the maximum value of each is saved.
 
@@ -180,13 +180,12 @@ Name | Paper | File name | Method name
 ## How to integrate your algorithms?
 
 You can extend the framework with other scheduling algorithms written in Python or C++.
-* To integrate your algorithms, you need to include your Python implementation in the schedTest folder. Alternatively for C++-algorithms, you need a pre-built binary, which can be executed from a Python script. 
+* To integrate your algorithms, you need to include your Python implementation in the **schedTest** folder. Alternatively for C++-algorithms, you need a pre-built binary, which can be executed from a Python script. 
 * Then you need to extend the framework interface, so that you can select your schedulability test in the GUI. In order to do so, you need to add several things in the effsstsMain.py file:
     1.  Import your Python file.
     2.  Add an entry to the GUI, which you can later select. 
     3.  Each selected test adds a scheme to a list, which includes all tests that will be executed. In case your schedulability test gets selected, you need to add your scheme, so that the algorithm is later called.
-    4.  Set a text for the label, so that the name of your test will be displayed in the GUI
-    5.  At an additional case to the switchTest method, which will select and execute your schedulability test, if you added your scheme correctly.
+    4.  Add an additional case to the switchTest method, which will select and execute your schedulability test, if you added your scheme correctly.
 * In order to make the implementation easier, you can search for an existing implementation, for example 'RSS' and copy each step to implement your own algorithm. 
 
 ## Acknowledgements
