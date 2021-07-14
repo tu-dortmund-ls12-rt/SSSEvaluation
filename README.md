@@ -119,9 +119,11 @@ Name | Paper | File name | Method name
 ---|---|---|---
 EDA | https://ieeexplore.ieee.org/document/7010483 | EDA.py | SEIFDA
 RSS | https://ieeexplore.ieee.org/document/9211430 Section V | RSS.py | RSS
-UDLEDF | https://ieeexplore.ieee.org/document/9211430 Section III | UDLEDF.py | UDLEDF_improved
-WLAEDF | https://ieeexplore.ieee.org/document/9211430 Section III | WLAEDF.py | WLAEDF
+UDLEDF | http://zheng.eng.wayne.edu/_resources/pdfs/HRT.pdf [^1] | UDLEDF.py | UDLEDF_improved
+WLAEDF | https://www.cs.unc.edu/~anderson/papers/ecrts13e_erratum.pdf [^1] | WLAEDF.py | WLAEDF
 RTEDF  | https://ieeexplore.ieee.org/document/9211430 Algorithm 1 | RTEDF.py | RTEDF
+
+[^1] (Uniprocessor version presented in https://ieeexplore.ieee.org/document/9211430 Section III)
 
 #### Constrained-Deadline
 
