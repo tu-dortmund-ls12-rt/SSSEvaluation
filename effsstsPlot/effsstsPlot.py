@@ -29,19 +29,19 @@ def pickColor(ischeme):
         color = colors[index]
     else:
         if ischeme.__contains__('SEIFDA-minD'):
-            color = '#0F00FF'
+            color = '#ffd700'
         elif ischeme.__contains__('SEIFDA-PBminD'):
-            color = '#0F0F00'
+            color = '#c6e2ff'
         elif ischeme.__contains__('SEIFDA-maxD'):
-            color = '#0F0F0F'
-        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('DnD'):
-            color = '#0F0FF0'
-        elif ischeme.__contains__('PATH-minD') and ischeme.__contains__('D=D'):
-            color = '#0F0FFF'
-        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('DnD'):
-            color = '#0FF000'
-        elif ischeme.__contains__('PATH-PBminD') and ischeme.__contains__('D=D'):
-            color = '#0FF00F'
+            color = '#800080'
+        elif ischeme.__contains__('Oblivious-IUB'):
+            color = '#20b2aa'
+        elif ischeme.__contains__('Clairvoyant-SSSD'):
+            color = '#66cdaa'
+        elif ischeme.__contains__('Oblivious-MP'):
+            color = '#ffa500'
+        elif ischeme.__contains__('Clairvoyant-PDAB'):
+            color = '#b0e0e6'
         else:
             color = '#0FF0F0'
     return color
@@ -102,9 +102,9 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
     """
     # sstype= ['S','M','L','0.15']
     # ssofftypes = [2, 3, 5]
-    ssoprops = ['2', '5', '8']
+    #ssoprops = ['2', '5', '8']
 
-    figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    #figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
     # prefix="effsstsPlot/data/"
 
     # for three sub-plot, fixed
@@ -129,12 +129,8 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
         data = np.load(ifile)
         x = data[0][0::1]
         y = data[1][0::1]
-        us = int(math.ceil(ustart/ustep))
-        ue = int(math.floor(uend/ustep))
         print(x)
         print(y)
-        x=x[us:ue+1]
-        y=y[us:ue+1]
         ax.plot(x, y,
                 '-',
                 color=pickColor(ischeme),
@@ -176,9 +172,9 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
     """
     # sstype= ['S','M','L','0.15']
     # ssofftypes = [2, 3, 5]
-    ssoprops = ['2', '5', '8']
+    #ssoprops = ['2', '5', '8']
 
-    figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    #figlabel = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
     # prefix="effsstsPlot/data/"
 
     # for three sub-plot, fixed
@@ -302,4 +298,4 @@ if __name__ == '__main__':
     testSchemes = ['EDA', 'NC', 'SCEDF', 'PASS-OPA']
     testSelfSuspendingType= ['S','M','L']
     testNumberofSegments = [2]
-    effsstsPlotAll(args[1], True, testSchemes, testSelfSuspendingType, testNumberofSegments, 1, 99, 5, 10)
+    effsstsPlotAll(args[1], True, testSchemes, testSelfSuspendingType, testNumberofSegments, 1, 99, 5, 10,10)

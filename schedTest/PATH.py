@@ -1,6 +1,7 @@
 from __future__ import division
 import math
 from schedTest import functions
+import sys
 
 def dbfpath1(task,t,k):
 	
@@ -12,8 +13,7 @@ def dbfpath1(task,t,k):
 			continue
 		else:
 			if task['paths'][p]['Cseg'][0]>maxG:
-				maxG=task['paths'][p]['Cseg'][0]
-	maxd=0		
+				maxG=task['paths'][p]['Cseg'][0]	
 
 	if t>=k*task['period']:
 		return (t/task['period'])*task['execution']+maxG
@@ -155,10 +155,15 @@ def SEIFDApath(task,HindexTasks,k,scheme,ifsame):
 def PATH(tasks,scheme):
 	sortedTasks=sorted(tasks,key= lambda x: functions.lm_cmp(x))
 
-	ischme=scheme.split('-')[1]
+	ischme=""
+	if scheme.split('-')[1] == "IUB" or scheme.split('-')[1] == "SSSD":
+		ischme="minD"
+	elif scheme.split('-')[1] == "MP" or scheme.split('-')[1] == "PDAB":
+		ischme="PBminD"
+
+	ifsame=scheme.split('-')[0]=='Oblivious'
 	k=int(scheme.split('-')[2])
-	ifsame=scheme.split('-')[3]=='D=D'
-	
+
 	for i in range(len(sortedTasks)):
 		task=sortedTasks[i]
 		HindexTasks=sortedTasks[:i]

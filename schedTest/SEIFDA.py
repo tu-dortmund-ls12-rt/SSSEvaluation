@@ -389,7 +389,6 @@ def EDA(tasks):
 def RM(tasks):
 	
 	for i in range(len(tasks)):
-		result=0
 		HPTasks=tasks[:i]
 		#print(HPTasks)
 		Cn=tasks[i]['execution']
@@ -431,8 +430,6 @@ def BURST_RM(tasks):
 	sortedTasksRM=sorted(tasks, key=lambda item:item['period']) 
 	#print(sortedTasksLM)
 	for i in range(len(sortedTasksRM)):
-		HPTasks=sortedTasksRM[:i]
-		#print(HPTasks)
 		Cn=sortedTasksRM[i]['execution']
 		Sn=sortedTasksRM[i]['sslength']
 		Tn=sortedTasksRM[i]['period']
@@ -450,8 +447,6 @@ def XM(tasks,scheme):
 		sys.exit(2)
 	#print(sortedTasksLM)
 	for i in range(len(sortedTasksLM)):
-		HPTasks=sortedTasksLM[:i]
-		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']
 		Tn=sortedTasksLM[i]['period']
@@ -465,8 +460,6 @@ def LM(tasks,blk=False):
 	sortedTasksLM=sorted(tasks,cmp=dm_cmp)
 	#print(sortedTasksLM)
 	for i in range(len(sortedTasksLM)):
-		result=0
-		HPTasks=sortedTasksLM[:i]
 		#print(HPTasks)
 		Cn=sortedTasksLM[i]['execution']
 		Sn=sortedTasksLM[i]['sslength']

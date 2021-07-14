@@ -10,6 +10,7 @@ import os
 import datetime
 import pickle
 from multiprocessing import Pool
+from pathlib import Path
 
 gSeed = datetime.datetime.now()
 gPrefixdata = ''
@@ -27,7 +28,6 @@ gNumberOfSegs = 2
 gSchemes = []
 gSLenMinValue = 0.01
 gSLenMaxValue = 0.1
-gNumberofruns = 1
 garwrap = []
 gthread = 1
 
@@ -40,9 +40,15 @@ class Ui_MainWindow(object):
         choice_plot = ['Tasks per Set', 'Number of Segments', 'Suspension Length']
 
 
-
+        VerticalSize = 1024
+        HorizontalSize = 660
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1024, 660)
+        MainWindow.setWindowTitle("Evaluation Framework for Self-Suspending Task Systems")
+        MainWindow.resize(VerticalSize, HorizontalSize)
+        MainWindow.setMaximumWidth(VerticalSize)
+        MainWindow.setMaximumHeight(HorizontalSize)
+        MainWindow.setMinimumWidth(VerticalSize)
+        MainWindow.setMinimumHeight(HorizontalSize)
 
 
 
@@ -54,11 +60,13 @@ class Ui_MainWindow(object):
         self.groupBox_general = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_general.setGeometry(QtCore.QRect(12, 12, 1000, 100))
         self.groupBox_general.setObjectName("groupBox_general")
+        self.groupBox_general.setTitle("General")
 
         self.runtests = QtWidgets.QCheckBox(self.groupBox_general)
         self.runtests.setGeometry(QtCore.QRect(12, 32, 91, 25))
         self.runtests.setChecked(True)
         self.runtests.setObjectName("runtests")
+        self.runtests.setText("Run Tests")
 
         self.combobox_input = QtWidgets.QComboBox(self.groupBox_general)
         self.combobox_input.setGeometry(QtCore.QRect(110, 32, 225, 25))
@@ -66,49 +74,58 @@ class Ui_MainWindow(object):
         self.combobox_input.addItems(choice_list)
         self.combobox_input.currentIndexChanged.connect(lambda: selectionchange(self.combobox_input))
 
+        self.loadtasks_title = QtWidgets.QLabel(self.groupBox_general)
+        self.loadtasks_title.setGeometry(QtCore.QRect(345, 32, 90, 25))
+        self.loadtasks_title.setObjectName("loadtasks_title")
+        self.loadtasks_title.setText("File Name:")
+        self.loadtasks_title.hide()
+
+        self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_general)
+        self.tasksetdatapath.setGeometry(QtCore.QRect(425, 32, 365, 25))
+        self.tasksetdatapath.setObjectName("tasksetdatapath")
+        self.tasksetdatapath.setText("Ts-100-Tn-10-Ust-5-Ssl-0.01-0.1-Seg-2-.pkl")
+        self.tasksetdatapath.hide()
+
         self.label_threadcount = QtWidgets.QLabel(self.groupBox_general)
         self.label_threadcount.setGeometry(QtCore.QRect(800, 32, 100, 25))
         self.label_threadcount.setObjectName("label_threadcount")
+        self.label_threadcount.setText("Threadcount:")
 
         self.threadcount = QtWidgets.QLineEdit(self.groupBox_general)
         self.threadcount.setGeometry(QtCore.QRect(895, 32, 95, 25))
         self.threadcount.setObjectName("threadcount")
+        self.threadcount.setText("1")
         
-        self.label_5 = QtWidgets.QLabel(self.groupBox_general)
-        self.label_5.setGeometry(QtCore.QRect(12, 65, 115, 25))
-        self.label_5.setObjectName("label_5")
+        self.label_prefixdatapath = QtWidgets.QLabel(self.groupBox_general)
+        self.label_prefixdatapath.setGeometry(QtCore.QRect(12, 65, 115, 25))
+        self.label_prefixdatapath.setObjectName("label_prefixdatapath")
+        self.label_prefixdatapath.setText("Prefix Data Path:")
 
         self.prefixdatapath = QtWidgets.QLineEdit(self.groupBox_general)
         self.prefixdatapath.setGeometry(QtCore.QRect(131, 65, 660, 25))
         self.prefixdatapath.setObjectName("prefixdatapath")
+        self.prefixdatapath.setText("effsstsPlot/Data")
 
         self.label_seed = QtWidgets.QLabel(self.groupBox_general)
         self.label_seed.setGeometry(QtCore.QRect(800, 65, 40, 25))
         self.label_seed.setObjectName("label_seed")
+        self.label_seed.setText("Seed:")
 
         self.seed = QtWidgets.QLineEdit(self.groupBox_general)
         self.seed.setGeometry(QtCore.QRect(845, 65, 145, 25))
         self.seed.setObjectName("seed")
 
-        self.loadtasks_title = QtWidgets.QLabel(self.groupBox_general)
-        self.loadtasks_title.setGeometry(QtCore.QRect(350, 32, 140, 25))
-        self.loadtasks_title.setObjectName("loadtasks_title")
-        self.loadtasks_title.hide()
 
-        self.tasksetdatapath = QtWidgets.QLineEdit(self.groupBox_general)
-        self.tasksetdatapath.setGeometry(QtCore.QRect(490, 32, 500, 25))
-        self.tasksetdatapath.setObjectName("tasksetdatapath")
-        self.tasksetdatapath.hide()
-
-        
 
         self.groupbox_configurations = QtWidgets.QGroupBox(self.centralwidget)
         self.groupbox_configurations.setGeometry(QtCore.QRect(12, 122, 1000, 100))
         self.groupbox_configurations.setObjectName("groupbox_configurations")
+        self.groupbox_configurations.setTitle("Configurations")
 
-        self.label_6 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_6.setGeometry(QtCore.QRect(12, 32, 198, 25))
-        self.label_6.setObjectName("label_6") # task sets per configuration
+        self.label_tasksetsperconfiguration = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_tasksetsperconfiguration.setGeometry(QtCore.QRect(12, 32, 198, 25))
+        self.label_tasksetsperconfiguration.setObjectName("label_tasksetsperconfiguration") # task sets per configuration
+        self.label_tasksetsperconfiguration.setText("Task Sets per Configuration:")
 
         self.tasksetsperconfig = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.tasksetsperconfig.setGeometry(QtCore.QRect(210, 32, 55, 25))
@@ -116,9 +133,10 @@ class Ui_MainWindow(object):
         self.tasksetsperconfig.setProperty("value", 100)
         self.tasksetsperconfig.setObjectName("tasksetsperconfig")
 
-        self.label_7 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_7.setGeometry(QtCore.QRect(12, 65, 198, 25))
-        self.label_7.setObjectName("label_7") # tasks per set
+        self.label_taskperset = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_taskperset.setGeometry(QtCore.QRect(12, 65, 198, 25))
+        self.label_taskperset.setObjectName("label_taskperset") # tasks per set
+        self.label_taskperset.setText("Tasks per Set:")
 
         self.tasksperset = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.tasksperset.setGeometry(QtCore.QRect(210, 65, 55, 25))
@@ -126,9 +144,10 @@ class Ui_MainWindow(object):
         self.tasksperset.setProperty("value", 10)
         self.tasksperset.setObjectName("tasksperset")
 
-        self.label_8 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_8.setGeometry(QtCore.QRect(275, 32, 155, 25))
-        self.label_8.setObjectName("label_8") # utilization start value
+        self.label_utilizationstartvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_utilizationstartvalue.setGeometry(QtCore.QRect(275, 32, 155, 25))
+        self.label_utilizationstartvalue.setObjectName("label_utilizationstartvalue") # utilization start value
+        self.label_utilizationstartvalue.setText("Utilization Start Value:")
 
         self.utilstart = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.utilstart.setGeometry(QtCore.QRect(435, 32, 55, 25))
@@ -136,9 +155,10 @@ class Ui_MainWindow(object):
         self.utilstart.setProperty("value", 0)
         self.utilstart.setObjectName("utilstart")
 
-        self.label_9 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_9.setGeometry(QtCore.QRect(275, 65, 155, 25))
-        self.label_9.setObjectName("label_9") # utilization end value
+        self.label_utilizationendvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_utilizationendvalue.setGeometry(QtCore.QRect(275, 65, 155, 25))
+        self.label_utilizationendvalue.setObjectName("label_utilizationendvalue") # utilization end value
+        self.label_utilizationendvalue.setText("Utilization End Value:")
 
         self.utilend = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.utilend.setGeometry(QtCore.QRect(435, 65, 55, 25)) #util end value
@@ -146,9 +166,10 @@ class Ui_MainWindow(object):
         self.utilend.setProperty("value", 100)
         self.utilend.setObjectName("utilend")
 
-        self.label_11 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_11.setGeometry(QtCore.QRect(500, 32, 160, 25))
-        self.label_11.setObjectName("label_11") # utilization step
+        self.label_utilizationstep = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_utilizationstep.setGeometry(QtCore.QRect(500, 32, 160, 25))
+        self.label_utilizationstep.setObjectName("label_utilizationstep") # utilization step
+        self.label_utilizationstep.setText("Utilization Step:")
         
         self.utilstep = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.utilstep.setGeometry(QtCore.QRect(660, 32, 55, 25))
@@ -156,9 +177,10 @@ class Ui_MainWindow(object):
         self.utilstep.setProperty("value", 5)
         self.utilstep.setObjectName("utilstep")
 
-        self.label_10 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_10.setGeometry(QtCore.QRect(500, 65, 155, 25))
-        self.label_10.setObjectName("label_10") # num_of_segment
+        self.label_numberofsegments = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_numberofsegments.setGeometry(QtCore.QRect(500, 65, 155, 25))
+        self.label_numberofsegments.setObjectName("label_numberofsegments") # num_of_segment
+        self.label_numberofsegments.setText("Number of Segments:")
 
         self.numberofsegs = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.numberofsegs.setGeometry(QtCore.QRect(660, 65, 55, 25))
@@ -166,9 +188,10 @@ class Ui_MainWindow(object):
         self.numberofsegs.setProperty("value", 2)
         self.numberofsegs.setObjectName("numberofsegs")
 
-        self.label = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label.setGeometry(QtCore.QRect(725, 32, 210, 25))
-        self.label.setObjectName("label") # suspension length min value
+        self.label_suspensionminvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_suspensionminvalue.setGeometry(QtCore.QRect(725, 32, 210, 25))
+        self.label_suspensionminvalue.setObjectName("label_suspensionminvalue") # suspension length min value
+        self.label_suspensionminvalue.setText("Suspension Length Min Value:")
         
         self.slengthminvalue = QtWidgets.QDoubleSpinBox(self.groupbox_configurations)
         self.slengthminvalue.setGeometry(QtCore.QRect(935, 32, 55, 25))
@@ -177,9 +200,10 @@ class Ui_MainWindow(object):
         self.slengthminvalue.setProperty("value", 0.01)
         self.slengthminvalue.setObjectName("slengthminvalue")
 
-        self.label_3 = QtWidgets.QLabel(self.groupbox_configurations)
-        self.label_3.setGeometry(QtCore.QRect(725, 65, 210, 25)) 
-        self.label_3.setObjectName("label_3") # suspension length max
+        self.label_suspensionmaxvalue = QtWidgets.QLabel(self.groupbox_configurations)
+        self.label_suspensionmaxvalue.setGeometry(QtCore.QRect(725, 65, 210, 25)) 
+        self.label_suspensionmaxvalue.setObjectName("label_suspensionmaxvalue") # suspension length max
+        self.label_suspensionmaxvalue.setText("Suspension Length Max Value:")
 
         self.slengthmaxvalue = QtWidgets.QDoubleSpinBox(self.groupbox_configurations)
         self.slengthmaxvalue.setGeometry(QtCore.QRect(935, 65, 55, 25))
@@ -193,381 +217,382 @@ class Ui_MainWindow(object):
         self.groupbox_schedulability_tests = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
         self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 232, 1000, 228))
         self.groupbox_schedulability_tests.setObjectName("groupbox_schedulability_tests")
+        self.groupbox_schedulability_tests.setTitle("Schedulability tests")
 
 
 
-        self.groupBox_5 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #FRD Segmented
-        self.groupBox_5.setGeometry(QtCore.QRect(11, 24, 232, 190))
-        self.groupBox_5.setObjectName("groupBox_5")
+        self.tabs = QtWidgets.QTabWidget(self.groupbox_schedulability_tests)
+        self.tabs.setGeometry(QtCore.QRect(1, 21, 999, 207))
+        self.tabs.setObjectName("tabs")
 
-        self.scrollArea_5 = QtWidgets.QScrollArea(self.groupBox_5)
-        self.scrollArea_5.setWidgetResizable(True)
-        self.scrollArea_5.setGeometry(QtCore.QRect(0, 20, 232, 170))
-        self.scrollArea_5.setObjectName("scrollArea_5")
-        self.scrollArea_5.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scrollArea_5.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-        self.scrollAreaWidgetContents_5 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_5.setGeometry(QtCore.QRect(0, 0, 212, 169))
-        self.scrollAreaWidgetContents_5.setObjectName("scrollAreaWidgetContents_5")
 
-        self.formLayoutWidget_5 = QtWidgets.QWidget(self.scrollAreaWidgetContents_5)
-        self.formLayoutWidget_5.setGeometry(QtCore.QRect(0, 0, 212, 169))
-        self.formLayoutWidget_5.setObjectName("formLayoutWidget_5")
-        
-        self.formLayout_5 = QtWidgets.QFormLayout(self.formLayoutWidget_5)
-        self.formLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.formLayout_5.setObjectName("formLayout_5")
+        self.scrollArea_1 = QtWidgets.QScrollArea(self.tabs)   # FRD Segmented
+        self.scrollArea_1.setWidgetResizable(True)
+        self.scrollArea_1.setGeometry(QtCore.QRect(0, 0, 999, 208))
+        self.scrollArea_1.setObjectName("scrollArea_1")
+        self.scrollArea_1.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea_1.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-        self.formLayout_5 = QtWidgets.QFormLayout()
-        self.formLayout_5.setObjectName("formLayout_5")
+        self.scrollAreaWidgetContents_1 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_1.setObjectName("scrollAreaWidgetContents_1")
 
-        self.scrollArea_5.setWidget(self.scrollAreaWidgetContents_5)
-        self.scrollAreaWidgetContents_5.setLayout(self.formLayout_5)
+        self.formLayoutWidget_1 = QtWidgets.QWidget(self.scrollAreaWidgetContents_1)
+        self.formLayoutWidget_1.setObjectName("formLayoutWidget_1")
 
-        self.seifdamind = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.formLayout_1 = QtWidgets.QFormLayout(self.formLayoutWidget_1)
+        self.formLayout_1.setObjectName("formLayout_1")
+
+        self.scrollArea_1.setWidget(self.scrollAreaWidgetContents_1)
+        self.scrollAreaWidgetContents_1.setLayout(self.formLayout_1)
+
+        self.tabs.addTab(self.scrollArea_1,"FRD Segmented")
+
+        self.seifdamind = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamind.setObjectName("seifdamind")
+        self.seifdamind.setText("SEIFDA-minD-")
         self.seifdamind.setToolTip('Shortest Execution Interval First Deadline Assignment - Picks the minimum x')
-        self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.seifdamind)
+        self.formLayout_1.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.seifdamind)
 
-        self.seifdamindg = QtWidgets.QSpinBox(self.formLayoutWidget_5)
+        self.seifdamindg = QtWidgets.QSpinBox(self.formLayoutWidget_1)
         self.seifdamindg.setMaximum(5)
         self.seifdamindg.setProperty("value", 1)
         self.seifdamindg.setObjectName("seifdamindg")
-        self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.seifdamindg)
+        self.formLayout_1.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.seifdamindg)
 
-        self.seifdamaxd = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.seifdamaxd = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamaxd.setObjectName("seifdamaxd")
+        self.seifdamaxd.setText("SEIFDA-maxD-")
         self.seifdamaxd.setToolTip('Shortest Execution Interval First Deadline Assignment - Picks the maximum x')
-        self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.seifdamaxd)
+        self.formLayout_1.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.seifdamaxd)
 
-        self.seifdamaxdg = QtWidgets.QSpinBox(self.formLayoutWidget_5)
+        self.seifdamaxdg = QtWidgets.QSpinBox(self.formLayoutWidget_1)
         self.seifdamaxdg.setMaximum(5)
         self.seifdamaxdg.setProperty("value", 1)
         self.seifdamaxdg.setObjectName("seifdamaxdg")
-        self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.seifdamaxdg)
+        self.formLayout_1.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.seifdamaxdg)
 
-        self.seifdapbmind = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.seifdapbmind = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdapbmind.setObjectName("seifdapbmind")
+        self.seifdapbmind.setText("SEIFDA-PBminD-")
         self.seifdapbmind.setToolTip('Shortest Execution Interval First Deadline Assignment - Proportionally-Bounded-Min x')
-        self.formLayout_5.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.seifdapbmind)
+        self.formLayout_1.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.seifdapbmind)
         
-        self.seifdapbmindg = QtWidgets.QSpinBox(self.formLayoutWidget_5)
+        self.seifdapbmindg = QtWidgets.QSpinBox(self.formLayoutWidget_1)
         self.seifdapbmindg.setMaximum(5)
         self.seifdapbmindg.setProperty("value", 1)
         self.seifdapbmindg.setObjectName("seifdapbmindg")
-        self.formLayout_5.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.seifdapbmindg)
+        self.formLayout_1.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.seifdapbmindg)
 
-        self.eda = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.eda = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.eda.setObjectName("eda")
+        self.eda.setText("EDA")
         self.eda.setToolTip('Equal relative Deadline Assignment (EDA)') 
-        self.formLayout_5.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.eda)
+        self.formLayout_1.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.eda)
 
-        self.proportional = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.proportional = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.proportional.setObjectName("proportional")
+        self.proportional.setText("PROPORTIONAL")
         self.proportional.setToolTip('Proportional relative deadline assignment')
-        self.formLayout_5.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.proportional)
+        self.formLayout_1.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.proportional)
 
-        self.seifdamip = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.seifdamip = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamip.setObjectName("seifdamip")
+        self.seifdamip.setText("SEIFDA-MILP")
         self.seifdamip.setToolTip('Shortest Execution Interval First Deadline Assignment - MILP')
-        self.formLayout_5.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.seifdamip)
+        self.formLayout_1.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.seifdamip)
 
-        self.gmfpa = QtWidgets.QCheckBox(self.formLayoutWidget_5)
+        self.gmfpa = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.gmfpa.setObjectName("gmfpa")
+        self.gmfpa.setText("GMFPA-")
         self.gmfpa.setToolTip('Generalized Multiframe Task Model with Parameter Adaptation - Set granularity of time steps')
-        self.formLayout_5.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.gmfpa)
+        self.formLayout_1.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.gmfpa)
 
-        self.gmfpag = QtWidgets.QDoubleSpinBox(self.formLayoutWidget_5)
+        self.gmfpag = QtWidgets.QDoubleSpinBox(self.formLayoutWidget_1)
         self.gmfpag.setMaximum(1.0)
         self.gmfpag.setSingleStep(0.01)
         self.gmfpag.setProperty("value", 0.5)
         self.gmfpag.setObjectName("gmfpag")
-        self.formLayout_5.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.gmfpag)
+        self.formLayout_1.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.gmfpag)
 
 
 
-        self.groupBox = QtWidgets.QGroupBox(self.groupbox_schedulability_tests)  #FRD Hybrid
-        self.groupBox.setGeometry(QtCore.QRect(253, 24, 217, 190))
-        self.groupBox.setObjectName("groupBox")
+        self.scrollArea_2 = QtWidgets.QScrollArea(self.tabs)   # FRD Hybrid
+        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollArea_2.setGeometry(QtCore.QRect(0, 0, 999, 208))
+        self.scrollArea_2.setObjectName("scrollArea_2")
+        self.scrollArea_2.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea_2.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-        self.scrollArea = QtWidgets.QScrollArea(self.groupBox)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setGeometry(QtCore.QRect(0, 20, 217, 170))
-        self.scrollArea.setObjectName("scrollArea")
-        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
 
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 217, 169))
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.formLayoutWidget_2 = QtWidgets.QWidget(self.scrollAreaWidgetContents_2)
+        self.formLayoutWidget_2.setObjectName("formLayoutWidget")
 
-        self.formLayoutWidget = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(0, 0, 217, 169))
-        self.formLayoutWidget.setObjectName("formLayoutWidget")
-        
-        self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
-        self.formLayout.setContentsMargins(0, 0, 0, 0)
-        self.formLayout.setObjectName("formLayout")
+        self.formLayout_2 = QtWidgets.QFormLayout(self.formLayoutWidget_2)
+        self.formLayout_2.setObjectName("formLayout_2")
 
-        self.formLayout = QtWidgets.QFormLayout()
-        self.formLayout.setObjectName("formLayout")
+        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.scrollAreaWidgetContents_2.setLayout(self.formLayout_2)
 
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.scrollAreaWidgetContents.setLayout(self.formLayout)
+        self.tabs.addTab(self.scrollArea_2,"FRD Hybrid")
 
-        self.pathminddd = QtWidgets.QCheckBox(self.groupBox)
+        self.pathminddd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathminddd.setObjectName("pathminddd")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.pathminddd)
+        self.pathminddd.setText("Oblivious-IUB-")
+        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.pathminddd)
 
         self.pathminddd.setToolTip('Pattern Oblivious Individual Upper Bounds')
-        self.pathmindddg = QtWidgets.QSpinBox(self.groupBox)
+        self.pathmindddg = QtWidgets.QSpinBox(self.formLayoutWidget_2)
         self.pathmindddg.setMaximum(5)
         self.pathmindddg.setProperty("value", 1)
         self.pathmindddg.setObjectName("pathmindddg")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.pathmindddg)
+        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.pathmindddg)
 
-        self.pathminddnd = QtWidgets.QCheckBox(self.groupBox)
+        self.pathminddnd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathminddnd.setObjectName("pathminddnd")
+        self.pathminddnd.setText("Clairvoyant-SSSD-")
         self.pathminddnd.setToolTip('Pattern-Clairvoyant Shorter Segment Shorter Deadline')
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.pathminddnd)
+        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.pathminddnd)
 
-        self.pathminddndg = QtWidgets.QSpinBox(self.groupBox)
+        self.pathminddndg = QtWidgets.QSpinBox(self.formLayoutWidget_2)
         self.pathminddndg.setMaximum(5)
         self.pathminddndg.setProperty("value", 1)
         self.pathminddndg.setObjectName("pathminddndg")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.pathminddndg)
+        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.pathminddndg)
 
-        self.pathpbminddd = QtWidgets.QCheckBox(self.groupBox)
+        self.pathpbminddd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathpbminddd.setObjectName("pathpbminddd")
+        self.pathpbminddd.setText("Oblivious-MP-")
         self.pathpbminddd.setToolTip('Pattern-Oblivious Multiple Paths')
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.pathpbminddd)
+        self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.pathpbminddd)
 
-        self.pathpbmindddg = QtWidgets.QSpinBox(self.groupBox)
+        self.pathpbmindddg = QtWidgets.QSpinBox(self.formLayoutWidget_2)
         self.pathpbmindddg.setMaximum(5)
         self.pathpbmindddg.setProperty("value", 1)
         self.pathpbmindddg.setObjectName("pathpbmindddg")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.pathpbmindddg)
+        self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.pathpbmindddg)
 
-        self.pathpbminddnd = QtWidgets.QCheckBox(self.groupBox)
+        self.pathpbminddnd = QtWidgets.QCheckBox(self.formLayoutWidget_2)
         self.pathpbminddnd.setObjectName("pathpbminddnd")
+        self.pathpbminddnd.setText("Clairvoyant-PDAB-")
         self.pathpbminddnd.setToolTip('Pattern-Clairvoyant Proportional Deadline with A Bias')
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.pathpbminddnd)
+        self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.pathpbminddnd)
 
-        self.pathpbminddndg = QtWidgets.QSpinBox(self.groupBox)
+        self.pathpbminddndg = QtWidgets.QSpinBox(self.formLayoutWidget_2)
         self.pathpbminddndg.setMaximum(5)
         self.pathpbminddndg.setProperty("value", 1)
         self.pathpbminddndg.setObjectName("pathpbminddndg")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.pathpbminddndg)
+        self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.pathpbminddndg)
 
 
 
-        self.groupBox_4 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #Segmented
-        self.groupBox_4.setGeometry(QtCore.QRect(480, 24, 170, 190))
-        self.groupBox_4.setObjectName("groupBox_4")
+        self.scrollArea_3 = QtWidgets.QScrollArea(self.tabs)   # Segmented
+        self.scrollArea_3.setWidgetResizable(True)
+        self.scrollArea_3.setGeometry(QtCore.QRect(0, 0, 999, 208))
+        self.scrollArea_3.setObjectName("scrollArea_3")
+        self.scrollArea_3.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea_3.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+        self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
+
+        self.formLayoutWidget_3 = QtWidgets.QWidget(self.scrollAreaWidgetContents_3)
+        self.formLayoutWidget_3.setObjectName("formLayoutWidget_3")
+
+        self.formLayout_3 = QtWidgets.QFormLayout(self.formLayoutWidget_3)
+        self.formLayout_3.setObjectName("formLayout_3")
+
+        self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
+        self.scrollAreaWidgetContents_3.setLayout(self.formLayout_3)
+
+        self.tabs.addTab(self.scrollArea_3,"Segmented")
+
+        self.scedf = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.scedf.setObjectName("scedf")
+        self.scedf.setText("SCEDF")
+        self.scedf.setToolTip('Suspension as Computation Earliest-Deadline-First (SCEDF)')
+        self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.scedf)
+
+        self.scrm = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.scrm.setObjectName("scrm")
+        self.scrm.setText("SCRM")
+        self.scrm.setToolTip('Suspension as Computation Rate-Monotonic (SCRM)')
+        self.formLayout_3.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.scrm)
         
-        self.scrollArea_4 = QtWidgets.QScrollArea(self.groupBox_4)
+        self.scairrm = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.scairrm.setObjectName("scairrm")
+        self.scairrm.setText("SCAIR-RM")
+        self.scairrm.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Rate-Monotonic (RM)')
+        self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.scairrm)
+        
+        self.scairopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.scairopa.setObjectName("scairopa")
+        self.scairopa.setText("SCAIR-OPA")
+        self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
+        self.formLayout_3.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
+        
+        self.frdgmfopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.frdgmfopa.setObjectName("frdgmfopa")
+        self.frdgmfopa.setText("FRDGMF-OPA")
+        self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
+        self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
+        
+        self.biondi = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.biondi.setObjectName("Biondi")
+        self.biondi.setText("BIONDI")
+        self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
+        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.biondi)
+        
+        self.srsr = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.srsr.setObjectName("srsr")
+        self.srsr.setText("SRSR")
+        self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
+        self.formLayout_3.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.srsr)
+
+
+
+        self.scrollArea_4 = QtWidgets.QScrollArea(self.tabs)   # Dynamic
         self.scrollArea_4.setWidgetResizable(True)
-        self.scrollArea_4.setGeometry(QtCore.QRect(0, 20, 170, 170))
+        self.scrollArea_4.setGeometry(QtCore.QRect(0, 0, 999, 208))
         self.scrollArea_4.setObjectName("scrollArea_4")
         self.scrollArea_4.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea_4.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollAreaWidgetContents_4 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_4.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.scrollAreaWidgetContents_4.setObjectName("scrollAreaWidgetContents_4")
 
         self.formLayoutWidget_4 = QtWidgets.QWidget(self.scrollAreaWidgetContents_4)
-        self.formLayoutWidget_4.setGeometry(QtCore.QRect(0, 0, 170, 169))
         self.formLayoutWidget_4.setObjectName("formLayoutWidget_4")
-        
-        self.formLayout_4 = QtWidgets.QFormLayout(self.formLayoutWidget_4)
-        self.formLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.formLayout_4.setObjectName("formLayout_4")
 
-        self.formLayout_4 = QtWidgets.QFormLayout()
+        self.formLayout_4 = QtWidgets.QFormLayout(self.formLayoutWidget_4)
         self.formLayout_4.setObjectName("formLayout_4")
 
         self.scrollArea_4.setWidget(self.scrollAreaWidgetContents_4)
         self.scrollAreaWidgetContents_4.setLayout(self.formLayout_4)
 
-        self.scedf = QtWidgets.QCheckBox(self.groupBox_4)
-        self.scedf.setObjectName("scedf")
-        self.scedf.setToolTip('Suspension as Computation Earliest-Deadline-First (SCEDF)')
-        self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.scedf)
+        self.tabs.addTab(self.scrollArea_4,"Dynamic")
 
-        self.scrm = QtWidgets.QCheckBox(self.groupBox_4)
-        self.scrm.setObjectName("scrm")
-        self.scrm.setToolTip('Suspension as Computation Rate-Monotonic (SCRM)')
-        self.formLayout_4.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.scrm)
-        
-        self.scairrm = QtWidgets.QCheckBox(self.groupBox_4)
-        self.scairrm.setObjectName("scairrm")
-        self.scairrm.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Rate-Monotonic (RM)')
-        self.formLayout_4.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.scairrm)
-        
-        self.scairopa = QtWidgets.QCheckBox(self.groupBox_4)
-        self.scairopa.setObjectName("scairopa")
-        self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
-        self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
-        
-        self.frdgmfopa = QtWidgets.QCheckBox(self.groupBox_4)
-        self.frdgmfopa.setObjectName("frdgmfopa")
-        self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
-        self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
-        
-        self.biondi = QtWidgets.QCheckBox(self.groupBox_4)
-        self.biondi.setObjectName("Biondi")
-        self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
-        self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.biondi)
-        
-        self.srsr = QtWidgets.QCheckBox(self.groupBox_4)
-        self.srsr.setObjectName("srsr")
-        self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
-        self.formLayout_4.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.srsr)
-
-
-
-        self.groupBox_8 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #Dynamic
-        self.groupBox_8.setGeometry(QtCore.QRect(660, 24, 170, 190))
-        self.groupBox_8.setObjectName("groupBox_8")
-
-        self.scrollArea_8 = QtWidgets.QScrollArea(self.groupBox_8)
-        self.scrollArea_8.setWidgetResizable(True)
-        self.scrollArea_8.setGeometry(QtCore.QRect(0, 20, 170, 170))
-        self.scrollArea_8.setObjectName("scrollArea_8")
-        self.scrollArea_8.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scrollArea_8.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-
-        self.scrollAreaWidgetContents_8 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_8.setGeometry(QtCore.QRect(0, 0, 170, 169))
-        self.scrollAreaWidgetContents_8.setObjectName("scrollAreaWidgetContents_8")
-
-        self.formLayoutWidget_8 = QtWidgets.QWidget(self.scrollAreaWidgetContents_8)
-        self.formLayoutWidget_8.setGeometry(QtCore.QRect(0, 0, 170, 169))
-        self.formLayoutWidget_8.setObjectName("formLayoutWidget_8")
-        
-        self.formLayout_8 = QtWidgets.QFormLayout(self.formLayoutWidget_8)
-        self.formLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.formLayout_8.setObjectName("formLayout_8")
-
-        self.formLayout_8 = QtWidgets.QFormLayout()
-        self.formLayout_8.setObjectName("formLayout_8")
-
-        self.scrollArea_8.setWidget(self.scrollAreaWidgetContents_8)
-        self.scrollAreaWidgetContents_8.setLayout(self.formLayout_8)
-
-        self.passopa = QtWidgets.QCheckBox(self.groupBox_8)
+        self.passopa = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.passopa.setObjectName("passopa")
+        self.passopa.setText("PASS-OPA")
         self.passopa.setToolTip('Priority Assignment algorithm for Self-Suspending Systems - Optimal-Priority Assignment')
-        self.formLayout_8.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.passopa)
+        self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.passopa)
 
-        self.rss = QtWidgets.QCheckBox(self.groupBox_8)
+        self.rss = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.rss.setObjectName("rss")
+        self.rss.setText("RSS")
         self.rss.setToolTip('Utilization-based Schedulability Test')
-        self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.rss)
+        self.formLayout_4.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.rss)
         
-        self.udledf = QtWidgets.QCheckBox(self.groupBox_8)
+        self.udledf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.udledf.setObjectName("udledf")
+        self.udledf.setText("UDLEDF")
         self.udledf.setToolTip('')
-        self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.udledf)
+        self.formLayout_4.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.udledf)
         
-        self.wlaedf = QtWidgets.QCheckBox(self.groupBox_8)
+        self.wlaedf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.wlaedf.setObjectName("wlaedf")
+        self.wlaedf.setText("WLAEDF")
         self.wlaedf.setToolTip('Workload-based Schedulability Test')
-        self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.wlaedf)
+        self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.wlaedf)
         
-        self.rtedf = QtWidgets.QCheckBox(self.groupBox_8)
+        self.rtedf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.rtedf.setObjectName("rtedf")
+        self.rtedf.setText("RTEDF")
         self.rtedf.setToolTip('Response-Time-Based Schedulability Test')
-        self.formLayout_8.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.rtedf)
+        self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.rtedf)
         
-        self.uniframework = QtWidgets.QCheckBox(self.groupBox_8)
+        self.uniframework = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.uniframework.setObjectName("uniframework")
+        self.uniframework.setText("UNIFRAMEWORK")
         self.uniframework.setToolTip('Unified Response Time Analysis Framework')
-        self.formLayout_8.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.uniframework)
+        self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.uniframework)
         
-        self.suspobl = QtWidgets.QCheckBox(self.groupBox_8)
+        self.suspobl = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.suspobl.setObjectName("suspobl")
+        self.suspobl.setText("SUSPOBL")
         self.suspobl.setToolTip('Suspension Oblivious')
-        self.formLayout_8.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.suspobl)
+        self.formLayout_4.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.suspobl)
 
-        self.suspjit = QtWidgets.QCheckBox(self.groupBox_8)
+        self.suspjit = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.suspjit.setObjectName("suspjit")
+        self.suspjit.setText("SUSPJIT")
         self.suspjit.setToolTip('Schedulability with Suspension as Jitter')
-        self.formLayout_8.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.suspjit)
+        self.formLayout_4.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.suspjit)
 
-        self.suspblock = QtWidgets.QCheckBox(self.groupBox_8)
+        self.suspblock = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.suspblock.setObjectName("suspblock")
+        self.suspblock.setText("SUSPBLOCK")
         self.suspblock.setToolTip('Schedulability with Suspension as Blocking Time')
-        self.formLayout_8.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.suspblock)
+        self.formLayout_4.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.suspblock)
 
-        self.uppaal = QtWidgets.QCheckBox(self.groupBox_8)
+        self.uppaal = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.uppaal.setObjectName("uppaal")
+        self.uppaal.setText("UPPAAL")
         self.uppaal.setToolTip('Exact Schedulability Test for Non-Preemptive Self-Suspending Real-Time Tasks with UPPAAL model checker')
-        self.formLayout_8.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.uppaal)
+        self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.uppaal)
 
 
 
-        self.groupBox_6 = QtWidgets.QGroupBox(self.groupbox_schedulability_tests) #General
-        self.groupBox_6.setGeometry(QtCore.QRect(840, 24, 150, 190))
-        self.groupBox_6.setObjectName("groupBox_6")
+        self.scrollArea_5 = QtWidgets.QScrollArea(self.tabs)   # General
+        self.scrollArea_5.setWidgetResizable(True)
+        self.scrollArea_5.setGeometry(QtCore.QRect(0, 0, 999, 208))
+        self.scrollArea_5.setObjectName("scrollArea_5")
+        self.scrollArea_5.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea_5.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-        self.scrollArea_6 = QtWidgets.QScrollArea(self.groupBox_6)
-        self.scrollArea_6.setWidgetResizable(True)
-        self.scrollArea_6.setGeometry(QtCore.QRect(0, 20, 150, 170))
-        self.scrollArea_6.setObjectName("scrollArea_6")
-        self.scrollArea_6.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scrollArea_6.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollAreaWidgetContents_5 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_5.setObjectName("scrollAreaWidgetContents_5")
 
-        self.scrollAreaWidgetContents_6 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 170, 169))
-        self.scrollAreaWidgetContents_6.setObjectName("scrollAreaWidgetContents_6")
+        self.formLayoutWidget_5 = QtWidgets.QWidget(self.scrollAreaWidgetContents_5)
+        self.formLayoutWidget_5.setObjectName("formLayoutWidget_5")
 
-        self.formLayoutWidget_6 = QtWidgets.QWidget(self.scrollAreaWidgetContents_6)
-        self.formLayoutWidget_6.setGeometry(QtCore.QRect(0, 0, 170, 169))
-        self.formLayoutWidget_6.setObjectName("formLayoutWidget_6")
-        
-        self.formLayout_6 = QtWidgets.QFormLayout(self.formLayoutWidget_6)
-        self.formLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.formLayout_6.setObjectName("formLayout_6")
+        self.formLayout_5 = QtWidgets.QFormLayout(self.formLayoutWidget_5)
+        self.formLayout_5.setObjectName("formLayout_5")
 
-        self.formLayout_6 = QtWidgets.QFormLayout()
-        self.formLayout_6.setObjectName("formLayout_6")
+        self.scrollArea_5.setWidget(self.scrollAreaWidgetContents_5)
+        self.scrollAreaWidgetContents_5.setLayout(self.formLayout_5)
 
-        self.scrollArea_6.setWidget(self.scrollAreaWidgetContents_6)
-        self.scrollAreaWidgetContents_6.setLayout(self.formLayout_6)
+        self.tabs.addTab(self.scrollArea_5,"General")
 
-        self.nc = QtWidgets.QCheckBox(self.groupBox_6)
+        self.nc = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_5)
         self.nc.setObjectName("nc")
+        self.nc.setText("NC")
         self.nc.setToolTip('Necessary Condition')
-        self.formLayout_6.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.nc)
+        self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.nc)
 
 
 
         self.groupbox_plots = QtWidgets.QGroupBox(self.centralwidget)  # multi plot
         self.groupbox_plots.setGeometry(QtCore.QRect(12, 470, 1000, 130))
         self.groupbox_plots.setObjectName("groupbox_plots")
+        self.groupbox_plots.setTitle("Plots")
         
         self.plotdata = QtWidgets.QCheckBox(self.groupbox_plots)
         self.plotdata.setGeometry(QtCore.QRect(12, 30, 160, 25))
         self.plotdata.setChecked(True)
         self.plotdata.setObjectName("plotdata")
+        self.plotdata.setText("Plot selected Tests")
 
         self.plotall = QtWidgets.QCheckBox(self.groupbox_plots)
         self.plotall.setGeometry(QtCore.QRect(172, 30, 180, 25))
         self.plotall.setChecked(True)
         self.plotall.setObjectName("plotall")
+        self.plotall.setText("Combine selected Tests")
 
         self.mp_check = QtWidgets.QCheckBox(self.groupbox_plots)
         self.mp_check.setGeometry(QtCore.QRect(12, 63, 190, 25))
         self.mp_check.setObjectName("mp_check")
+        self.mp_check.setText("Combine available Tests")
         self.mp_check.setToolTip('Plots')
         self.mp_check.stateChanged.connect(lambda: selectionchange_plot(self.combobox_plot))
 
         self.label_mp_control = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp_control.setGeometry(QtCore.QRect(211, 63, 130, 25))
         self.label_mp_control.setObjectName("label_mp")
+        self.label_mp_control.setText("Control Parameter:")
 
         self.combobox_plot = QtWidgets.QComboBox(self.groupbox_plots)
         self.combobox_plot.setGeometry(QtCore.QRect(351, 63, 180, 25))
@@ -578,6 +603,7 @@ class Ui_MainWindow(object):
         self.label_mp = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp.setGeometry(QtCore.QRect(12, 96, 50, 25))
         self.label_mp.setObjectName("label_mp")
+        self.label_mp.setText("Values:")
 
         self.tasksperset_p1 = QtWidgets.QSpinBox(self.groupbox_plots)
         self.tasksperset_p1.setGeometry(QtCore.QRect(74, 96, 50, 25))
@@ -618,6 +644,7 @@ class Ui_MainWindow(object):
         self.label_mp_max = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp_max.setGeometry(QtCore.QRect(12, 96, 80, 25))
         self.label_mp_max.setObjectName("label_mp_max")
+        self.label_mp_max.setText("Max Values:")
         self.label_mp_max.hide()
 
         self.slengthmaxvalue_p1 = QtWidgets.QDoubleSpinBox(self.groupbox_plots)
@@ -644,6 +671,7 @@ class Ui_MainWindow(object):
         self.label_mp_min = QtWidgets.QLabel(self.groupbox_plots)
         self.label_mp_min.setGeometry(QtCore.QRect(305, 96, 80, 25))
         self.label_mp_min.setObjectName("label_mp_max")
+        self.label_mp_min.setText("Min Values:")
         self.label_mp_min.hide()
 
         self.slengthminvalue_p1 = QtWidgets.QDoubleSpinBox(self.groupbox_plots)
@@ -701,10 +729,13 @@ class Ui_MainWindow(object):
         self.run.setToolTip('Button to run the settings')
         self.run.setGeometry(QtCore.QRect(812, 610, 200, 25))
         self.run.setObjectName("run")
+        self.run.setText("Run")
+
         self.exit = QtWidgets.QPushButton(self.centralwidget)
         self.exit.setToolTip('Exit the framework')
         self.exit.setGeometry(QtCore.QRect(12, 610, 200, 25))
         self.exit.setObjectName("exit")
+        self.exit.setText("Exit")
 
 
 
@@ -718,41 +749,25 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionOpen = QtWidgets.QAction(MainWindow)
         self.actionOpen.setObjectName("actionOpen")
+        self.actionOpen.setText("Open")
+        self.actionOpen.setShortcut("Ctrl+O")
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
+        self.actionSave.setText("Save")
+        self.actionSave.setShortcut("Ctrl+S")
         self.actionClose = QtWidgets.QAction(MainWindow)
         self.actionClose.setObjectName("actionClose")
+        self.actionClose.setText("Close")
+        self.actionClose.setShortcut("Ctrl+F4")
         self.actionQuit = QtWidgets.QAction(MainWindow)
         self.actionQuit.setObjectName("actionQuit")
+        self.actionQuit.setText("Quit")
         self.actionFramework_Help = QtWidgets.QAction(MainWindow)
         self.actionFramework_Help.setObjectName("actionFramework_Help")
+        self.actionFramework_Help.setText("Framework Help")
         self.actionAbout_Framework = QtWidgets.QAction(MainWindow)
         self.actionAbout_Framework.setObjectName("actionAbout_Framework")
-
-
-
-
-        def clickMethod(self):
-            global gPrefixdata
-            global gRuntest
-            global gPlotdata
-            global gNumberOfTaskSets
-            global gNumberOfTasksPerSet
-            global gUStart
-            global gUEnd
-            global gUStep
-            global gNumberOfSegs
-            global gSchemes
-            global gSLenMinValue
-            global gSLenMaxValue
-            global gPlotall
-            global gTaskChoice
-            global gmpCheck
-
-            del gSchemes[:]
-            setSchemes()
-
-            #print gSchemes
+        self.actionAbout_Framework.setText("About Framework")
 
 
         def selectionchange(com_b):
@@ -827,13 +842,34 @@ class Ui_MainWindow(object):
                         anums.hide()
                         anumt.hide()   
 
+        def clickMethod(self):
+            global gPrefixdata
+            global gRuntest
+            global gPlotdata
+            global gNumberOfTaskSets
+            global gNumberOfTasksPerSet
+            global gUStart
+            global gUEnd
+            global gUStep
+            global gNumberOfSegs
+            global gSchemes
+            global gSLenMinValue
+            global gSLenMaxValue
+            global gPlotall
+            global gTaskChoice
+            global gmpCheck
+
+            del gSchemes[:]
+            setSchemes()
+
+            #print(gSchemes)
+
         def clickexit(self):
             app.quit()
 
         self.run.clicked.connect(clickMethod)
         self.exit.clicked.connect(clickexit)
 
-        self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         def setSchemes():
@@ -949,7 +985,7 @@ class Ui_MainWindow(object):
                 else:
                     gSchemes.append('NC')
             if self.biondi.isChecked():
-                gSchemes.append('Biondi')
+                gSchemes.append('BIONDI')
             if self.passopa.isChecked():
                 gSchemes.append('PASS-OPA')
             if self.scedf.isChecked():
@@ -963,16 +999,13 @@ class Ui_MainWindow(object):
             if self.frdgmfopa.isChecked():
                 gSchemes.append('FRDGMF-OPA')
             if self.pathminddd.isChecked():
-                gSchemes.append(
-                    'PATH-minD-' + str(self.pathmindddg.value()) + '-D=D')
+                gSchemes.append('Oblivious-IUB-' + str(self.pathmindddg.value()))
             if self.pathminddnd.isChecked():
-                gSchemes.append(
-                    'PATH-minD-' + str(self.pathminddndg.value()) + '-DnD')
+                gSchemes.append('Clairvoyant-SSSD-' + str(self.pathminddndg.value()))
             if self.pathpbminddd.isChecked():
-                gSchemes.append('PATH-PBminD-' + str(self.pathpbmindddg.value()) + '-D=D')
+                gSchemes.append('Oblivious-MP-' + str(self.pathpbmindddg.value()))
             if self.pathpbminddnd.isChecked():
-                gSchemes.append('PATH-PBminD-' + str(self.pathpbminddndg.value()) + '-DnD')
-            #hteper
+                gSchemes.append('Clairvoyant-PDAB-' + str(self.pathpbminddndg.value()))
             if self.rss.isChecked():
                 gSchemes.append('RSS')
             if self.udledf.isChecked():
@@ -1004,7 +1037,6 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('SRSR')
-
             if gRuntest:
                 #khchen
                 if len(gSchemes) != 0:
@@ -1039,194 +1071,102 @@ class Ui_MainWindow(object):
 
             #MainWindow.statusBar().showMessage('Ready')
 
+def tasksetConfiguration():
+    global gNumberOfTaskSets
+    global gNumberOfTasksPerSet
+    global gUStep
+    global gUStart
+    global gUEnd
+    global gSLenMaxValue
+    global gSLenMinValue
+    global gNumberOfSegs
+    global gSeed
 
-        def tasksetConfiguration():
-            global gNumberOfTaskSets
-            global gNumberOfTasksPerSet
-            global gUStep
-            global gUStart
-            global gUEnd
-            global gSLenMaxValue
-            global gSLenMinValue
-            global gNumberOfSegs
-            global gSeed
+    tasksets_difutil = []
 
-            tasksets_difutil = []
+    if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
+        random.seed(gSeed)
+        for u in range(gUStart, gUEnd+gUStep, gUStep):
+            tasksets = []
+            for _ in range(0, gNumberOfTaskSets):
+                #percentageU = u * gUStep / 100
+                percentageU = u / 100
+                tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
+                                                seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
+                sortedTasks = sorted(tasks, key=lambda item: item['period'])
+                tasksets.append(sortedTasks)
+            tasksets_difutil.append(tasksets)
+        if gTaskChoice == 'Generate and Save Tasksets':
+            file_name = 'Ts-'+ str(gNumberOfTaskSets) + '-Tn-' \
+                        + str(gNumberOfTasksPerSet) + '-Ust-' + str(gUStep) +\
+                        '-Ssl-' + str(gSLenMinValue) + '-' + \
+                        str(gSLenMaxValue) + '-Seg-'+str(gNumberOfSegs)+'-.pkl'
+            MainWindow.statusBar().showMessage('File saved as: ' + file_name)
+            info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gUStart, gUEnd, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
+            with open('./tasksets/saves/'+file_name, 'wb') as f:
+                pickle.dump([tasksets_difutil,info] , f)
+    elif gTaskChoice == 'Load Tasksets':
+        # if len(gTasksetpath) != 0:
+        file_name = gTasksetpath
+        with open('./tasksets/saves/'+file_name, 'rb') as f:
+                data = pickle.load(f)
+        tasksets_difutil = data[0]
+        info = data[1]
+        gNumberOfTaskSets = int(info[0])
+        gNumberOfTasksPerSet = int(info[1])
+        gUStep = int(info[2])
+        gUStart = int(info[3])
+        gUEnd = int(info[4])
+        gSLenMinValue = float(info[5])
+        gSLenMaxValue = float(info[6])
+        gNumberOfSegs = int(info[7])
+        gSeed = info[8]
+    random.seed(gSeed)
+    return tasksets_difutil
 
+def schedulabilityTest(Tasksets_util):
+    pool = Pool(gthread)
+    #sspropotions = ['10']
+    #periodlogs = ['2']
+    for ischeme in gSchemes:
+        x = np.arange(gUStart, gUEnd+gUStep, gUStep)
+        #y = np.zeros(int(100 / gUStep) + 1)
+        y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
+        print(y)
+        ifskip = False
+        for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
+            print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gUStart + u * gUStep, "SSLength:", str(
+                gSLenMinValue), " - ", str(gSLenMaxValue), "Num. of segments:", gNumberOfSegs)
+            if u == 0:
+                y[u] = 1
+                continue
+            if u * gUStep == 100:
+                y[u] = 0
+                continue
+            if ifskip == True:
+                print("acceptanceRatio:", 0)
+                y[u] = 0
+                continue
             
-            random.seed(gSeed)
+            numfail = 0
+            splitTasks = np.array_split(tasksets,gthread)
+            results = [pool.apply_async(switchTest, args=(splitTasks[i],ischeme,i,)) for i in range(len(splitTasks))]
+            output = [p.get() for p in results]
+            numfail = sum(output)
 
-            if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
-                # khchen original code
-                #y = np.zeros(int(100 / gUStep) + 1)
-                #for u in range(0, len(y), 1):
+            acceptanceRatio = 1 - (numfail / gNumberOfTaskSets)
+            print("acceptanceRatio:", acceptanceRatio)
+            y[u] = acceptanceRatio
+            if acceptanceRatio == 0:
+                ifskip = True
 
-                y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
+        plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gNumberOfSegs) + '/'
+        plotfile = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(
+            gNumberOfSegs) + '/' + ischeme + str(gNumberOfTasksPerSet)
 
-                for u in range(gUStart, gUEnd, gUStep):
-                    tasksets = []
-                    for i in range(0, gNumberOfTaskSets, 1):
-                        #percentageU = u * gUStep / 100
-                        percentageU = u / 100
-                        tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
-                                                        seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
-                        sortedTasks = sorted(tasks, key=lambda item: item['period'])
-                        tasksets.append(sortedTasks)
-                    tasksets_difutil.append(tasksets)
-                if gTaskChoice == 'Generate and Save Tasksets':
-                    file_name = 'TspCon_'+ str(gNumberOfTaskSets) + '_TpTs_' \
-                                + str(gNumberOfTasksPerSet) + '_Utilst_' + str(gUStep) +\
-                                '_Minss_' + str(gSLenMinValue) + '_Maxss_' + \
-                                str(gSLenMaxValue) + '_Seg_'+str(gNumberOfSegs)+'_.pkl'
-                    MainWindow.statusBar().showMessage('File saved as: ' + file_name)
-                    info = [gNumberOfTaskSets, gNumberOfTasksPerSet, gUStep, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gSeed ]
-                    with open('./genTasksets/'+file_name, 'wb') as f:
-                        pickle.dump([tasksets_difutil,info] , f)
-            elif gTaskChoice == 'Load Tasksets':
-                # if len(gTasksetpath) != 0:
-                file_name = gTasksetpath
-                with open('./genTasksets/'+file_name, 'rb') as f:
-                     data = pickle.load(f)
-                tasksets_difutil = data[0]
-                info = data[1]
-                gNumberOfTaskSets = int(info[0])
-                gNumberOfTasksPerSet = int(info[1])
-                gUStep = int(info[2])
-                gSLenMinValue = float(info[3])
-                gSLenMaxValue = float(info[4])
-                gNumberOfSegs = int(info[5])
-                gSeed = info[6]
-            return tasksets_difutil
-
-
-
-        def schedulabilityTest(Tasksets_util):
-            pool = Pool(gthread)
-
-            sspropotions = ['10']
-            periodlogs = ['2']
-            for ischeme in gSchemes:
-                x = np.arange(gUStart, gUEnd+1, gUStep)
-                #y = np.zeros(int(100 / gUStep) + 1)
-                print(x)
-                y = np.zeros(int((gUEnd-gUStart) / gUStep) + 1)
-                print(y)
-                ifskip = False
-                # print("Hello")
-                # print(Tasksets_util)
-                # print("Hello")
-                for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
-                    print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gUStart + u * gUStep, "SSLength:", str(
-                        gSLenMinValue), " - ", str(gSLenMaxValue), "Num. of segments:", gNumberOfSegs)
-                    if u == 0:
-                        y[u] = 1
-                        continue
-                    if u * gUStep == 100:
-                        y[u] = 0
-                        continue
-                    if ifskip == True:
-                        print("acceptanceRatio:", 0)
-                        y[u] = 0
-                        continue
-                    
-                    numfail = 0
-                    splitTasks = np.array_split(tasksets,gthread)
-                    results = [pool.apply_async(switchTest, args=(splitTasks[i],ischeme,i,)) for i in range(len(splitTasks))]
-                    output = [p.get() for p in results]
-                    numfail = sum(output)
-
-                    acceptanceRatio = 1 - (numfail / gNumberOfTaskSets)
-                    print("acceptanceRatio:", acceptanceRatio)
-                    y[u] = acceptanceRatio
-                    if acceptanceRatio == 0:
-                        ifskip = True
-
-                plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gNumberOfSegs) + '/'
-                plotfile = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(
-                    gNumberOfSegs) + '/' + ischeme + str(gNumberOfTasksPerSet)
-
-                if not os.path.exists(plotPath):
-                    os.makedirs(plotPath)
-                np.save(plotfile, np.array([x, y]))
-       
-
-
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Evaluation Framework for Self-Suspending Task Systems"))
-        self.groupBox_general.setTitle(_translate("MainWindow", "General"))
-        self.prefixdatapath.setText(_translate("MainWindow", "effsstsPlot/Data"))
-        self.threadcount.setText(_translate("MainWindow", "1"))
-        self.tasksetdatapath.setText(_translate("MainWindow", "TspCon_100_TpTs_10_Utilst_5_Minss_0.01_Maxss_0.1_Seg_2_.pkl"))
-        self.runtests.setText(_translate("MainWindow", "Run Tests"))
-        self.plotdata.setText(_translate("MainWindow", "Plot selected Tests"))
-        self.plotall.setText(_translate("MainWindow", "Combine selected Tests"))
-        self.label_5.setText(_translate("MainWindow", "Prefix Data Path:"))
-        self.loadtasks_title.setText(_translate("MainWindow", "Tasksets File Name:"))
-        self.label_threadcount.setText(_translate("MainWindow", "Threadcount:"))
-        self.label_seed.setText(_translate("MainWindow", "Seed:"))
-        self.groupbox_configurations.setTitle(_translate("MainWindow", "Configurations"))
-        self.label_6.setText(_translate("MainWindow", "Task Sets per Configuration:"))
-        self.label_7.setText(_translate("MainWindow", "Tasks per Set:"))
-        self.label_8.setText(_translate("MainWindow", "Utilization Start Value:"))
-        self.label_9.setText(_translate("MainWindow", "Utilization End Value:"))
-        self.label_10.setText(_translate("MainWindow", "Number of Segments:"))
-        self.label_11.setText(_translate("MainWindow", "Utilization Step:"))
-        self.label.setText(_translate("MainWindow", "Suspension Length Min Value:"))
-        self.label_3.setText(_translate("MainWindow", "Suspension Length Max Value:"))
-        self.run.setText(_translate("MainWindow", "Run"))
-        self.exit.setText(_translate("MainWindow", "Exit"))
-        self.groupbox_schedulability_tests.setTitle(_translate("MainWindow", "Schedulability tests"))
-        self.groupbox_plots.setTitle(_translate("MainWindow", "Plots"))
-        self.groupBox_6.setTitle(_translate("MainWindow", "General"))
-        self.nc.setText(_translate("MainWindow", "NC"))
-        self.srsr.setText(_translate("MainWindow", "SRSR"))
-        self.biondi.setText(_translate("MainWindow", "Biondi RTSS 16"))
-        self.groupBox.setTitle(_translate("MainWindow", "FRD Hybrid"))
-        self.pathminddd.setText(_translate("MainWindow", "Oblivious-IUB"))
-        self.pathminddnd.setText(_translate("MainWindow", "Clairvoyant-SSSD"))
-        self.pathpbminddd.setText(_translate("MainWindow", "Oblivious-MP"))
-        self.pathpbminddnd.setText(_translate("MainWindow", "Clairvoyant-PDAB"))
-        self.groupBox_4.setTitle(_translate("MainWindow", "Segmented"))
-        self.scedf.setText(_translate("MainWindow", "SCEDF"))
-        self.scrm.setText(_translate("MainWindow", "SCRM"))
-        self.scairrm.setText(_translate("MainWindow", "SCAIR-RM"))
-        self.rss.setText(_translate("MainWindow", "RSS"))
-        self.gmfpa.setText(_translate("MainWindow", "GMF-PA"))
-        self.rtedf.setText(_translate("MainWindow", "RTEDF"))
-        self.udledf.setText(_translate("MainWindow", "UDLEDF"))
-        self.wlaedf.setText(_translate("MainWindow", "WLAEDF"))
-        self.uniframework.setText(_translate("MainWindow", "UniFramework"))
-        self.suspobl.setText(_translate("MainWindow", "SuspObl"))
-        self.suspjit.setText(_translate("MainWindow", "SuspJit"))
-        self.suspblock.setText(_translate("MainWindow", "SuspBlock"))
-        self.uppaal.setText(_translate("MainWindow", "UPPAAL"))
-        self.seifdamip.setText(_translate("MainWindow", "SEIFDA-MILP"))
-        self.scairopa.setText(_translate("MainWindow", "SCAIR-OPA"))
-        self.frdgmfopa.setText(_translate("MainWindow", "FRDGMF-OPA"))
-        self.groupBox_5.setTitle(_translate("MainWindow", "FRD Segmented"))
-        self.proportional.setText(_translate("MainWindow", "Proportional"))
-        self.seifdamind.setText(_translate("MainWindow", "SEIFDA-minD-"))
-        self.seifdamaxd.setText(_translate("MainWindow", "SEIFDA-maxD-"))
-        self.seifdapbmind.setText(_translate("MainWindow", "SEIFDA-PBminD-"))
-        self.eda.setText(_translate("MainWindow", "EDA"))
-        self.groupBox_8.setTitle(_translate("MainWindow", "Dynamic"))
-        self.label_mp.setText(_translate("MainWindow", "Values:"))
-        self.label_mp_control.setText(_translate("MainWindow", "Control Parameter:"))
-        self.label_mp_min.setText(_translate("MainWindow", "Min Values:"))
-        self.label_mp_max.setText(_translate("MainWindow", "Max Values:"))
-        self.mp_check.setText(_translate("MainWindow", "Combine available Tests"))
-        self.passopa.setText(_translate("MainWindow", "PASS-OPA"))
-        self.actionOpen.setText(_translate("MainWindow", "Open"))
-        self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
-        self.actionSave.setText(_translate("MainWindow", "Save"))
-        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
-        self.actionClose.setText(_translate("MainWindow", "Close"))
-        self.actionClose.setShortcut(_translate("MainWindow", "Ctrl+F4"))
-        self.actionQuit.setText(_translate("MainWindow", "Quit"))
-        self.actionFramework_Help.setText(_translate("MainWindow", "Framework Help"))
-        self.actionAbout_Framework.setText(_translate("MainWindow", "About Framework"))
-
+        if not os.path.exists(plotPath):
+            os.makedirs(plotPath)
+        np.save(plotfile, np.array([x, y]))
  
 def switchTest(tasksets,ischeme,i):
     counter = 0
@@ -1238,7 +1178,7 @@ def switchTest(tasksets,ischeme,i):
             if SCRM.SC_RM(tasks) == False:
                 counter += 1
         elif ischeme == 'PASS-OPA':
-            if Audsley.Audsley(tasks) == False:
+            if Audsley.Audsley(tasks,ischeme) == False:
                 counter += 1
         elif ischeme == 'SEIFDA-MILP':
             if mipx.mip(tasks) == False:
@@ -1246,7 +1186,7 @@ def switchTest(tasksets,ischeme,i):
         elif ischeme.split('-')[0] == 'SEIFDA':
             if SEIFDA.greedy(tasks, ischeme) == False:
                 counter += 1
-        elif ischeme.split('-')[0] == 'PATH':
+        elif ischeme.split('-')[0] == 'Oblivious' or ischeme.split('-')[0] == 'Clairvoyant'  :
             if PATH.PATH(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'EDA':
@@ -1265,16 +1205,16 @@ def switchTest(tasksets,ischeme,i):
             if rad.scair_dm(tasks) == False:
                 counter += 1
         elif ischeme == 'SCAIR-OPA':
-            if rad.Audsley(tasks, ischeme) == False:
+            if Audsley.Audsley(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'FRDGMF-OPA':
-            if rad.Audsley(tasks, ischeme) == False:
+            if Audsley.Audsley(tasks, ischeme) == False:
                 counter += 1
-        elif ischeme == 'Biondi':
+        elif ischeme == 'BIONDI':
             if Biondi.Biondi(tasks) == False:
                 counter += 1
         elif ischeme == 'RSS':
-            if RSS.SC2EDF(tasks) == False:
+            if RSS.RSS(tasks) == False:
                 counter += 1
         elif ischeme == 'UDLEDF':
             if UDLEDF.UDLEDF(tasks) == False:
@@ -1307,6 +1247,20 @@ def switchTest(tasksets,ischeme,i):
             assert ischeme, 'not vaild ischeme'
     return counter
 
+def evaluate_multiple_tasksets_multiple_schemes(tasksets, ischemes):
+    result = [[True if switchTest([taskset],ischeme,0)==0 else False for ischeme in ischemes] for taskset in tasksets]
+    #print(result)
+    return result
+
+def evaluate_single_taskset_multiple_schemes(taskset, ischemes):
+    result = [True if switchTest([taskset],ischeme,0)==0 else False for ischeme in ischemes]
+    #print(result)
+    return result
+
+def evaluate_single_taskset_single_scheme(taskset, ischeme):
+    result = True if switchTest([taskset],ischeme,0)==0 else False
+    #print(result)
+    return result
 
 if __name__ == "__main__":
     import sys

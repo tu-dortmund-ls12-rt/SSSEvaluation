@@ -1,5 +1,7 @@
-from schedTest import PASS
-def Audsley(tasks):
+from schedTest import rad
+import sys
+
+def Audsley(tasks,scheme):
 	#Optimal Priority Assignment
 	priortyassigned=[0 for i in range(len(tasks))]
 	for plevel in range(len(tasks)): 
@@ -16,13 +18,12 @@ def Audsley(tasks):
 			for j in range(len(tasks)):
 				if priortyassigned[j]==0 and i != j:
 					primeTasks.append(tasks[j])
-			#print "all :",tasks
-			#print "task:",itask
-			#print "prime:",primeTasks
-			#print ""
 
 			
 			Tn=itask['period']
+			Cn=itask['execution']
+			Sn=itask['sslength']
+			D=(itask['deadline']-itask['sslength'])/len(itask['Cseg'])
 			maxSC=0
 			for j in range(len(itask["paths"])):
 				SC=0
@@ -31,15 +32,26 @@ def Audsley(tasks):
 				for k in range(len(itask["paths"][j]['Sseg'])):
 					SC+=itask["paths"][j]['Sseg'][k]
 				maxSC=max(maxSC,SC)
-				
-
-			if PASS.PASS(maxSC,Tn,primeTasks) == True:
-				priortyassigned[i]=1
-				canLevel=1
-				tasks[i]['priority']=len(tasks)-plevel
-				break	
+			if scheme == "PASS-OPA":
+				if rad.PASS(maxSC,Tn,primeTasks) == True:
+					priortyassigned[i]=1
+					canLevel=1
+					tasks[i]['priority']=len(tasks)-plevel
+					break
+			elif scheme == "SCAIR-OPA":
+				if (rad.segTest(Cn,Sn,Tn,primeTasks) or rad.SUMTest(itask,primeTasks) )==True:
+					priortyassigned[i]=1
+					canLevel=1
+					tasks[i]['priority']=len(tasks)-plevel
+					break	
+			elif scheme == "FRDGMF-OPA":
+				if rad.FRDGMF(itask,primeTasks,D)==True:
+					priortyassigned[i]=1
+					canLevel=1
+					tasks[i]['priority']=len(tasks)-plevel
+					break
+			else:
+				sys.exit(2)
 		if canLevel == 0:
-			#print "fail assign at",plevel 
 			return False 
-	#print tasks
 	return True
