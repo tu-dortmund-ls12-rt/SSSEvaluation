@@ -85,6 +85,14 @@ For the dynamic model, the total execution time ['execution'] and total suspensi
 
 ## Schedulability Tests
 
+### Not limited
+
+Name | Paper | File name | Method name
+---|---|---|---
+SCEDF | https://link.springer.com/article/10.1007/s11241-018-9316-9 Section 7.1 | SCEDF.py | SC_EDF
+SCRM | https://link.springer.com/article/10.1007/s11241-018-9316-9 Section 4.2.4 | SCRM.py | SC_RM
+SUSPOBL | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspObl
+
 ### Segmented Suspension
 
 #### Implicit-Deadline
@@ -92,9 +100,9 @@ For the dynamic model, the total execution time ['execution'] and total suspensi
 Name | Paper | File name | Method name
 ---|---|---|---
 EDA | https://ieeexplore.ieee.org/document/7010483 | EDA.py | SEIFDA
-SEIFDA-minD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
-SEIFDA-maxD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
-SEIFDA-PBminD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
+SEIFDA-minD | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
+SEIFDA-maxD | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
+SEIFDA-PBminD | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
 SEIFDA-MILP | https://dl.acm.org/doi/10.1145/2997465.2997497 | mipx.py | mip
 NC | https://dl.acm.org/doi/10.1145/2997465.2997497 | NC.py | NC
 PROPORTIONAL | https://ieeexplore.ieee.org/document/6881366 | PROPORTIONAL.py | PROPORTIONAL
@@ -104,13 +112,13 @@ SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
 
 Name | Paper | File name | Method name
 ---|---|---|---
-BIONDI | https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
+MILP-ReleaseJitter| https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
 
 #### Arbitrary-Deadline
 
 Name | Paper | File name | Method name
 ---|---|---|---
-GMFPA- | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
+GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py | GMFPA
 
 ### Dynamic Suspension
 
@@ -118,10 +126,12 @@ GMFPA- | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py 
 
 Name | Paper | File name | Method name
 ---|---|---|---
+Idv-Burst-RM | https://ieeexplore.ieee.org/document/7010485 | rad.py | BURST-RM 
 RSS | https://ieeexplore.ieee.org/document/9211430 Section V | RSS.py | RSS
 UDLEDF | http://zheng.eng.wayne.edu/_resources/pdfs/HRT.pdf <sup>1</sup> | UDLEDF.py | UDLEDF
 WLAEDF | https://www.cs.unc.edu/~anderson/papers/ecrts13e_erratum.pdf <sup>1</sup>  | WLAEDF.py | WLAEDF
 RTEDF  | https://ieeexplore.ieee.org/document/9211430 Algorithm 1 | RTEDF.py | RTEDF
+SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
 
 [1]: (Uniprocessor version presented in https://ieeexplore.ieee.org/document/9211430 Section III)
 
@@ -129,15 +139,11 @@ RTEDF  | https://ieeexplore.ieee.org/document/9211430 Algorithm 1 | RTEDF.py | R
 
 Name | Paper | File name | Method name
 ---|---|---|---
-SCEDF | https://link.springer.com/article/10.1007/s11241-018-9316-9 Section 7.1 | SCEDF.py | SC_EDF
-SCRM | https://link.springer.com/article/10.1007/s11241-018-9316-9 Section 4.2.4 | SCRM.py | SC_RM
 SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
 SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | Audsley
 PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | Audsley.py | Audsley
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
-SUSPOBL | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspObl
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
-SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
 
 #### Arbitrary-Deadline
 
