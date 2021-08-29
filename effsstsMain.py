@@ -120,7 +120,7 @@ class Ui_MainWindow(object):
 		self.groupbox_configurations = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupbox_configurations.setGeometry(QtCore.QRect(12, 122, 1000, 100))
 		self.groupbox_configurations.setObjectName("groupbox_configurations")
-		self.groupbox_configurations.setTitle("Configurations")
+		self.groupbox_configurations.setTitle("Task Sets")
 
 		self.label_tasksetsperconfiguration = QtWidgets.QLabel(self.groupbox_configurations)
 		self.label_tasksetsperconfiguration.setGeometry(QtCore.QRect(12, 32, 198, 25))
@@ -217,7 +217,7 @@ class Ui_MainWindow(object):
 		self.groupbox_schedulability_tests = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
 		self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 232, 1000, 228))
 		self.groupbox_schedulability_tests.setObjectName("groupbox_schedulability_tests")
-		self.groupbox_schedulability_tests.setTitle("Schedulability tests")
+		self.groupbox_schedulability_tests.setTitle("Schedulability Tests")
 
 
 
