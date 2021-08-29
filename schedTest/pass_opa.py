@@ -1,25 +1,25 @@
 from schedTest import rad
 import sys
 
-def Audsley(tasks,scheme):
+def PASS_OPA(tasks,scheme):
 	#Optimal Priority Assignment
 	priortyassigned=[0 for i in range(len(tasks))]
-	for plevel in range(len(tasks)): 
+	for plevel in range(len(tasks)):
 		canLevel=0
 		## check whether task i can be assigned with the priority level plevel
-		for i in range(len(tasks)):	
+		for i in range(len(tasks)):
 			##ignore lower priority tasks
 			if priortyassigned[i]==1:
-				continue	
+				continue
 			itask=tasks[i]
-			
+
 			## get higher prioirty tasks
 			primeTasks=[]
 			for j in range(len(tasks)):
 				if priortyassigned[j]==0 and i != j:
 					primeTasks.append(tasks[j])
 
-			
+
 			Tn=itask['period']
 			Cn=itask['execution']
 			Sn=itask['sslength']
@@ -43,7 +43,7 @@ def Audsley(tasks,scheme):
 					priortyassigned[i]=1
 					canLevel=1
 					tasks[i]['priority']=len(tasks)-plevel
-					break	
+					break
 			elif scheme == "FRDGMF-OPA":
 				if rad.FRDGMF(itask,primeTasks,D)==True:
 					priortyassigned[i]=1
@@ -53,5 +53,5 @@ def Audsley(tasks,scheme):
 			else:
 				sys.exit(2)
 		if canLevel == 0:
-			return False 
+			return False
 	return True

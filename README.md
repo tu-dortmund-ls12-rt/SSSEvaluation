@@ -112,7 +112,7 @@ SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
 
 Name | Paper | File name | Method name
 ---|---|---|---
-MILP-ReleaseJitter| https://ieeexplore.ieee.org/document/7176028 | Biondi.py | Biondi
+MILP-ReleaseJitter| https://ieeexplore.ieee.org/document/7176028 | milp_response.py | Milpreleasejitter 
 
 #### Arbitrary-Deadline
 
@@ -141,7 +141,7 @@ Name | Paper | File name | Method name
 ---|---|---|---
 SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
 SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | scair_opa.py | SCAIR_OPA
-PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | Audsley.py | Audsley
+PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | pass_opa.py | PASS_OPA
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
 

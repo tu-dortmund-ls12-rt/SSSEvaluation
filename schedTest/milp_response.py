@@ -7,8 +7,8 @@ import numpy as np
 # WCRT-Approximation by task interference applied on Real-Time Applications on Dynamic Reconfigurable FPGAs
 # From: https://ieeexplore.ieee.org/document/7176028 and https://ieeexplore.ieee.org/document/7809838
 # Input: Task set
-# Output: Schedulability of the Task Set under Biondi
-def Biondi(tasks):
+# Output: Schedulability of the Task Set
+def Milpreleasejitter(tasks):
 	len_tasks = len(tasks)
 	#wcrt of each task
 	wcrt = [0] * len_tasks
@@ -79,15 +79,15 @@ def Biondi(tasks):
 		m.addConstr((Rssj[:].sum() + sum(s_segs) <= UBss ),name='c1')
 
 		#Constraint 2
-		m.addConstrs((Rssj[j] == c_segs[j] + sum(i[0] * i[1] for i in zip(Nikj[:,j], Cj)) 
+		m.addConstrs((Rssj[j] == c_segs[j] + sum(i[0] * i[1] for i in zip(Nikj[:,j], Cj))
 					for j in range(len_c_segs)),name='c2')
 
 		#Constraint 3
-		m.addConstrs((Rssj[j] <= UBssj[j] 
+		m.addConstrs((Rssj[j] <= UBssj[j]
 					for j in range(len_c_segs)),name='c3')
 
 		#Constraint 4
-		m.addConstrs((Okj[k,j] >= -Jk[k] 
+		m.addConstrs((Okj[k,j] >= -Jk[k]
 					for k in range(len_hp_tasks)
 					for j in range(len_c_segs)),name='c4')
 
@@ -97,15 +97,15 @@ def Biondi(tasks):
 					for j in range(len_c_segs-1)),name='c5')
 
 		#Constraint 6
-		m.addConstrs((Nikj[k,j] >= 0 
+		m.addConstrs((Nikj[k,j] >= 0
 					for k in range(len_hp_tasks)
 					for j in range(len_c_segs)),name='c6')
 
-		m.addConstrs((NikjCont[k,j] >= 0 
+		m.addConstrs((NikjCont[k,j] >= 0
 					for k in range(len_hp_tasks)
 					for j in range(len_c_segs)),name='c6cont')
 
-		m.addConstrs((NikjCeil[k,j] >= 0 
+		m.addConstrs((NikjCeil[k,j] >= 0
 					for k in range(len_hp_tasks)
 					for j in range(len_c_segs)),name='c6ceil')
 
@@ -117,7 +117,7 @@ def Biondi(tasks):
 		m.addConstrs((NikjCeil[k,j] >= NikjCont[k,j]
 					for k in range(len_hp_tasks)
 					for j in range(len_c_segs)),name='c7ceil1')
-					
+
 		m.addConstrs((NikjCeil[k,j]-1 <= NikjCont[k,j]-IntFeasTol
 					for k in range(len_hp_tasks)
 					for j in range(len_c_segs)),name='c7ceil2')
@@ -188,7 +188,7 @@ def Biondi(tasks):
 		else:
 			# MILP is unfeasible and task set cant be scheduled
 			m.computeIIS()
-			m.write("Biondi.ilp")
+			m.write("Milpreleasejitter.ilp")
 			return False
 	#Everything is schedulable
 	return True

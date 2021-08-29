@@ -3,8 +3,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import random
 import sys
 import numpy as np
-from schedTest import Burst_RM, tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, scair_opa, scair_rm
-from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi, Uppaal, Burst_RM
+from schedTest import Burst_RM, tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, pass_opa, rad, PATH, mipx, scair_opa, scair_rm
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, milp_response, Uppaal, Burst_RM
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -56,7 +56,7 @@ class Ui_MainWindow(object):
 		self.centralwidget.setObjectName("centralwidget")
 
 
-		
+
 		self.groupBox_general = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_general.setGeometry(QtCore.QRect(12, 12, 1000, 100))
 		self.groupBox_general.setObjectName("groupBox_general")
@@ -95,7 +95,7 @@ class Ui_MainWindow(object):
 		self.threadcount.setGeometry(QtCore.QRect(895, 32, 95, 25))
 		self.threadcount.setObjectName("threadcount")
 		self.threadcount.setText("1")
-		
+
 		self.label_prefixdatapath = QtWidgets.QLabel(self.groupBox_general)
 		self.label_prefixdatapath.setGeometry(QtCore.QRect(12, 65, 115, 25))
 		self.label_prefixdatapath.setObjectName("label_prefixdatapath")
@@ -170,7 +170,7 @@ class Ui_MainWindow(object):
 		self.label_utilizationstep.setGeometry(QtCore.QRect(500, 32, 160, 25))
 		self.label_utilizationstep.setObjectName("label_utilizationstep") # utilization step
 		self.label_utilizationstep.setText("Utilization Step:")
-		
+
 		self.utilstep = QtWidgets.QSpinBox(self.groupbox_configurations)
 		self.utilstep.setGeometry(QtCore.QRect(660, 32, 55, 25))
 		self.utilstep.setMaximum(100)
@@ -192,7 +192,7 @@ class Ui_MainWindow(object):
 		self.label_suspensionminvalue.setGeometry(QtCore.QRect(725, 32, 210, 25))
 		self.label_suspensionminvalue.setObjectName("label_suspensionminvalue") # suspension length min value
 		self.label_suspensionminvalue.setText("Suspension Length Min Value:")
-		
+
 		self.slengthminvalue = QtWidgets.QDoubleSpinBox(self.groupbox_configurations)
 		self.slengthminvalue.setGeometry(QtCore.QRect(935, 32, 55, 25))
 		self.slengthminvalue.setMaximum(1.0)
@@ -201,7 +201,7 @@ class Ui_MainWindow(object):
 		self.slengthminvalue.setObjectName("slengthminvalue")
 
 		self.label_suspensionmaxvalue = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_suspensionmaxvalue.setGeometry(QtCore.QRect(725, 65, 210, 25)) 
+		self.label_suspensionmaxvalue.setGeometry(QtCore.QRect(725, 65, 210, 25))
 		self.label_suspensionmaxvalue.setObjectName("label_suspensionmaxvalue") # suspension length max
 		self.label_suspensionmaxvalue.setText("Suspension Length Max Value:")
 
@@ -277,7 +277,7 @@ class Ui_MainWindow(object):
 		self.seifdapbmind.setText("SEIFDA-PBminD-")
 		self.seifdapbmind.setToolTip('Shortest Execution Interval First Deadline Assignment - Proportionally-Bounded-Min x')
 		self.formLayout_1.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.seifdapbmind)
-		
+
 		self.seifdapbmindg = QtWidgets.QSpinBox(self.formLayoutWidget_1)
 		self.seifdapbmindg.setMaximum(5)
 		self.seifdapbmindg.setProperty("value", 1)
@@ -287,7 +287,7 @@ class Ui_MainWindow(object):
 		self.eda = QtWidgets.QCheckBox(self.formLayoutWidget_1)
 		self.eda.setObjectName("eda")
 		self.eda.setText("EDA")
-		self.eda.setToolTip('Equal relative Deadline Assignment (EDA)') 
+		self.eda.setToolTip('Equal relative Deadline Assignment (EDA)')
 		self.formLayout_1.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.eda)
 
 		self.proportional = QtWidgets.QCheckBox(self.formLayoutWidget_1)
@@ -420,31 +420,31 @@ class Ui_MainWindow(object):
 		self.scrm.setText("SCRM")
 		self.scrm.setToolTip('Suspension as Computation Rate-Monotonic (SCRM)')
 		self.formLayout_3.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.scrm)
-		
+
 		self.scairrm = QtWidgets.QCheckBox(self.formLayoutWidget_3)
 		self.scairrm.setObjectName("scairrm")
 		self.scairrm.setText("SCAIR-RM")
 		self.scairrm.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Rate-Monotonic (RM)')
 		self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.scairrm)
-		
+
 		self.scairopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
 		self.scairopa.setObjectName("scairopa")
 		self.scairopa.setText("SCAIR-OPA")
 		self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
 		self.formLayout_3.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
-		
+
 		self.frdgmfopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
 		self.frdgmfopa.setObjectName("frdgmfopa")
 		self.frdgmfopa.setText("FRDGMF-OPA")
 		self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
 		self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
-		
+
 		self.milpreleasejitter = QtWidgets.QCheckBox(self.formLayoutWidget_3)
 		self.milpreleasejitter.setObjectName("MILP-ReleaseJitter")
 		self.milpreleasejitter.setText("MILP-ReleaseJitter")
-		self.milpreleasejitter.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
+		self.milpreleasejitter.setToolTip('MILP-based method')
 		self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.milpreleasejitter)
-		
+
 		self.srsr = QtWidgets.QCheckBox(self.formLayoutWidget_3)
 		self.srsr.setObjectName("srsr")
 		self.srsr.setText("SRSR")
@@ -485,31 +485,31 @@ class Ui_MainWindow(object):
 		self.rss.setText("RSS")
 		self.rss.setToolTip('Utilization-based Schedulability Test')
 		self.formLayout_4.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.rss)
-		
+
 		self.udledf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
 		self.udledf.setObjectName("udledf")
 		self.udledf.setText("UDLEDF")
 		self.udledf.setToolTip('')
 		self.formLayout_4.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.udledf)
-		
+
 		self.wlaedf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
 		self.wlaedf.setObjectName("wlaedf")
 		self.wlaedf.setText("WLAEDF")
 		self.wlaedf.setToolTip('Workload-based Schedulability Test')
 		self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.wlaedf)
-		
+
 		self.rtedf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
 		self.rtedf.setObjectName("rtedf")
 		self.rtedf.setText("RTEDF")
 		self.rtedf.setToolTip('Response-Time-Based Schedulability Test')
 		self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.rtedf)
-		
+
 		self.uniframework = QtWidgets.QCheckBox(self.formLayoutWidget_4)
 		self.uniframework.setObjectName("uniframework")
 		self.uniframework.setText("UNIFRAMEWORK")
 		self.uniframework.setToolTip('Unified Response Time Analysis Framework')
 		self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.uniframework)
-		
+
 		self.suspobl = QtWidgets.QCheckBox(self.formLayoutWidget_4)
 		self.suspobl.setObjectName("suspobl")
 		self.suspobl.setText("SUSPOBL")
@@ -575,7 +575,7 @@ class Ui_MainWindow(object):
 		self.groupbox_plots.setGeometry(QtCore.QRect(12, 470, 1000, 130))
 		self.groupbox_plots.setObjectName("groupbox_plots")
 		self.groupbox_plots.setTitle("Plots")
-		
+
 		self.plotdata = QtWidgets.QCheckBox(self.groupbox_plots)
 		self.plotdata.setGeometry(QtCore.QRect(12, 30, 160, 25))
 		self.plotdata.setChecked(True)
@@ -666,7 +666,7 @@ class Ui_MainWindow(object):
 		self.slengthmaxvalue_p2.setSingleStep(0.01)
 		self.slengthmaxvalue_p2.setProperty("value", 0.1)
 		self.slengthmaxvalue_p2.setObjectName("slengthmaxvalue")
-		
+
 		self.slengthmaxvalue_p3 = QtWidgets.QDoubleSpinBox(self.groupbox_plots)
 		self.slengthmaxvalue_p3.setGeometry(QtCore.QRect(238, 96, 55, 25))
 		self.slengthmaxvalue_p3.setMaximum(1.0)
@@ -711,11 +711,11 @@ class Ui_MainWindow(object):
 			a.hide()
 			b.hide()
 			c.hide()
-			
+
 		self.label_mp_control.hide()
 		self.combobox_plot.hide()
 		self.label_mp.hide()
-	
+
 		self.tasksperset_p1.hide()
 		self.tasksperset_p2.hide()
 		self.tasksperset_p3.hide()
@@ -730,7 +730,7 @@ class Ui_MainWindow(object):
 		self.slengthminvalue_p1.hide()
 		self.slengthminvalue_p2.hide()
 		self.slengthminvalue_p3.hide()
-		
+
 		self.run = QtWidgets.QPushButton(self.centralwidget)
 		self.run.setToolTip('Button to run the settings')
 		self.run.setGeometry(QtCore.QRect(812, 610, 200, 25))
@@ -787,12 +787,12 @@ class Ui_MainWindow(object):
 
 		def selectionchange_plot( com_b):
 
-			
+
 			if not(self.mp_check.isChecked()):
 				self.label_mp_control.hide()
 				self.combobox_plot.hide()
 				self.label_mp.hide()
-			
+
 				self.tasksperset_p1.hide()
 				self.tasksperset_p2.hide()
 				self.tasksperset_p3.hide()
@@ -821,7 +821,7 @@ class Ui_MainWindow(object):
 					self.label_mp_max.hide()
 					self.label_mp_min.hide()
 					self.label_mp.show()
-		
+
 				for i in range(1, 4):
 					slmax = 'slengthmaxvalue_p' + str(i)
 					slmin = 'slengthminvalue_p' + str(i)
@@ -846,7 +846,7 @@ class Ui_MainWindow(object):
 						aslmax.show()
 						aslmin.show()
 						anums.hide()
-						anumt.hide()   
+						anumt.hide()
 
 		def clickMethod(self):
 			global gPrefixdata
@@ -1155,7 +1155,7 @@ def schedulabilityTest(Tasksets_util):
 				print("acceptanceRatio:", 0)
 				y[u] = 0
 				continue
-			
+
 			numfail = 0
 			splitTasks = np.array_split(tasksets,gthread)
 			results = [pool.apply_async(switchTest, args=(splitTasks[i],ischeme,i,)) for i in range(len(splitTasks))]
@@ -1186,7 +1186,7 @@ def switchTest(tasksets,ischeme,i):
 			if SCRM.SC_RM(tasks) == False:
 				counter += 1
 		elif ischeme == 'PASS-OPA':
-			if Audsley.Audsley(tasks,ischeme) == False:
+			if pass_opa.PASS_OPA(tasks,ischeme) == False:
 				counter += 1
 		elif ischeme == 'SEIFDA-MILP':
 			if mipx.mip(tasks) == False:
@@ -1216,10 +1216,10 @@ def switchTest(tasksets,ischeme,i):
 			if scair_opa.SCAIR_OPA(tasks, ischeme) == False:
 				counter += 1
 		elif ischeme == 'FRDGMF-OPA':
-			if Audsley.Audsley(tasks, ischeme) == False:
+			if pass_opa.PASS_OPA(tasks, ischeme) == False:
 				counter += 1
 		elif ischeme == 'MILP-ReleaseJitter':
-			if Biondi.Biondi(tasks) == False:
+			if milp_response.Milpreleasejitter(tasks) == False:
 				counter += 1
 		elif ischeme == 'RSS':
 			if RSS.RSS(tasks) == False:
