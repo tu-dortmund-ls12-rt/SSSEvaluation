@@ -126,7 +126,7 @@ GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py |
 
 Name | Paper | File name | Method name
 ---|---|---|---
-Idv-Burst-RM | https://ieeexplore.ieee.org/document/7010485 | rad.py | BURST-RM 
+Idv-Burst-RM | https://ieeexplore.ieee.org/document/7010485 | Burst_RM.py | BURST_RM 
 RSS | https://ieeexplore.ieee.org/document/9211430 Section V | RSS.py | RSS
 UDLEDF | http://zheng.eng.wayne.edu/_resources/pdfs/HRT.pdf <sup>1</sup> | UDLEDF.py | UDLEDF
 WLAEDF | https://www.cs.unc.edu/~anderson/papers/ecrts13e_erratum.pdf <sup>1</sup>  | WLAEDF.py | WLAEDF

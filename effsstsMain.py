@@ -530,7 +530,7 @@ class Ui_MainWindow(object):
 
 		self.burstrm = QtWidgets.QCheckBox(self.formLayoutWidget_4)
 		self.burstrm.setObjectName("burstrm")
-		self.burstrm.setText("BURST-RM")
+		self.burstrm.setText("Idv-Burst-RM")
 		self.burstrm.setToolTip('Rate monotonic priority assignment with burst schedulability evaluation')
 		self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.burstrm)
 
@@ -1029,7 +1029,7 @@ class Ui_MainWindow(object):
 			if self.suspblock.isChecked():
 				gSchemes.append('SUSPBLOCK')
 			if self.burstrm.isChecked():
-				gSchemes.append('BURST-RM')
+				gSchemes.append('IDV-BURST-RM')
 			if self.uppaal.isChecked():
 				gSchemes.append('UPPAAL')
 			if self.gmfpa.isChecked():
@@ -1245,7 +1245,7 @@ def switchTest(tasksets,ischeme,i):
 		elif ischeme == 'SUSPBLOCK':
 			if FixedPriority.SuspBlock(tasks) == False:
 				counter += 1
-		elif ischeme == 'BURST-RM':
+		elif ischeme == 'IDV-BURST-RM':
 			if Burst_RM.BURST_RM(tasks) == False:
 				counter += 1
 		elif ischeme == 'UPPAAL':
