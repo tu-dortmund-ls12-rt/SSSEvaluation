@@ -118,10 +118,10 @@ def UDLEDF_improved(tasks):
 # Input: Previous list of indices
 # Output: Next step of indices 
 def nextIndicesList(indicesList):
-    for i in range(0, len(indicesList)):
-        if indicesList[i]== 0:
-            indicesList[i]=1
-            break
-        else:
-            indicesList[i]=0
-    return indicesList
+	for i in range(0, len(indicesList)):
+		if indicesList[i]== 0:
+			indicesList[i]=1
+			break
+		else:
+			indicesList[i]=0
+	return indicesList
