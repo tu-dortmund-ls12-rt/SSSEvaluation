@@ -180,25 +180,6 @@ def SUMTest(itask,HPTasks):
 		return False
 	else:
 		return True
-def segTest(Cn,Sn,Tn,HPTasks):
-	R=0
-
-	while True:	
-
-		dm=0
-		for itask in HPTasks:		
-			if itask['sslength']==0:
-				dm+=itask['execution']*math.ceil((R)/itask['period'])	
-			else:
-				dm+=MRBF(R,itask)
-		
-		if dm+Cn+Sn> Tn:
-			return False
-		 
-		if dm+Cn+Sn>R:
-			R=dm+Cn+Sn
-		else:
-			return True
 def XRTA(Cn,Sn,Tn,HPTasks):
 	R=0
 	while True:	
@@ -404,38 +385,6 @@ def dm_cmp(x, y):
 	dy=y['period']-y['sslength']
 	return int(dx - dy)
 
-def Burst_HP(Cn,Sn,Tn,HPTasks):
-	Tasks=[]
-	for itask in HPTasks:	
-		Tasks.append(itask)
-
-	for itask in Tasks:	
-		alpha=1+(1/int(Tn/itask['period']))
-		itask['alpha']=alpha
-	#sorting by increasing alpha
-	sortedTasksAlpha=sorted(Tasks, key=lambda item:item['alpha']) 
-	sumL=0
-	for i in range(len(sortedTasksAlpha)):
-		prod=1
-		for j in range(i,len(sortedTasksAlpha)):
-			prod*(1+sortedTasksAlpha[j]['execution']/sortedTasksAlpha[j]['period'])
-
-		sumL+=(sortedTasksAlpha[i]['alpha']+1)*(sortedTasksAlpha[i]['execution']/sortedTasksAlpha[i]['period'])/prod
-	if (Cn+Sn)/Tn <= 1-sumL:
-		return True
-	else:
-		return False
-def BURST_RM(tasks):
-	#sorting tasks by increasing period
-	sortedTasksRM=sorted(tasks, key=lambda item:item['period']) 
-	#print(sortedTasksLM)
-	for i in range(len(sortedTasksRM)):
-		Cn=sortedTasksRM[i]['execution']
-		Sn=sortedTasksRM[i]['sslength']
-		Tn=sortedTasksRM[i]['period']
-		if Burst_HP(Cn,Sn,Tn,sortedTasksRM[:i])==False:
-				return False
-	return True
 def XM(tasks,scheme):
 	if scheme == "XLM":
 		#sorting tasks by increasing T-S

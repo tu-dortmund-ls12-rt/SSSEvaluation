@@ -126,7 +126,7 @@ GMFPA | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py |
 
 Name | Paper | File name | Method name
 ---|---|---|---
-Idv-Burst-RM | https://ieeexplore.ieee.org/document/7010485 | rad.py | BURST-RM 
+Idv-Burst-RM | https://ieeexplore.ieee.org/document/7010485 | Burst_RM.py | BURST_RM 
 RSS | https://ieeexplore.ieee.org/document/9211430 Section V | RSS.py | RSS
 UDLEDF | http://zheng.eng.wayne.edu/_resources/pdfs/HRT.pdf <sup>1</sup> | UDLEDF.py | UDLEDF
 WLAEDF | https://www.cs.unc.edu/~anderson/papers/ecrts13e_erratum.pdf <sup>1</sup>  | WLAEDF.py | WLAEDF
@@ -140,7 +140,7 @@ SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | 
 Name | Paper | File name | Method name
 ---|---|---|---
 SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
-SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | Audsley
+SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | scair_opa.py | SCAIR_OPA
 PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | Audsley.py | Audsley
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
