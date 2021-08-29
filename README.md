@@ -140,7 +140,7 @@ SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | 
 Name | Paper | File name | Method name
 ---|---|---|---
 SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
-SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | Audsley
+SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | scair_opa.py | SCAIR_OPA
 PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | Audsley.py | Audsley
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit

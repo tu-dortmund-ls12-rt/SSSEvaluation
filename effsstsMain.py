@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import random
 import sys
 import numpy as np
-from schedTest import tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx
+from schedTest import tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, scair_opa, scair_rm
 from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi, Uppaal
 from effsstsPlot import effsstsPlot
 import os
@@ -439,11 +439,11 @@ class Ui_MainWindow(object):
         self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
         self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
         
-        self.biondi = QtWidgets.QCheckBox(self.formLayoutWidget_3)
-        self.biondi.setObjectName("Biondi")
-        self.biondi.setText("BIONDI")
-        self.biondi.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
-        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.biondi)
+        self.milpreleasejitter = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+        self.milpreleasejitter.setObjectName("MILP-ReleaseJitter")
+        self.milpreleasejitter.setText("MILP-ReleaseJitter")
+        self.milpreleasejitter.setToolTip('Alessandros Method. Biondi (RTSS 2016)')
+        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.milpreleasejitter)
         
         self.srsr = QtWidgets.QCheckBox(self.formLayoutWidget_3)
         self.srsr.setObjectName("srsr")
@@ -984,8 +984,8 @@ class Ui_MainWindow(object):
                     error_msg.exec_()
                 else:
                     gSchemes.append('NC')
-            if self.biondi.isChecked():
-                gSchemes.append('BIONDI')
+            if self.milpreleasejitter.isChecked():
+                gSchemes.append('MILP-ReleaseJitter')
             if self.passopa.isChecked():
                 gSchemes.append('PASS-OPA')
             if self.scedf.isChecked():
@@ -1202,15 +1202,15 @@ def switchTest(tasksets,ischeme,i):
             if SRSR.SRSR(tasks) == False:
                 counter += 1
         elif ischeme == 'SCAIR-RM':
-            if rad.scair_dm(tasks) == False:
+            if scair_rm.SCAIR_RM(tasks) == False:
                 counter += 1
         elif ischeme == 'SCAIR-OPA':
-            if Audsley.Audsley(tasks, ischeme) == False:
+            if scair_opa.SCAIR_OPA(tasks, ischeme) == False:
                 counter += 1
         elif ischeme == 'FRDGMF-OPA':
             if Audsley.Audsley(tasks, ischeme) == False:
                 counter += 1
-        elif ischeme == 'BIONDI':
+        elif ischeme == 'MILP-ReleaseJitter':
             if Biondi.Biondi(tasks) == False:
                 counter += 1
         elif ischeme == 'RSS':

@@ -180,25 +180,6 @@ def SUMTest(itask,HPTasks):
 		return False
 	else:
 		return True
-def segTest(Cn,Sn,Tn,HPTasks):
-	R=0
-
-	while True:	
-
-		dm=0
-		for itask in HPTasks:		
-			if itask['sslength']==0:
-				dm+=itask['execution']*math.ceil((R)/itask['period'])	
-			else:
-				dm+=MRBF(R,itask)
-		
-		if dm+Cn+Sn> Tn:
-			return False
-		 
-		if dm+Cn+Sn>R:
-			R=dm+Cn+Sn
-		else:
-			return True
 def XRTA(Cn,Sn,Tn,HPTasks):
 	R=0
 	while True:	
