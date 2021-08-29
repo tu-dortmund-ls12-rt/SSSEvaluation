@@ -91,6 +91,7 @@ For the dynamic model, the total execution time ['execution'] and total suspensi
 
 Name | Paper | File name | Method name
 ---|---|---|---
+EDA | https://ieeexplore.ieee.org/document/7010483 | EDA.py | SEIFDA
 SEIFDA-minD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
 SEIFDA-maxD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
 SEIFDA-PBminD- | https://dl.acm.org/doi/10.1145/2997465.2997497 | SEIFDA.py | SEIFDA
@@ -117,7 +118,6 @@ GMFPA- | https://link.springer.com/article/10.1007/s11241-017-9279-2 | GMFPA.py 
 
 Name | Paper | File name | Method name
 ---|---|---|---
-EDA | https://ieeexplore.ieee.org/document/7010483 | EDA.py | SEIFDA
 RSS | https://ieeexplore.ieee.org/document/9211430 Section V | RSS.py | RSS
 UDLEDF | http://zheng.eng.wayne.edu/_resources/pdfs/HRT.pdf <sup>1</sup> | UDLEDF.py | UDLEDF
 WLAEDF | https://www.cs.unc.edu/~anderson/papers/ecrts13e_erratum.pdf <sup>1</sup>  | WLAEDF.py | WLAEDF
