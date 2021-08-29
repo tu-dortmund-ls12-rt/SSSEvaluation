@@ -107,11 +107,13 @@ SEIFDA-MILP | https://dl.acm.org/doi/10.1145/2997465.2997497 | mipx.py | mip
 NC | https://dl.acm.org/doi/10.1145/2997465.2997497 | NC.py | NC
 PROPORTIONAL | https://ieeexplore.ieee.org/document/6881366 | PROPORTIONAL.py | PROPORTIONAL
 SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
+UPPAAL | https://ieeexplore.ieee.org/document/8715111 | Uppaal.py | UPPAAL
 
 #### Constrained-Deadline
 
 Name | Paper | File name | Method name
 ---|---|---|---
+FRDGMF-OPA | https://ieeexplore.ieee.org/document/7459469 | pass_opa.py | PASS_OPA
 MILP-ReleaseJitter| https://ieeexplore.ieee.org/document/7176028 | milp_response.py | Milpreleasejitter 
 
 #### Arbitrary-Deadline
@@ -140,7 +142,7 @@ SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | 
 Name | Paper | File name | Method name
 ---|---|---|---
 SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
-SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | scair_opa.py | SCAIR_OPA
+SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | pass_opa.py | PASS_OPA
 PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | pass_opa.py | PASS_OPA
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
