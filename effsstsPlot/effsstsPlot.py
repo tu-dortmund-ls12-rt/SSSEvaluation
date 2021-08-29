@@ -10,19 +10,19 @@ def pickColor(ischeme):
 	schemes = [
 		'EDA','PROPORTIONAL','SEIFDA-MILP',
 		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','FRDGMF-OPA','MILP-ReleaseJitter','SRSR',
-		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK','UPPAAL'
+		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK','BURST-RM','UPPAAL'
 		'NC']
 	colors = [
 		'#0ff1ce','#696969','#bada55',
 		'#7fe5f0','#ff0000','#ff80ed','#407294','#c39797','#420420','#133337',
-		'#065535','#f08080','#5ac18e','#666666','#6897bb','#f7347a','#576675','#ffc0cb','#81d8d0','#b4eeb4',
+		'#065535','#f08080','#5ac18e','#666666','#6897bb','#f7347a','#576675','#ffc0cb','#81d8d0','#ac25e2','#b4eeb4',
 		'#008080',
 		'#696966','#ffd700','#ffa500','#8a2be2','#00ffff','#ff7373','#40e0d0','#0000ff',
 		'#d3ffce','#c6e2ff','#b0e0e6','#fa8072','#003366','#ffff00','#ffb6c1','#8b0000',
 		'#800000','#800080','#7fffd4','#00ff00','#cccccc','#0a75ad','#ffff66','#000080',
-		'#ffc3a0','#20b2aa','#ac25e2','#333333','#66cdaa','#ff6666','#ff00ff','#ff7f50',
+		'#ffc3a0','#20b2aa','#333333','#66cdaa','#ff6666','#ff00ff','#ff7f50','#088da5',
 		'#4ca3dd','#468499','#047806','#008000','#f6546a','#cbbeb5','#00ced1','#101010',
-		'#660066','#b6fcd5','#daa520','#990000','#0e2f44','#808080','#088da5',
+		'#660066','#b6fcd5','#daa520','#990000','#0e2f44','#808080',
 		]
 	if ischeme in schemes:
 		index = schemes.index(ischeme)

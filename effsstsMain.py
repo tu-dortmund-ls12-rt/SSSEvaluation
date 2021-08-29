@@ -3,8 +3,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import random
 import sys
 import numpy as np
-from schedTest import tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, scair_opa, scair_rm
-from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi, Uppaal
+from schedTest import Burst_RM, tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, Audsley, rad, PATH, mipx, scair_opa, scair_rm
+from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, Biondi, Uppaal, Burst_RM
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -528,11 +528,17 @@ class Ui_MainWindow(object):
 		self.suspblock.setToolTip('Schedulability with Suspension as Blocking Time')
 		self.formLayout_4.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.suspblock)
 
+		self.burstrm = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+		self.burstrm.setObjectName("burstrm")
+		self.burstrm.setText("BURST-RM")
+		self.burstrm.setToolTip('Rate monotonic priority assignment with burst schedulability evaluation')
+		self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.burstrm)
+
 		self.uppaal = QtWidgets.QCheckBox(self.formLayoutWidget_4)
 		self.uppaal.setObjectName("uppaal")
 		self.uppaal.setText("UPPAAL")
 		self.uppaal.setToolTip('Exact Schedulability Test for Non-Preemptive Self-Suspending Real-Time Tasks with UPPAAL model checker')
-		self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.uppaal)
+		self.formLayout_4.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.uppaal)
 
 
 
@@ -1022,6 +1028,8 @@ class Ui_MainWindow(object):
 				gSchemes.append('SUSPJIT')
 			if self.suspblock.isChecked():
 				gSchemes.append('SUSPBLOCK')
+			if self.burstrm.isChecked():
+				gSchemes.append('BURST-RM')
 			if self.uppaal.isChecked():
 				gSchemes.append('UPPAAL')
 			if self.gmfpa.isChecked():
@@ -1236,6 +1244,9 @@ def switchTest(tasksets,ischeme,i):
 				counter += 1
 		elif ischeme == 'SUSPBLOCK':
 			if FixedPriority.SuspBlock(tasks) == False:
+				counter += 1
+		elif ischeme == 'BURST-RM':
+			if Burst_RM.BURST_RM(tasks) == False:
 				counter += 1
 		elif ischeme == 'UPPAAL':
 			if Uppaal.Uppaal(tasks,i) == False:
