@@ -9,7 +9,7 @@ def pickColor(ischeme):
 	color = ''
 	schemes = [
 		'EDA','PROPORTIONAL','SEIFDA-MILP',
-		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','FRDGMF-OPA','MILP-ReleaseJitter','SRSR',
+		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','EDAGMF-OPA','MILP-ReleaseJitter','SRSR',
 		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK','BURST-RM','UPPAAL'
 		'NC']
 	colors = [
@@ -50,7 +50,7 @@ def pickMarker(ischeme):
 	marker = ''
 	schemes = [
 		'EDA','PROPORTIONAL','SEIFDA-MILP',
-		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','FRDGMF-OPA','MILP-ReleaseJitter','SRSR',
+		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','EDAGMF-OPA','MILP-ReleaseJitter','SRSR',
 		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK',
 		'NC']
 	markers = [

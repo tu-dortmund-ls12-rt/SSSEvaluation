@@ -433,11 +433,11 @@ class Ui_MainWindow(object):
 		self.scairopa.setToolTip('Suspension as Computation (SC) and As Interference Restarts (AIR) Optimal Priority Assignment (OPA) ')
 		self.formLayout_3.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.scairopa)
 
-		self.frdgmfopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
-		self.frdgmfopa.setObjectName("frdgmfopa")
-		self.frdgmfopa.setText("FRDGMF-OPA")
-		self.frdgmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
-		self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.frdgmfopa)
+		self.edagmfopa = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+		self.edagmfopa.setObjectName("edagmfopa")
+		self.edagmfopa.setText("EDAGMF-OPA")
+		self.edagmfopa.setToolTip('Fixed Relative Deadline (FRD) and Generalized Multiframe (GMF) Optimal Priority Assignment (OPA) ')
+		self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.edagmfopa)
 
 		self.milpreleasejitter = QtWidgets.QCheckBox(self.formLayoutWidget_3)
 		self.milpreleasejitter.setObjectName("MILP-ReleaseJitter")
@@ -1002,8 +1002,8 @@ class Ui_MainWindow(object):
 				gSchemes.append('SCAIR-RM')
 			if self.scairopa.isChecked():
 				gSchemes.append('SCAIR-OPA')
-			if self.frdgmfopa.isChecked():
-				gSchemes.append('FRDGMF-OPA')
+			if self.edagmfopa.isChecked():
+				gSchemes.append('EDAGMF-OPA')
 			if self.pathminddd.isChecked():
 				gSchemes.append('Oblivious-IUB-' + str(self.pathmindddg.value()))
 			if self.pathminddnd.isChecked():
@@ -1215,7 +1215,7 @@ def switchTest(tasksets,ischeme,i):
 		elif ischeme == 'SCAIR-OPA':
 			if pass_opa.PASS_OPA(tasks, ischeme) == False:
 				counter += 1
-		elif ischeme == 'FRDGMF-OPA':
+		elif ischeme == 'EDAGMF-OPA':
 			if pass_opa.PASS_OPA(tasks, ischeme) == False:
 				counter += 1
 		elif ischeme == 'MILP-ReleaseJitter':

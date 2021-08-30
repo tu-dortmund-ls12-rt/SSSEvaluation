@@ -113,7 +113,7 @@ UPPAAL | https://ieeexplore.ieee.org/document/8715111 | Uppaal.py | UPPAAL
 
 Name | Paper | File name | Method name
 ---|---|---|---
-FRDGMF-OPA | https://ieeexplore.ieee.org/document/7459469 | pass_opa.py | PASS_OPA
+EDAGMF-OPA | https://ieeexplore.ieee.org/document/7459469 | pass_opa.py | PASS_OPA
 MILP-ReleaseJitter| https://ieeexplore.ieee.org/document/7176028 | milp_response.py | Milpreleasejitter 
 
 #### Arbitrary-Deadline

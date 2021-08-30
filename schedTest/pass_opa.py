@@ -44,8 +44,8 @@ def PASS_OPA(tasks,scheme):
 					canLevel=1
 					tasks[i]['priority']=len(tasks)-plevel
 					break
-			elif scheme == "FRDGMF-OPA":
-				if rad.FRDGMF(itask,primeTasks,D)==True:
+			elif scheme == "EDAGMF-OPA":
+				if rad.EDAGMF(itask,primeTasks,D)==True:
 					priortyassigned[i]=1
 					canLevel=1
 					tasks[i]['priority']=len(tasks)-plevel

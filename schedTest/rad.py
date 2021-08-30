@@ -99,7 +99,7 @@ def segTest(Cn,Sn,Tn,HPTasks):
 			R=dm+Cn+Sn
 		else:
 			return True
-def FRDGMF(task,HPTasks,D):
+def EDAGMF(task,HPTasks,D):
 	# For each execution segment, calculate the interfering workload from higher priority tasks
 	mi = len(task['Cseg'])
 	for j in range(mi):
