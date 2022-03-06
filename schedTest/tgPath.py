@@ -10,6 +10,8 @@ import math
 import sys, getopt
 import json
 import datetime
+import drs
+
 
 USet=[]
 PSet=[]
@@ -171,3 +173,4 @@ def taskGeneration_p(NumberOfTasksPerSet,uTotal,minsslength,maxsslength,Pmin=100
 	CSet_generate(Pmin,numLog)
 	SSS_seg_gen(vRatio,minsslength,maxsslength,numsegs,minSratio,numpaths,scalef)
 	return PSet
+
