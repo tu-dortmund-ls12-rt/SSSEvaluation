@@ -10,8 +10,6 @@ import math
 import sys, getopt
 import json
 import datetime
-from drs import drs
-
 
 USet=[]
 PSet=[]
@@ -74,7 +72,6 @@ def seg_UUniFast(n,total):
 		sumU=nextSumU
 	seg.append(sumU)
 	return seg
-
 
 def SSS_seg_gen(vRatio,minCtune,maxCtune,maxnumsegs,minSratio,numpaths,scalef):
 	global PSet
@@ -167,27 +164,10 @@ def init():
 	USet=[]
 	PSet=[]
 
-def taskGeneration_p(NumberOfTasksPerSet,uTotal,minsslength,maxsslength,Pmin=100,numLog=1,vRatio=1,
-	seed=1,numsegs=2,minSratio=1,numpaths=2,scalef=0.8):
+def taskGeneration_p(NumberOfTasksPerSet,uTotal,minsslength,maxsslength,Pmin=100,numLog=1,vRatio=1,seed=1,numsegs=2,minSratio=1,numpaths=2,scalef=0.8):
 	init()
 	#random.seed() This is called before this function is called
 	UUniFast(NumberOfTasksPerSet,uTotal)
 	CSet_generate(Pmin,numLog)
 	SSS_seg_gen(vRatio,minsslength,maxsslength,numsegs,minSratio,numpaths,scalef)
-	return PSet
-
-def taskGeneration_drs(NumberOfTasksPerSet,uTotal,u_Bound,l_Bound,minsslength,maxsslength,Pmin=100,
-	numLog=1,vRatio=1,seed=1,numsegs=2,minSratio=1,numpaths=2,scalef=0.8):
-	init()
-	#random.seed() This is called before this function is called
-
-	drs(NumberOfTasksPerSet, uTotal, u_Bound, l_Bound)
-	
-	#uTotal - sum of output values
-	#l_bound and u_bound : vectors of length n which describes the lower and upper bound respectively
-
-	CSet_generate(Pmin,numLog)
-
-	SSS_seg_gen(vRatio,minsslength,maxsslength,numsegs,minSratio,numpaths,scalef)
-	
 	return PSet
