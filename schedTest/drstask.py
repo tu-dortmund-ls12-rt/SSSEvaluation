@@ -6,71 +6,80 @@ import json
 import datetime
 from drs import drs
 
-
-DRS_exe=[]
-DRS_val=[]
-PSet=[]
+DRS_exe = []
+DRS_val = []
+PSet = []
 
 
 def DRS_WCET(n, util=1):
-  
-   global DRS_exe
+    global DRS_exe
 
-   DRS_exe = drs(n, util)
-
+    DRS_exe = drs(n, util)
 
 
-def CSet_generate(Pmin,numLog):
-    j=0
+def CSet_generate(Pmin, numLog):
+    j = 0
     global PSet
 
     for i in DRS_exe:
-    
-       thN=j%1
-       p=random.uniform(100*math.pow(10, thN), 100*math.pow(10, thN+1))
-       pair={}
-       pair['period']=p
-       pair['execution']=i*p
+        thN = j % 1
+        p = random.uniform(100 * math.pow(10, thN), 100 * math.pow(10, thN + 1))
+        pair = {}
+        pair['period'] = p
+        pair['execution'] = i * p
 
-       #multiplying period with first utilization values to generate WCET
+        # multiplying period with first utilization values to generate WCET
 
-       pair['deadline']=p
-       pair['utilization']=i
-       PSet.append(pair)
-       j=j+1
-       
+        pair['deadline'] = p
+        pair['utilization'] = i
+        PSet.append(pair)
+        j = j + 1
 
 
 def suspend(Pmin, numLog):
-   j=0
-   global PSet
+    j = 0
+    global PSet
 
-   for i in DRS_val:
-       thN=j%1
-       p=random.uniform(100*math.pow(10, thN), 100*math.pow(10, thN+1))
-       pair={}
-       pair['period']=p
-       pair['sslength']=i*p
+    for i in DRS_val:
+        thN = j % 1
+        p = random.uniform(100 * math.pow(10, thN), 100 * math.pow(10, thN + 1))
+        pair = {}
+        pair['period'] = p
+        pair['sslength'] = i * p
 
-       #multiplying period with the other utilization values to generate the suspension time
+        # multiplying period with the other utilization values to generate the suspension time
 
-       PSet.append(pair)
-       j=j+1
-       
-   return PSet
+        PSet.append(pair)
+        j = j + 1
+
+    return PSet
 
 
+def taskGeneration_drs(NumberOfTasksPerSet, uTotal, u_Bound, l_Bound, minsslength, maxsslength, Pmin=100, numLog=1):
+    global DRS_val
 
-def taskGeneration_drs(NumberOfTasksPerSet,uTotal,u_Bound,l_Bound,minsslength,maxsslength,Pmin=100, numLog=1):
+    DRS_WCET(NumberOfTasksPerSet, uTotal)
 
-   global DRS_val 
+    DRS_val = drs(NumberOfTasksPerSet, uTotal, u_Bound, l_Bound)
 
-   DRS_WCET(NumberOfTasksPerSet, uTotal)
+    CSet_generate(Pmin, numLog)
 
-   DRS_val = drs(NumberOfTasksPerSet, uTotal, u_Bound, l_Bound)
-    
-   CSet_generate(Pmin,numLog)
-    
-   suspend(Pmin,numLog)
+    suspend(Pmin, numLog)
 
-   return PSet
+    return PSet
+
+
+if __name__ == '__main__':
+    # DEBUG
+    # Start this script with:
+    # python3 -m schedTest.drstask
+    print('Randomly generate 10 tasks ...')
+    ts = taskGeneration_drs(10, 0.8, [0.1] * 10, [0.05] * 10, None, None)
+    print('')
+    print(ts)
+    print('')
+    print('number of tasks:', len(ts))
+    print('the first task:', ts[1])
+    print('the last task:', ts[-1])
+
+    breakpoint()  # here you can have a deeper look into the task set 'ts'. Quit with 'q'
