@@ -11,7 +11,7 @@ DRS_val=[]
 Task=[]
 
 
-def Period_generate(Pmin, numLog):                      #generating 10 tasks..
+def Period_generate(Pmin, numLog):                                                  #generating 10 tasks..
     
    j=0
    
@@ -20,12 +20,12 @@ def Period_generate(Pmin, numLog):                      #generating 10 tasks..
    for i in DRS_exe:
            
        thN=j%1 
-       p=random.uniform(100*math.pow(10, thN), 100*math.pow(10, thN+1))
+       p=random.uniform(100*math.pow(10, thN), 100*math.pow(10, thN+1))             #generating 10 periods
        pair={}
        pair['period']=p
-       pair['execution']=i*p
-       pair['suspension']=p*DRS_val[temp]
-       Task.append(pair)
+       pair['execution']=i*p                                                        #multiplying period with util1 values producing WCET
+       pair['suspension']=p*DRS_val[temp]                                           #multiplying period with util2 values producing Suspension period
+       Task.append(pair)                                                            #generating the Task Set {period, execution, suspension}
        temp = temp + 1
        j=j+1
 
@@ -33,15 +33,17 @@ def Period_generate(Pmin, numLog):                      #generating 10 tasks..
    return Task
 
 
-def DRS_wcet(n, util=1):                                #generating 10 utilization values <=1
+
+def DRS_wcet(n, util=1):                                                            #generating 10 utilization values <=1
      
    global DRS_exe
 
    DRS_exe = drs(n, util)
    
+
    
      
-def DRS_sus(n, util, ubound, lbound):                             #generating other 10 utils
+def DRS_sus(n, util, ubound, lbound):                                               #generating other 10 util values
     
     global DRS_val
     
@@ -57,6 +59,6 @@ def taskGeneration_drs(NumberOfTasksPerSet,uTotal,u_Bound,l_Bound,minsslength,ma
 
    Period_generate(Pmin,numLog)
    
-   print('number of tasks:', len(Task))
+   print('number of tasks:', len(Task))                              
    
    return Task
