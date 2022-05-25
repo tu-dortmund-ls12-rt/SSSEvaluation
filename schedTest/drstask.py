@@ -9,7 +9,7 @@ from drs import drs
 
 
 def Period_generate(Pmin, numLog, val_ex, val_sus):
-    ''' Generates the Period values and returns the final Taskset
+    """ Generates the Period values and returns the final Taskset
 
     Args:
         Pmin (int) : Takes a set value of 100
@@ -20,7 +20,7 @@ def Period_generate(Pmin, numLog, val_ex, val_sus):
     Returns:
         Task (list): Returns an appended list of Task-set in the form: {period, execution, suspension}
 
-    '''
+    """
     Task = []
     j = 0
     temp = 0
@@ -40,22 +40,22 @@ def Period_generate(Pmin, numLog, val_ex, val_sus):
 
 
 def DRS_ex_sus(n, util_ex_Sus):
-    ''' Generates and returns the Utilization vector for execution and suspension time combined
+    """ Generates and returns the Utilization vector for execution and suspension time combined
 
     Args:
         n (int) : Number of tasks
-        util_ex_Sus (float) : Sum of all utilisation values(>=1) for execution and suspension
+        util_ex_Sus (float) : Sum of all utilisation values(<= Number Of Tasks) for execution and suspension
 
     Returns:
         drs (list): Returns a vector of n number of utilization values for (execution + suspension) time
 
-    '''
+    """
 
     return drs(n, util_ex_Sus)
 
 
 def DRS_ex(n, util_Ex, ubound_exe_sus):
-    ''' Generates and returns the Utilization vector for execution
+    """ Generates and returns the Utilization vector for execution
 
     Args:
         n (int) : Number of tasks
@@ -65,14 +65,14 @@ def DRS_ex(n, util_Ex, ubound_exe_sus):
 
     Returns:
         drs (list): Returns a vector of n number of utilization values for exeecution time
-    '''
+    """
 
     return drs(n, util_Ex, ubound_exe_sus)
 
 
 def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
                        uTotal_Exe, Pmin=100, numLog=1):
-    ''' Generates and returns the tasksets
+    """ Generates and returns the tasksets
 
     Args:
         NumberOfTasksPerSet (int) : Total number of tasks
@@ -81,7 +81,7 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
 
     Returns:
         Task_set (list): Returns the final Task-set
-    '''
+    """
 
     val_exe_sus = DRS_ex_sus(NumberOfTasksPerSet, uTotal_Exe_Sus)
     val_ex = DRS_ex(NumberOfTasksPerSet, uTotal_Exe, val_exe_sus)
