@@ -111,8 +111,6 @@ class Ui_MainWindow(object):
 		self.seed.setGeometry(QtCore.QRect(845, 65, 145, 25))
 		self.seed.setObjectName("seed")
 
-		
-
 
 		self.groupbox_configurations = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupbox_configurations.setGeometry(QtCore.QRect(12, 122, 1000, 173))
@@ -129,30 +127,36 @@ class Ui_MainWindow(object):
 		self.label_numberoftasks.setObjectName("label_tasksnumber")
 		self.label_numberoftasks.setText("Number of Tasks:")
 
-		self.numberoftasks = QtWidgets.QLineEdit(self.groupbox_configurations)
+		self.numberoftasks = QtWidgets.QSpinBox(self.groupbox_configurations)
 		self.numberoftasks.setGeometry(QtCore.QRect(210, 58, 198, 25))
+		self.numberoftasks.setMaximum(100)
+		self.numberoftasks.setProperty("value", 0)
 		self.numberoftasks.setObjectName("numberoftasks")
-		self.numberoftasks.setFixedWidth(50)
-		
+		self.numberoftasks.setFixedWidth(55)
+
 		self.label_totalexecution_suspension = QtWidgets.QLabel(self.groupbox_configurations)
 		self.label_totalexecution_suspension.setGeometry(QtCore.QRect(275, 58, 198, 25))
 		self.label_totalexecution_suspension.setObjectName("label_sumexecution&suspension")
 		self.label_totalexecution_suspension.setText("Execution + Suspension:")
 
-		self.totalexecution_suspension = QtWidgets.QLineEdit(self.groupbox_configurations)
+		self.totalexecution_suspension = QtWidgets.QSpinBox(self.groupbox_configurations)
 		self.totalexecution_suspension.setGeometry(QtCore.QRect(435, 58, 198, 25))
+		self.totalexecution_suspension.setMaximum(100)
+		self.totalexecution_suspension.setProperty("value", 0)
 		self.totalexecution_suspension.setObjectName("totalexecution_suspension")
-		self.totalexecution_suspension.setFixedWidth(50)
+		self.totalexecution_suspension.setFixedWidth(55)
 
 		self.label_totalexecution = QtWidgets.QLabel(self.groupbox_configurations)
 		self.label_totalexecution.setGeometry(QtCore.QRect(500, 58, 198, 25))
 		self.label_totalexecution.setObjectName("label_sumexecution")
 		self.label_totalexecution.setText("Total Execution:")
 
-		self.totalexecution = QtWidgets.QLineEdit(self.groupbox_configurations)
+		self.totalexecution = QtWidgets.QSpinBox(self.groupbox_configurations)
 		self.totalexecution.setGeometry(QtCore.QRect(660, 58, 198, 25))
+		self.totalexecution.setMaximum(100)
+		self.totalexecution.setProperty("value", 0)
 		self.totalexecution.setObjectName("totalexecution")
-		self.totalexecution.setFixedWidth(50)
+		self.totalexecution.setFixedWidth(55)
 
 		self.radiobutton_utilvalues_ufast = QtWidgets.QRadioButton(self.groupbox_configurations)
 		self.radiobutton_utilvalues_ufast.setGeometry(QtCore.QRect(435, 25, 198, 25))
@@ -256,6 +260,14 @@ class Ui_MainWindow(object):
 		self.slengthmaxvalue.setProperty("value", 0.1)
 		self.slengthmaxvalue.setObjectName("slengthmaxvalue")
 
+		self.gen = QtWidgets.QPushButton(self.groupbox_configurations)
+		self.gen.setToolTip('Button to Generate the Tasksets')
+		self.gen.setGeometry(QtCore.QRect(932, 56, 198, 25))
+		self.gen.setObjectName("gen")
+		self.gen.setText("Generate")
+		self.gen.resize(60, 30)
+
+
 
 
 		self.groupbox_schedulability_tests = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
@@ -264,11 +276,9 @@ class Ui_MainWindow(object):
 		self.groupbox_schedulability_tests.setTitle("Schedulability Tests")
 
 
-
 		self.tabs = QtWidgets.QTabWidget(self.groupbox_schedulability_tests)
 		self.tabs.setGeometry(QtCore.QRect(1, 21, 999, 207))
 		self.tabs.setObjectName("tabs")
-
 
 
 		self.scrollArea_1 = QtWidgets.QScrollArea(self.tabs)   # FRD Segmented
@@ -775,6 +785,7 @@ class Ui_MainWindow(object):
 		self.slengthminvalue_p2.hide()
 		self.slengthminvalue_p3.hide()
 
+		
 		self.run = QtWidgets.QPushButton(self.centralwidget)
 		self.run.setToolTip('Button to run the settings')
 		self.run.setGeometry(QtCore.QRect(812, 650, 200, 25))
@@ -892,6 +903,14 @@ class Ui_MainWindow(object):
 						anums.hide()
 						anumt.hide()
 
+
+		def clickGenerate(self):
+			global gNumberOfTasks
+			global percentageTotal_Exe_Sus
+			global guTotal_Exe
+
+			drs_task()
+
 		def clickMethod(self):
 			global gPrefixdata
 			global gRuntest
@@ -919,8 +938,27 @@ class Ui_MainWindow(object):
 
 		self.run.clicked.connect(clickMethod)
 		self.exit.clicked.connect(clickexit)
+		self.gen.clicked.connect(clickGenerate)
 
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
+		def drs_task():
+			global gNumberOfTasks
+			global gTotal_Exe_Sus
+			global gTotal_Exe
+
+			tasks = []
+
+			gNumberOfTasks = self.numberoftasks.value()
+			gTotal_Exe_Sus = self.totalexecution_suspension.value()
+			gTotal_Exe = self.totalexecution.value()
+
+			tasks = drstask.taskGeneration_drs(gNumberOfTasks, gTotal_Exe_Sus,
+                       gTotal_Exe, Pmin=100, numLog=1)
+
+			return tasks
+
 
 		def setSchemes():
 			global gPrefixdata
@@ -944,6 +982,9 @@ class Ui_MainWindow(object):
 
 			global gmultiplot
 			global gmpCheck
+			global gNumberOfTasks
+			global percentageTotal_Exe_Sus
+			global guTotal_Exe
 
 			###GENERAL###
 			gRuntest = self.runtests.isChecked()
@@ -955,6 +996,7 @@ class Ui_MainWindow(object):
 			gTasksetpath = self.tasksetdatapath.text()
 
 			###CONFIGURATION###
+
 			gNumberOfTaskSets = self.tasksetsperconfig.value()
 			gNumberOfTasksPerSet = self.tasksperset.value()
 			gUStart = self.utilstart.value()
@@ -1131,6 +1173,7 @@ class Ui_MainWindow(object):
 			self.totalexecution_suspension.show()
 			self.label_totalexecution.show()
 			self.totalexecution.show()
+			self.gen.show()
 
 		else:
 			self.label_numberoftasks.hide()
@@ -1139,8 +1182,18 @@ class Ui_MainWindow(object):
 			self.totalexecution_suspension.hide()
 			self.label_totalexecution.hide()
 			self.totalexecution.hide()
+			self.gen.hide()
 
 
+def drs_config():
+	global gNumberOfTasks
+	global percentageTotal_Exe_Sus
+	global guTotal_Exe
+
+	tasks_drs = drstask.taskGeneration_drs(gNumberOfTasks, percentageTotal_Exe_Sus,
+                       guTotal_Exe, Pmin=100, numLog=1)
+
+	return tasks_drs
 
 def tasksetConfiguration():
 	global gNumberOfTaskSets
@@ -1168,11 +1221,6 @@ def tasksetConfiguration():
 				percentageU = u / 100
 				tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
 												seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
-
-				#tasks = tgPath.taskGeneration_drs(gNumberOfTasksPerSet, gUtotal, gUbound, gLbound, gSLenMinValue, gSLenMaxValue, vRatio=1,
-												#seed=gSeed, numsegs=gNumberOfSegs, numLog=init(2))	
-
-
 
 				sortedTasks = sorted(tasks, key=lambda item: item['period'])
 				tasksets.append(sortedTasks)
