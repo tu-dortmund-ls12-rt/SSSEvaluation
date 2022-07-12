@@ -93,9 +93,9 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
     Task_set = Period_generate(Pmin, numLog, val_ex, val_sus)
 
 
-    print('Number of tasks:', len(Task_set))
-    print('Tasks:', Task_set)
+    #print('Number of tasks:', len(Task_set))
 
+    #print(Task_set)
 
     return Task_set
 
