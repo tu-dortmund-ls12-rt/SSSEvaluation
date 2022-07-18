@@ -66,6 +66,7 @@ def DRS_ex(n, util_Ex, ubound_exe_sus):
     Returns:
         drs (list): Returns a vector of n number of utilization values for exeecution time
     """
+    # TODO: add quick fix for bug with zero util
 
     return drs(n, util_Ex, ubound_exe_sus)
 
@@ -76,14 +77,17 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
 
     Args:
         NumberOfTasksPerSet (int) : Total number of tasks
-        uTotal_Exe_Sus (float) : Sum of all utilisation values(>=1) for execution and suspension
+        uTotal_Exe_Sus (float) : Sum of all utilisation values(>=1 is possible) for execution and suspension
         uTotal_Exe (float) : Total utilisation value(<=1) for execution
+
+        ensure: uTotal_Exe_Sus >= uTotal_Exe # TODO: write this better!
 
     Returns:
         Task_set (list): Returns the final Task-set
     """
 
     val_exe_sus = DRS_ex_sus(NumberOfTasksPerSet, uTotal_Exe_Sus)
+    print(val_exe_sus)
     val_ex = DRS_ex(NumberOfTasksPerSet, uTotal_Exe, val_exe_sus)
     val_sus = []
     sus_object = zip(val_exe_sus, val_ex)

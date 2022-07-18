@@ -950,11 +950,11 @@ class Ui_MainWindow(object):
 
 			# else:
 			# 	# 	del gSchemes[:]
-			# 	setSchemes()
+			setSchemes()
 
 
 
-			#print(gSchemes)
+			print(gSchemes)
 
 		def clickGenerate(self):
 			drs_task()
@@ -1194,7 +1194,7 @@ class Ui_MainWindow(object):
 				#khchen
 				if len(gSchemes) != 0:
 					try:
-						tasksets_util = tasksetConfiguration()
+						tasksets_util = tasksetConfiguration()  #
 						MainWindow.statusBar().showMessage('Testing the given configurations...')
 						schedulabilityTest(tasksets_util)
 						MainWindow.statusBar().showMessage('Finish')
@@ -1296,9 +1296,10 @@ def tasksetConfiguration():
 	if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
 		random.seed(gSeed)
 		for u in range(gUStart, gUEnd+gUStep, gUStep):
+			# TODO enter here
 			tasksets = []
 			for _ in range(0, gNumberOfTaskSets):
-				percentageU = u * gUStep / 100
+				percentageU = u * gUStep / 100  # TODO fix
 				percentageU = u / 100
 				tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
 												seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
@@ -1337,6 +1338,8 @@ def tasksetConfiguration():
 	# 	return tasksets_drs
 	# else:
 	# 	return tasksets_difutil
+
+	return tasksets_difutil
 
 
 def schedulabilityTest(Tasksets_util):
@@ -1491,4 +1494,4 @@ if __name__ == "__main__":
 	#khchen
 	MainWindow.statusBar().showMessage('Ready')
 	MainWindow.show()
-	sys.exit(app.exec_())`
+	sys.exit(app.exec_())
