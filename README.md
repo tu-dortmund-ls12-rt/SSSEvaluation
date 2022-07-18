@@ -39,7 +39,7 @@ To activate the full feature set of the framework, you also need to install the 
 
 ### How to use?
 
-Move into the end-to-end folder and start the framework with python:
+Move into the SSSEvaluation folder and start the framework with python:
 ```
 cd SSSEvaluation
 python3 effsstsMain.py
