@@ -65,10 +65,19 @@ def DRS_ex(n, util_Ex, ubound_exe_sus):
 
     Returns:
         drs (list): Returns a vector of n number of utilization values for exeecution time
+        NB: Keeping util_Ex as 0 will produce an array of 0s of size 'n'
     """
-    # TODO: add quick fix for bug with zero util
+   
+    if util_Ex == 0:
+        exception = []
+        for i in range(n):
+            bucket = i * 0
+            exception.append(bucket)
 
-    return drs(n, util_Ex, ubound_exe_sus)
+        return exception
+
+    else:
+        return drs(n, util_Ex, ubound_exe_sus)
 
 
 def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
@@ -79,15 +88,14 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
         NumberOfTasksPerSet (int) : Total number of tasks
         uTotal_Exe_Sus (float) : Sum of all utilisation values(>=1 is possible) for execution and suspension
         uTotal_Exe (float) : Total utilisation value(<=1) for execution
-
-        ensure: uTotal_Exe_Sus >= uTotal_Exe # TODO: write this better!
+        NB: uTotal_Exe_Sus must be >= uTotal_Exe
 
     Returns:
         Task_set (list): Returns the final Task-set
     """
 
     val_exe_sus = DRS_ex_sus(NumberOfTasksPerSet, uTotal_Exe_Sus)
-    print(val_exe_sus)
+    #print(val_exe_sus)
     val_ex = DRS_ex(NumberOfTasksPerSet, uTotal_Exe, val_exe_sus)
     val_sus = []
     sus_object = zip(val_exe_sus, val_ex)
@@ -96,25 +104,20 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
 
     Task_set = Period_generate(Pmin, numLog, val_ex, val_sus)
 
-
-    #print('Number of tasks:', len(Task_set))
-
-    #print(Task_set)
-
     return Task_set
 
 
 if __name__ == '__main__':
     # DEBUG
-    print('Randomly generate 10 tasks ...')
+    print('Randomly generating tasks ...')
 
-    ts = taskGeneration_drs(10, 2, 1)
+    ts = taskGeneration_drs(10, 1, 0)
 
     print('')
     print(ts)
     print('')
-    print('number of tasks:', len(ts))
-    print('the first task:', ts[1])
-    print('the last task:', ts[-1])
-
+    # print('number of tasks:', len(ts))
+    # print('the first task:', ts[1])
+    # print('the last task:', ts[-1])
+ 
     breakpoint()
