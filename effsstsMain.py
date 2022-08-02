@@ -761,7 +761,7 @@ class Ui_MainWindow(object):
 		self.slengthminvalue_p3 = QtWidgets.QDoubleSpinBox(self.groupbox_plots)
 		self.slengthminvalue_p3.setGeometry(QtCore.QRect(531, 96, 55, 25))
 		self.slengthminvalue_p3.setMaximum(1.0)
-		self.slengthminvalue_p3.setSingleStep(0.01)
+		self.slengthminvalue_p3.setSingleStep(0.01) 
 		self.slengthminvalue_p3.setProperty("value", 0.01)
 		self.slengthminvalue_p3.setObjectName("slengthminvalue")
 
@@ -1020,209 +1020,213 @@ class Ui_MainWindow(object):
 			print(tasksets_drs)
 
 					
-		# def setSchemes():
-		# 	global gPrefixdata
-		# 	global gTasksetpath
-		# 	global gRuntest
-		# 	global gPlotdata
-		# 	global gNumberOfTaskSets
-		# 	global gNumberOfTasksPerSet
-		# 	global gUStart
-		# 	global gUEnd
-		# 	global gUStep
-		# 	global gNumberOfSegs
-		# 	global gSchemes
-		# 	global gSLenMinValue
-		# 	global gSLenMaxValue
-		# 	global gPlotall
-		# 	global gSeed
-		# 	global gTaskChoice
-		# 	global garwrap
-		# 	global gthread
-		# 	global gmultiplot
-		# 	global gmpCheck
-		# 	global gNumberOfTasks
-		# 	global percentageTotal_Exe_Sus
-		# 	global guTotal_Exe
+		def setSchemes():
+			global gPrefixdata
+			global gTasksetpath
+			global gRuntest
+			global gPlotdata
+			global gNumberOfTaskSets
+			global gNumberOfTasksPerSet
+			global gUStart
+			global gUEnd
+			global gUStep
+			global gNumberOfSegs
+			global gSchemes
+			global gSLenMinValue
+			global gSLenMaxValue
+			global gPlotall
+			global gSeed
+			global gTaskChoice
+			global garwrap
+			global gthread
+			global gmultiplot
+			global gmpCheck
+			global gNumberOfTasks
+			global percentageTotal_Exe_Sus
+			global guTotal_Exe
 
-		# 	###GENERAL###
-		# 	gRuntest = self.runtests.isChecked()
-		# 	gPlotdata = self.plotdata.isChecked()
-		# 	gPlotall = self.plotall.isChecked()
-		# 	gTaskChoice = self.combobox_input.currentText()
+			###GENERAL###
+			gRuntest = self.runtests.isChecked()
+			gPlotdata = self.plotdata.isChecked()
+			gPlotall = self.plotall.isChecked()
+			gTaskChoice = self.combobox_input.currentText()
 
-		# 	gPrefixdata = self.prefixdatapath.text()
-		# 	gTasksetpath = self.tasksetdatapath.text()
+			gPrefixdata = self.prefixdatapath.text()
+			gTasksetpath = self.tasksetdatapath.text()
 
-		# 	###CONFIGURATION###
+			###CONFIGURATION###
 
-		# 	gNumberOfTaskSets = self.tasksetsperconfig.value()
-		# 	gNumberOfTasksPerSet = self.tasksperset.value()
-		# 	gUStart = self.utilstart.value()
-		# 	gUEnd = self.utilend.value()
-		# 	gUStep = self.utilstep.value()
-		# 	gNumberOfSegs = self.numberofsegs.value()
-		# 	gSLenMinValue = self.slengthminvalue.value()
-		# 	gSLenMaxValue = self.slengthmaxvalue.value()
-		# 	if self.seed.text() != '':
-		# 		gSeed = self.seed.text()
-		# 	else:
-		# 		gSeed = datetime.datetime.now()
-		# 	if self.threadcount.text() != '':
-		# 		gthread = int(self.threadcount.text())
-		# 	else:
-		# 		gthread = 1
-		# 	###MultiPlot###
-		# 	gmultiplot = self.combobox_plot.currentText()
-		# 	if gmultiplot == 'Tasks per Set':
-		# 		garwrap = [self.tasksperset_p1.value(), self.tasksperset_p2.value(), self.tasksperset_p3.value()]
-		# 	elif gmultiplot == 'Number of Segments':
-		# 		garwrap = [self.numberofsegs_p1.value(), self.numberofsegs_p2.value(), self.numberofsegs_p3.value()]
-		# 	elif gmultiplot == 'Suspension Length':
-		# 		garwrap = [self.slengthminvalue_p1.value(), self.slengthminvalue_p2.value(), self.slengthminvalue_p3.value(),
-		# 				self.slengthmaxvalue_p1.value(), self.slengthmaxvalue_p2.value(), self.slengthmaxvalue_p3.value()]
-		# 	gmpCheck = self.mp_check.isChecked()
+			gNumberOfTaskSets = self.tasksetsperconfig.value()
+			gNumberOfTasksPerSet = self.tasksperset.value()
+			gUStart = self.utilstart.value()
+			gUEnd = self.utilend.value()
+			gUStep = self.utilstep.value()
+			gNumberOfSegs = self.numberofsegs.value()
+			gSLenMinValue = self.slengthminvalue.value()
+			gSLenMaxValue = self.slengthmaxvalue.value()
+			if self.seed.text() != '':
+				gSeed = self.seed.text()
+			else:
+				gSeed = datetime.datetime.now()
+			if self.threadcount.text() != '':
+				gthread = int(self.threadcount.text())
+			else:
+				gthread = 1
+				
 
-		# 	#khchen init error window and fill in the concept later
-		# 	error_msg = QtWidgets.QMessageBox()
-		# 	error_msg.setIcon(QtWidgets.QMessageBox.Critical)
+			###MultiPlot###
 
-		# 	###SCHEDULABILITY TESTS###
-		# 	if self.seifdamind.isChecked():
-		# 		if gNumberOfSegs > 2:
-		# 			self.seifdamind.setChecked(False)
-		# 			error_msg.setWindowTitle("SEIFDA-minD test fails")
-		# 			error_msg.setInformativeText('SEIFDA-minD does not work for more than two segements.')
-		# 			error_msg.exec_()
-		# 		else:
-		# 			gSchemes.append('SEIFDA-minD-' + str(self.seifdamindg.value()))
-		# 	if self.seifdamaxd.isChecked():
-		# 		if gNumberOfSegs > 2:
-		# 			self.seifdamaxd.setChecked(False)
-		# 			error_msg.setWindowTitle("SEIFDA-maxD test fails")
-		# 			error_msg.setInformativeText('SEIFDA-maxD does not work for more than two segements.')
-		# 			error_msg.exec_()
-		# 		else:
-		# 			gSchemes.append('SEIFDA-maxD-' + str(self.seifdamaxdg.value()))
-		# 	if self.seifdapbmind.isChecked():
-		# 		if gNumberOfSegs > 2:
-		# 			self.seifdapbmind.setChecked(False)
-		# 			error_msg.setWindowTitle("SEIFDA-PBminD test fails")
-		# 			error_msg.setInformativeText('SEIFDA-PBminD does not work for more than two segements.')
-		# 			error_msg.exec_()
-		# 		else:
-		# 			gSchemes.append('SEIFDA-PBminD-' + str(self.seifdapbmindg.value()))
-		# 	if self.seifdamip.isChecked():
-		# 		if gNumberOfSegs > 2:
-		# 			self.seifdamip.setChecked(False)
-		# 			error_msg.setWindowTitle("SEIFDA-MILP test fails")
-		# 			error_msg.setInformativeText('SEIFDA-MILP does not work for more than two segements.')
-		# 			error_msg.exec_()
-		# 		else:
-		# 			gSchemes.append('SEIFDA-MILP')
-		# 	if self.eda.isChecked():
-		# 		gSchemes.append('EDA')
-		# 	if self.proportional.isChecked():
-		# 		gSchemes.append('PROPORTIONAL')
-		# 	if self.nc.isChecked():
-		# 		if gNumberOfSegs > 2:
-		# 			self.nc.setChecked(False)
-		# 			error_msg = QtWidgets.QMessageBox()
-		# 			error_msg.setIcon(QtWidgets.QMessageBox.Critical)
-		# 			error_msg.setWindowTitle("NC won't work!")
-		# 			error_msg.setInformativeText('Necessary Condition does not work for more than two segements.')
-		# 			#error_msg.setDetailedText("Necessary Condition only works for two segements of computation.")
-		# 			error_msg.exec_()
-		# 		else:
-		# 			gSchemes.append('NC')
-		# 	if self.milpreleasejitter.isChecked():
-		# 		gSchemes.append('MILP-ReleaseJitter')
-		# 	if self.passopa.isChecked():
-		# 		gSchemes.append('PASS-OPA')
-		# 	if self.scedf.isChecked():
-		# 		gSchemes.append('SCEDF')
-		# 	if self.scrm.isChecked():
-		# 		gSchemes.append('SCRM')
-		# 	if self.scairrm.isChecked():
-		# 		gSchemes.append('SCAIR-RM')
-		# 	if self.scairopa.isChecked():
-		# 		gSchemes.append('SCAIR-OPA')
-		# 	if self.edagmfopa.isChecked():
-		# 		gSchemes.append('EDAGMF-OPA')
-		# 	if self.pathminddd.isChecked():
-		# 		gSchemes.append('Oblivious-IUB-' + str(self.pathmindddg.value()))
-		# 	if self.pathminddnd.isChecked():
-		# 		gSchemes.append('Clairvoyant-SSSD-' + str(self.pathminddndg.value()))
-		# 	if self.pathpbminddd.isChecked():
-		# 		gSchemes.append('Oblivious-MP-' + str(self.pathpbmindddg.value()))
-		# 	if self.pathpbminddnd.isChecked():
-		# 		gSchemes.append('Clairvoyant-PDAB-' + str(self.pathpbminddndg.value()))
-		# 	if self.rss.isChecked():
-		# 		gSchemes.append('RSS')
-		# 	if self.udledf.isChecked():
-		# 		gSchemes.append('UDLEDF')
-		# 	if self.wlaedf.isChecked():
-		# 		gSchemes.append('WLAEDF')
-		# 	if self.rtedf.isChecked():
-		# 		gSchemes.append('RTEDF')
-		# 	if self.uniframework.isChecked():
-		# 		gSchemes.append('UNIFRAMEWORK')
-		# 	if self.suspobl.isChecked():
-		# 		gSchemes.append('SUSPOBL')
-		# 	if self.suspjit.isChecked():
-		# 		gSchemes.append('SUSPJIT')
-		# 	if self.suspblock.isChecked():
-		# 		gSchemes.append('SUSPBLOCK')
-		# 	if self.burstrm.isChecked():
-		# 		gSchemes.append('IDV-BURST-RM')
-		# 	if self.uppaal.isChecked():
-		# 		gSchemes.append('UPPAAL')
-		# 	if self.gmfpa.isChecked():
-		# 		gSchemes.append('GMFPA-' + str(self.gmfpag.value()))
-		# 	if self.srsr.isChecked():
-		# 		if gNumberOfSegs > 2:
-		# 			self.srsr.setChecked(False)
-		# 			error_msg = QtWidgets.QMessageBox()
-		# 			error_msg.setIcon(QtWidgets.QMessageBox.Critical)
-		# 			error_msg.setWindowTitle("SRSR won't work!")
-		# 			error_msg.setInformativeText('Necessary Condition does not work for more than two segements.')
-		# 			#error_msg.setDetailedText("Necessary Condition only works for two segements of computation.")
-		# 			error_msg.exec_()
-		# 		else:
-		# 			gSchemes.append('SRSR')
-		# 	if gRuntest:
-		# 		#khchen
-		# 		if len(gSchemes) != 0:
-		# 			try:
-		# 				tasksets_util = tasksetConfiguration()  #
-		# 				MainWindow.statusBar().showMessage('Testing the given configurations...')
-		# 				schedulabilityTest(tasksets_util)
-		# 				MainWindow.statusBar().showMessage('Finish')
-		# 			except Exception as e:
-		# 				MainWindow.statusBar().showMessage(str(e))
-		# 		else:
-		# 			MainWindow.statusBar().showMessage('There is no selection to test.')
+			gmultiplot = self.combobox_plot.currentText()
+			if gmultiplot == 'Tasks per Set':
+				garwrap = [self.tasksperset_p1.value(), self.tasksperset_p2.value(), self.tasksperset_p3.value()]
+			elif gmultiplot == 'Number of Segments':
+				garwrap = [self.numberofsegs_p1.value(), self.numberofsegs_p2.value(), self.numberofsegs_p3.value()]
+			elif gmultiplot == 'Suspension Length':
+				garwrap = [self.slengthminvalue_p1.value(), self.slengthminvalue_p2.value(), self.slengthminvalue_p3.value(),
+						self.slengthmaxvalue_p1.value(), self.slengthmaxvalue_p2.value(), self.slengthmaxvalue_p3.value()]
+			gmpCheck = self.mp_check.isChecked()
 
-		# 	if gPlotdata:
-		# 		if len(gSchemes) != 0:
-		# 			try:
-		# 				effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
-		# 										gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
-		# 			except Exception as e:
-		# 				MainWindow.statusBar().showMessage(str(e))
-		# 		else:
-		# 			MainWindow.statusBar().showMessage('There is no plot to draw.')
-		# 	if gmpCheck:
-		# 		if len(gSchemes) != 0:
-		# 			try:
-		# 				effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
-		# 										gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
-		# 			except Exception as e:
-		# 				MainWindow.statusBar().showMessage(str(e))
-		# 		else:
-		# 			MainWindow.statusBar().showMessage('There is no plot to draw.')
+			#khchen init error window and fill in the concept later
+			error_msg = QtWidgets.QMessageBox()
+			error_msg.setIcon(QtWidgets.QMessageBox.Critical)
 
-		# 	#MainWindow.statusBar().showMessage('Ready')
+			###SCHEDULABILITY TESTS###
+			
+			if self.seifdamind.isChecked():
+				if gNumberOfSegs > 2:
+					self.seifdamind.setChecked(False)
+					error_msg.setWindowTitle("SEIFDA-minD test fails")
+					error_msg.setInformativeText('SEIFDA-minD does not work for more than two segements.')
+					error_msg.exec_()
+				else:
+					gSchemes.append('SEIFDA-minD-' + str(self.seifdamindg.value()))
+			if self.seifdamaxd.isChecked():
+				if gNumberOfSegs > 2:
+					self.seifdamaxd.setChecked(False)
+					error_msg.setWindowTitle("SEIFDA-maxD test fails")
+					error_msg.setInformativeText('SEIFDA-maxD does not work for more than two segements.')
+					error_msg.exec_()
+				else:
+					gSchemes.append('SEIFDA-maxD-' + str(self.seifdamaxdg.value()))
+			if self.seifdapbmind.isChecked():
+				if gNumberOfSegs > 2:
+					self.seifdapbmind.setChecked(False)
+					error_msg.setWindowTitle("SEIFDA-PBminD test fails")
+					error_msg.setInformativeText('SEIFDA-PBminD does not work for more than two segements.')
+					error_msg.exec_()
+				else:
+					gSchemes.append('SEIFDA-PBminD-' + str(self.seifdapbmindg.value()))
+			if self.seifdamip.isChecked():
+				if gNumberOfSegs > 2:
+					self.seifdamip.setChecked(False)
+					error_msg.setWindowTitle("SEIFDA-MILP test fails")
+					error_msg.setInformativeText('SEIFDA-MILP does not work for more than two segements.')
+					error_msg.exec_()
+				else:
+					gSchemes.append('SEIFDA-MILP')
+			if self.eda.isChecked():
+				gSchemes.append('EDA')
+			if self.proportional.isChecked():
+				gSchemes.append('PROPORTIONAL')
+			if self.nc.isChecked():
+				if gNumberOfSegs > 2:
+					self.nc.setChecked(False)
+					error_msg = QtWidgets.QMessageBox()
+					error_msg.setIcon(QtWidgets.QMessageBox.Critical)
+					error_msg.setWindowTitle("NC won't work!")
+					error_msg.setInformativeText('Necessary Condition does not work for more than two segements.')
+					#error_msg.setDetailedText("Necessary Condition only works for two segements of computation.")
+					error_msg.exec_()
+				else:
+					gSchemes.append('NC')
+			if self.milpreleasejitter.isChecked():
+				gSchemes.append('MILP-ReleaseJitter')
+			if self.passopa.isChecked():
+				gSchemes.append('PASS-OPA')
+			if self.scedf.isChecked():
+				gSchemes.append('SCEDF')
+			if self.scrm.isChecked():
+				gSchemes.append('SCRM')
+			if self.scairrm.isChecked():
+				gSchemes.append('SCAIR-RM')
+			if self.scairopa.isChecked():
+				gSchemes.append('SCAIR-OPA')
+			if self.edagmfopa.isChecked():
+				gSchemes.append('EDAGMF-OPA')
+			if self.pathminddd.isChecked():
+				gSchemes.append('Oblivious-IUB-' + str(self.pathmindddg.value()))
+			if self.pathminddnd.isChecked():
+				gSchemes.append('Clairvoyant-SSSD-' + str(self.pathminddndg.value()))
+			if self.pathpbminddd.isChecked():
+				gSchemes.append('Oblivious-MP-' + str(self.pathpbmindddg.value()))
+			if self.pathpbminddnd.isChecked():
+				gSchemes.append('Clairvoyant-PDAB-' + str(self.pathpbminddndg.value()))
+			if self.rss.isChecked():
+				gSchemes.append('RSS')
+			if self.udledf.isChecked():
+				gSchemes.append('UDLEDF')
+			if self.wlaedf.isChecked():
+				gSchemes.append('WLAEDF')
+			if self.rtedf.isChecked():
+				gSchemes.append('RTEDF')
+			if self.uniframework.isChecked():
+				gSchemes.append('UNIFRAMEWORK')
+			if self.suspobl.isChecked():
+				gSchemes.append('SUSPOBL')
+			if self.suspjit.isChecked():
+				gSchemes.append('SUSPJIT')
+			if self.suspblock.isChecked():
+				gSchemes.append('SUSPBLOCK')
+			if self.burstrm.isChecked():
+				gSchemes.append('IDV-BURST-RM')
+			if self.uppaal.isChecked():
+				gSchemes.append('UPPAAL')
+			if self.gmfpa.isChecked():
+				gSchemes.append('GMFPA-' + str(self.gmfpag.value()))
+			if self.srsr.isChecked():
+				if gNumberOfSegs > 2:
+					self.srsr.setChecked(False)
+					error_msg = QtWidgets.QMessageBox()
+					error_msg.setIcon(QtWidgets.QMessageBox.Critical)
+					error_msg.setWindowTitle("SRSR won't work!")
+					error_msg.setInformativeText('Necessary Condition does not work for more than two segements.')
+					#error_msg.setDetailedText("Necessary Condition only works for two segements of computation.")
+					error_msg.exec_()
+				else:
+					gSchemes.append('SRSR')
+			if gRuntest:
+				#khchen
+				if len(gSchemes) != 0:
+					try:
+						tasksets_util = tasksetConfiguration()  #
+						MainWindow.statusBar().showMessage('Testing the given configurations...')
+						schedulabilityTest(tasksets_util)
+						MainWindow.statusBar().showMessage('Finish')
+					except Exception as e:
+						MainWindow.statusBar().showMessage(str(e))
+				else:
+					MainWindow.statusBar().showMessage('There is no selection to test.')
+
+			if gPlotdata:
+				if len(gSchemes) != 0:
+					try:
+						effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
+												gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
+					except Exception as e:
+						MainWindow.statusBar().showMessage(str(e))
+				else:
+					MainWindow.statusBar().showMessage('There is no plot to draw.')
+			if gmpCheck:
+				if len(gSchemes) != 0:
+					try:
+						effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
+												gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
+					except Exception as e:
+						MainWindow.statusBar().showMessage(str(e))
+				else:
+					MainWindow.statusBar().showMessage('There is no plot to draw.')
+
+			#MainWindow.statusBar().showMessage('Ready')
 
 	def trigger(self, value):
 		if value:
@@ -1289,7 +1293,6 @@ def tasksetConfiguration():
 	global gUtotal
 	global tasksets_drs
 
-	
 
 	tasksets_difutil = []
 
