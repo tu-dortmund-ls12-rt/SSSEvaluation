@@ -1341,6 +1341,7 @@ def tasksetConfiguration():
 	# 	return tasksets_drs
 	# else:
 	# 	return tasksets_difutil
+	print(tasksets_difutil)
 
 	return tasksets_difutil
 

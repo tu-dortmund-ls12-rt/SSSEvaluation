@@ -937,43 +937,43 @@ class Ui_MainWindow(object):
 
 			if self.passopa.isChecked():
 				gSchemes.append('PASS-OPA')
-			if self.scedf.isChecked():
+			elif self.scedf.isChecked():
 				gSchemes.append('SCEDF')
-			if self.scrm.isChecked():
+			elif self.scrm.isChecked():
 				gSchemes.append('SCRM')
-			if self.scairrm.isChecked():
+			elif self.scairrm.isChecked():
 				gSchemes.append('SCAIR-RM')
-			if self.scairopa.isChecked():
+			elif self.scairopa.isChecked():
 				gSchemes.append('SCAIR-OPA')
-			if self.edagmfopa.isChecked():
+			elif self.edagmfopa.isChecked():
 				gSchemes.append('EDAGMF-OPA')
-			if self.pathminddd.isChecked():
+			elif self.pathminddd.isChecked():
 				gSchemes.append('Oblivious-IUB-' + str(self.pathmindddg.value()))
-			if self.pathminddnd.isChecked():
+			elif self.pathminddnd.isChecked():
 				gSchemes.append('Clairvoyant-SSSD-' + str(self.pathminddndg.value()))
-			if self.pathpbminddd.isChecked():
+			elif self.pathpbminddd.isChecked():
 				gSchemes.append('Oblivious-MP-' + str(self.pathpbmindddg.value()))
-			if self.pathpbminddnd.isChecked():
+			elif self.pathpbminddnd.isChecked():
 				gSchemes.append('Clairvoyant-PDAB-' + str(self.pathpbminddndg.value()))
-			if self.rss.isChecked():
+			elif self.rss.isChecked():
 				gSchemes.append('RSS')
-			if self.udledf.isChecked():
+			elif self.udledf.isChecked():
 				gSchemes.append('UDLEDF')
-			if self.wlaedf.isChecked():
+			elif self.wlaedf.isChecked():
 				gSchemes.append('WLAEDF')
-			if self.rtedf.isChecked():
+			elif self.rtedf.isChecked():
 				gSchemes.append('RTEDF')
-			if self.uniframework.isChecked():
+			elif self.uniframework.isChecked():
 				gSchemes.append('UNIFRAMEWORK')
-			if self.suspobl.isChecked():
+			elif self.suspobl.isChecked():
 				gSchemes.append('SUSPOBL')
-			if self.suspjit.isChecked():
+			elif self.suspjit.isChecked():
 				gSchemes.append('SUSPJIT')
-			if self.suspblock.isChecked():
+			elif self.suspblock.isChecked():
 				gSchemes.append('SUSPBLOCK')
-			if self.burstrm.isChecked():
+			elif self.burstrm.isChecked():
 				gSchemes.append('IDV-BURST-RM')
-			if self.uppaal.isChecked():
+			elif self.uppaal.isChecked():
 				gSchemes.append('UPPAAL')
 			else:
 				gSchemes.append('SRSR')
@@ -1027,10 +1027,12 @@ def drs_task():
 
 	i = 0
 	while 1:
+		tasksets_for_config = []
 		for _ in range(0, gNumberOfTaskSets):
 			tasks = drstask.taskGeneration_drs(gNumberOfTasksPerSet, gEx_Sus, gEx, Pmin=100, numLog=1)
 			#print(tasks)
-			tasksets_drs.append(tasks)
+			tasksets_for_config.append(tasks)
+		tasksets_drs.append(tasksets_for_config)
 
 		gEx += gStep_ex
 		gEx_Sus += gStep_ex_sus
@@ -1041,6 +1043,7 @@ def drs_task():
 
 	#print(tasksets_drs)
 	random.seed(gSeed)
+	print(tasksets_drs)
 	return tasksets_drs
 
 def schedulabilityTest(Tasksets_util):

@@ -44,20 +44,20 @@ print('DRS:',tasksets_drs)
 
 sus_obv = FixedPriority.SuspJit(tasksets_ufast)
 
-#sus_obv_drs = FixedPriority.SuspObl(tasksets_drs)
+sus_obv_drs = FixedPriority.SuspObl(tasksets_drs)
 
 print(sus_obv)
 
-#print(sus_obv_drs)
+print(sus_obv_drs)
 
 
 sus_jit = FixedPriority.SuspJit(tasksets_ufast)
 
-#sus_jit_drs = FixedPriority.SuspJit(tasksets_drs)
+sus_jit_drs = FixedPriority.SuspJit(tasksets_drs)
 
 print(sus_jit)
 
-#print(sus_jit_drs)
+print(sus_jit_drs)
 
 
 

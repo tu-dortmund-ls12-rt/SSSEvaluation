@@ -31,7 +31,7 @@ def Period_generate(Pmin, numLog, val_ex, val_sus):
         pair = {}
         pair['period'] = p
         pair['execution'] = i*p
-        pair['suspension'] = p*val_sus[temp]
+        pair['sslength'] = p*val_sus[temp]
         Task.append(pair)
         temp = temp + 1
         j = j+1
@@ -104,7 +104,14 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
 
     Task_set = Period_generate(Pmin, numLog, val_ex, val_sus)
 
+    Task_set = implicit_deadline(Task_set)
+
     return Task_set
+
+def implicit_deadline(ts):
+    for tsk in ts:
+        tsk['deadline'] = tsk['period']
+    return ts
 
 
 if __name__ == '__main__':
