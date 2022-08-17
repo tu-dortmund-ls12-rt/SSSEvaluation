@@ -114,7 +114,7 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
 	ax = fig.add_subplot(111)
 	fig.subplots_adjust(top=0.9, left=0.1, right=0.95, hspace=0.3)
 
-	ax.set_xlabel('Utilization (%)', size=15)
+	ax.set_xlabel('Execution Time', size=15)
 	ax.set_ylabel('Acceptance Ratio', size=15)
 	ax.spines['top'].set_color('black')
 	ax.spines['bottom'].set_color('black')
@@ -150,7 +150,7 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
 						prop={'size': 10})
 
 	ax.set_title('No. of tasks: '+str(numberoftasks)+', Self-suspension length: ' +
-					str(minsstype)+"-"+str(maxsstype)+', No. of segments: '+str(ssofftypes), size=10, y=0.99)
+					str(minsstype)+"-"+str(maxsstype)+', No. of segments/Granularity: '+str(ssofftypes), size=10, y=0.99)
 	ax.grid()
 	i += 1
 	#fig.savefig(prefix+"/"+isstype+"/"+issofftypes +
@@ -198,7 +198,7 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
 	for c in range(3):
 		ax = fig.add_subplot(2, 3, (c + 1))
 
-		ax.set_xlabel('Utilization (%)', size=10)
+		ax.set_xlabel('Execution Time', size=10)
 		ax.set_ylabel('Acceptance Ratio', size=10)
 		ax.spines['top'].set_color('black')
 		ax.spines['bottom'].set_color('black')
@@ -259,7 +259,7 @@ def effsstsPlotmulti(prefix, plotall, id_par, par_values, schemes, minsstype, ma
 			i += 1
 
 	fig.suptitle('No. of tasks: '+str(numberoftasks)+', Self-suspension length: ' +
-					str(minsstype)+"-"+str(maxsstype)+', No. of segments: '+str(ssofftypes), size=16, y=0.99)
+					str(minsstype)+"-"+str(maxsstype)+', No. of segments/Granularity: '+str(ssofftypes), size=16, y=0.99)
 	# ax.grid()
 
 	#fig.savefig(prefix+"/"+isstype+"/"+issofftypes +
@@ -298,4 +298,4 @@ if __name__ == '__main__':
 	testSchemes = ['EDA', 'NC', 'SCEDF', 'PASS-OPA']
 	testSelfSuspendingType= ['S','M','L']
 	testNumberofSegments = [2]
-	effsstsPlotAll(args[1], True, testSchemes, testSelfSuspendingType, testNumberofSegments, 1, 99, 5, 10,10)
+	effsstsPlotAll(args[1], True, testSchemes, testSelfSuspendingType, testNumberofSegments, 1, 10, 5, 10,10)

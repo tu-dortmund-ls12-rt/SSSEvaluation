@@ -26,7 +26,6 @@ gUStart = 0
 gUEnd = 100
 gUStep = 5
 gNumberOfSegs = 2
-gGran = 10
 gSchemes = []
 gSLenMinValue = 0.01
 gSLenMaxValue = 0.1
@@ -41,6 +40,7 @@ class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		choice_list = ['Generate Tasksets', 'Generate and Save Tasksets', 'Load Tasksets']
 		choice_plot = ['Tasks per Set', 'Number of Segments', 'Suspension Length']
+
 
 		VerticalSize = 1024
 		HorizontalSize = 733
@@ -177,7 +177,7 @@ class Ui_MainWindow(object):
 		self.tasksetsperconfig = QtWidgets.QSpinBox(self.groupbox_configurations)
 		self.tasksetsperconfig.setGeometry(QtCore.QRect(210, 58, 55, 25))
 		self.tasksetsperconfig.setMaximum(1000)
-		self.tasksetsperconfig.setProperty("value", 10)
+		self.tasksetsperconfig.setProperty("value", 100)
 		self.tasksetsperconfig.setObjectName("tasksetsperconfig")
 
 		self.label_taskperset = QtWidgets.QLabel(self.groupbox_configurations)
@@ -713,6 +713,7 @@ class Ui_MainWindow(object):
 		self.gen.setObjectName("gen")
 		self.gen.setText("Generate (DRS)")
 
+
 		MainWindow.setCentralWidget(self.centralwidget)
 		self.menubar = QtWidgets.QMenuBar(MainWindow)
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 1030, 21))
@@ -833,8 +834,6 @@ class Ui_MainWindow(object):
 			global gPlotall
 			global gTaskChoice
 			global gmpCheck
-			global gExEnd	
-			global gEx_SusEnd
 
 
 			drs_schemes()
@@ -876,8 +875,6 @@ class Ui_MainWindow(object):
 			global garwrap
 			global gthread
 			global gmultiplot
-			global gExEnd	
-			global gEx_SusEnd
 			
 			
 			###GENERAL###
@@ -889,7 +886,6 @@ class Ui_MainWindow(object):
 
 			gPrefixdata = self.prefixdatapath.text()
 			gTasksetpath = self.tasksetdatapath.text()
-
 
 			###CONFIGURATION###
 
@@ -907,8 +903,6 @@ class Ui_MainWindow(object):
 			
 			gEx = exstart_float
 			gEx_Sus = exsus_start_float
-			gExEnd = exend_float
-			gEx_SusEnd = exsus_end_float
 			gGran = self.granularity.value()
 			gNumberOfTaskSets = self.tasksetsperconfig.value()
 			gNumberOfTasksPerSet = self.tasksperset.value()
@@ -921,6 +915,7 @@ class Ui_MainWindow(object):
 				gthread = int(self.threadcount.text())
 			else:
 				gthread = 1
+
 
 			##MultiPlot###
 			
@@ -939,14 +934,6 @@ class Ui_MainWindow(object):
 			error_msg.setIcon(QtWidgets.QMessageBox.Critical)
 
 			###SCHEDULABILITY TESTS###
-
-
-			#gSchemes = [UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, SUSPBLOCK, IDV-BURST-RM, SUSPOBL, SUSPJIT]	
-			# if 'SUSPOBL','SUSPJIT' in gSchemes:
-			# 	gSchemes
-
-			#gSchemes = list(set(gSchemes))
-			# print('SORTED SCHEMES:',gSchemes)
 
 			if self.passopa.isChecked():
 				gSchemes.append('PASS-OPA')
@@ -990,12 +977,6 @@ class Ui_MainWindow(object):
 				gSchemes.append('UPPAAL')
 			else:
 				gSchemes.append('SRSR')
-
-			#gSchemes = np.unique(gSchemes)
-
-			gSchemes = list(set(gSchemes))		## Removes Duplicates
-
-
 			if gRuntest:
 				
 				if len(gSchemes) != 0:
@@ -1012,24 +993,17 @@ class Ui_MainWindow(object):
 			if gPlotdata:
 				if len(gSchemes) != 0:
 					try:
-						effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gGran,
-												gEx, gExEnd, gGran, gNumberOfTasksPerSet)
-
-						#gStep is replaced with gGran (needs to be discussed)
-						#gNumberofSegs is also replaced with gGran (needs to be discussed as well)
-
+						effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
+												gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
 					except Exception as e:
 						MainWindow.statusBar().showMessage(str(e))
 				else:
 					MainWindow.statusBar().showMessage('There is no plot to draw.')
 			if gmpCheck:
 				if len(gSchemes) != 0:
-					try:
-						effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gEx, gExEnd, gGran, gNumberOfTasksPerSet)
-
-						#same changes done as above
-
-
+					try:`
+						effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs,
+												gUStart, gUEnd, gUStep, gNumberOfTasksPerSet)
 					except Exception as e:
 						MainWindow.statusBar().showMessage(str(e))
 				else:
@@ -1047,8 +1021,6 @@ def drs_task():
 	global gStep_ex_sus
 	global gNumberOfTaskSets
 	global gNumberOfTasksPerSet
-	global gExEnd	
-	global gEx_SusEnd
 
 
 	tasksets_drs = []
@@ -1071,29 +1043,22 @@ def drs_task():
 
 	#print(tasksets_drs)
 	random.seed(gSeed)
-	#print(tasksets_drs)
+	print(tasksets_drs)
 	return tasksets_drs
 
 def schedulabilityTest(Tasksets_util):
 	pool = Pool(gthread)
 	#sspropotions = ['10']
 	#periodlogs = ['2']
-
-	# sorted_gSchemes = np.unique(gSchemes)
-	# print('SORTED SCHEMES:',sorted_gSchemes)
-	
 	for ischeme in gSchemes:
-		#print("--->",ischeme)
-		x = np.arange(0, gUEnd+gUStep, gUStep)
+		x = np.arange(gUStart, gUEnd+gUStep, gUStep)
 		#y = np.zeros(int(100 / gUStep) + 1)
 		y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
 		print(y)
 		ifskip = False
 		for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
-			print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gEx + u * gUStep, "Granularity:", gGran)
-
-			#use of gUStep.. will it be 
-
+			print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gUStart + u * gUStep, "SSLength:", str(
+				gSLenMinValue), " - ", str(gSLenMaxValue), "Num. of segments:", gNumberOfSegs)
 			if u == 0:
 				y[u] = 1
 				continue
@@ -1117,17 +1082,13 @@ def schedulabilityTest(Tasksets_util):
 			if acceptanceRatio == 0:
 				ifskip = True
 
-		plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gGran) + '/'
+		plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gNumberOfSegs) + '/'
 		plotfile = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(
-			gGran) + '/' + ischeme + str(gNumberOfTasksPerSet)
+			gNumberOfSegs) + '/' + ischeme + str(gNumberOfTasksPerSet)
 
 		if not os.path.exists(plotPath):
 			os.makedirs(plotPath)
 		np.save(plotfile, np.array([x, y]))
-		
-		# gSchemes = np.unique(gSchemes)
-		# print('SORTED SCHEMES:',gSchemes)
-
 
 def switchTest(tasksets,ischeme,i):
 	counter = 0
