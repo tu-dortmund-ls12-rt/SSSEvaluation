@@ -836,6 +836,7 @@ class Ui_MainWindow(object):
 			global gExEnd	
 			global gEx_SusEnd
 
+			# gSchemes = []  # initialize
 
 			drs_schemes()
 			
@@ -878,6 +879,7 @@ class Ui_MainWindow(object):
 			global gmultiplot
 			global gExEnd	
 			global gEx_SusEnd
+			global gExStart
 			
 			
 			###GENERAL###
@@ -906,6 +908,7 @@ class Ui_MainWindow(object):
 			gStep_ex_sus = (exsus_end_float - exsus_start_float)/self.granularity.value()
 			
 			gEx = exstart_float
+			gExStart = exstart_float
 			gEx_Sus = exsus_start_float
 			gExEnd = exend_float
 			gEx_SusEnd = exsus_end_float
@@ -948,52 +951,54 @@ class Ui_MainWindow(object):
 			#gSchemes = list(set(gSchemes))
 			# print('SORTED SCHEMES:',gSchemes)
 
+			gSchemes = []
+
 			if self.passopa.isChecked():
 				gSchemes.append('PASS-OPA')
-			elif self.scedf.isChecked():
+			if self.scedf.isChecked():
 				gSchemes.append('SCEDF')
-			elif self.scrm.isChecked():
+			if self.scrm.isChecked():
 				gSchemes.append('SCRM')
-			elif self.scairrm.isChecked():
+			if self.scairrm.isChecked():
 				gSchemes.append('SCAIR-RM')
-			elif self.scairopa.isChecked():
+			if self.scairopa.isChecked():
 				gSchemes.append('SCAIR-OPA')
-			elif self.edagmfopa.isChecked():
+			if self.edagmfopa.isChecked():
 				gSchemes.append('EDAGMF-OPA')
-			elif self.pathminddd.isChecked():
+			if self.pathminddd.isChecked():
 				gSchemes.append('Oblivious-IUB-' + str(self.pathmindddg.value()))
-			elif self.pathminddnd.isChecked():
+			if self.pathminddnd.isChecked():
 				gSchemes.append('Clairvoyant-SSSD-' + str(self.pathminddndg.value()))
-			elif self.pathpbminddd.isChecked():
+			if self.pathpbminddd.isChecked():
 				gSchemes.append('Oblivious-MP-' + str(self.pathpbmindddg.value()))
-			elif self.pathpbminddnd.isChecked():
+			if self.pathpbminddnd.isChecked():
 				gSchemes.append('Clairvoyant-PDAB-' + str(self.pathpbminddndg.value()))
-			elif self.rss.isChecked():
+			if self.rss.isChecked():
 				gSchemes.append('RSS')
-			elif self.udledf.isChecked():
+			if self.udledf.isChecked():
 				gSchemes.append('UDLEDF')
-			elif self.wlaedf.isChecked():
+			if self.wlaedf.isChecked():
 				gSchemes.append('WLAEDF')
-			elif self.rtedf.isChecked():
+			if self.rtedf.isChecked():
 				gSchemes.append('RTEDF')
-			elif self.uniframework.isChecked():
+			if self.uniframework.isChecked():
 				gSchemes.append('UNIFRAMEWORK')
-			elif self.suspobl.isChecked():
+			if self.suspobl.isChecked():
 				gSchemes.append('SUSPOBL')
-			elif self.suspjit.isChecked():
+			if self.suspjit.isChecked():
 				gSchemes.append('SUSPJIT')
-			elif self.suspblock.isChecked():
+			if self.suspblock.isChecked():
 				gSchemes.append('SUSPBLOCK')
-			elif self.burstrm.isChecked():
+			if self.burstrm.isChecked():
 				gSchemes.append('IDV-BURST-RM')
-			elif self.uppaal.isChecked():
+			if self.uppaal.isChecked():
 				gSchemes.append('UPPAAL')
-			else:
-				gSchemes.append('SRSR')
+			# else: # TODO what is this??
+			# 	gSchemes.append('SRSR')
 
 			#gSchemes = np.unique(gSchemes)
 
-			gSchemes = list(set(gSchemes))		## Removes Duplicates
+			# gSchemes = list(set(gSchemes))		## Removes Duplicates
 
 
 			if gRuntest:
@@ -1054,7 +1059,7 @@ def drs_task():
 	tasksets_drs = []
 
 	i = 0
-	while 1:
+	while 1:  # TODO use np.linspace with gExStart, gExEnd, gGran AND same with suspension
 		tasksets_for_config = []
 		for _ in range(0, gNumberOfTaskSets):
 			tasks = drstask.taskGeneration_drs(gNumberOfTasksPerSet, gEx_Sus, gEx, Pmin=100, numLog=1)
@@ -1084,9 +1089,11 @@ def schedulabilityTest(Tasksets_util):
 	
 	for ischeme in gSchemes:
 		#print("--->",ischeme)
-		x = np.arange(0, gUEnd+gUStep, gUStep)
+		x = np.linspace(gExStart, gExEnd, num=gGran)  # TODO probably need to adjust here as well
+		# x = np.arange(gExStart, gExEnd, (gExEnd - gExStart)/gGran)
+		print('gEx', gExStart, 'gExEnd', gExEnd)
 		#y = np.zeros(int(100 / gUStep) + 1)
-		y = np.zeros(int((gUEnd-gUStart) / gUStep)+1)
+		y = np.zeros(int(gGran))  # TODO probably need to adjust here as well
 		print(y)
 		ifskip = False
 		for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
@@ -1094,6 +1101,7 @@ def schedulabilityTest(Tasksets_util):
 
 			#use of gUStep.. will it be 
 
+			# TODO still to be adjusted
 			if u == 0:
 				y[u] = 1
 				continue
@@ -1123,7 +1131,9 @@ def schedulabilityTest(Tasksets_util):
 
 		if not os.path.exists(plotPath):
 			os.makedirs(plotPath)
-		np.save(plotfile, np.array([x, y]))
+		np.save(plotfile, np.array([x, y], dtype=object))
+
+		print(x, y)
 		
 		# gSchemes = np.unique(gSchemes)
 		# print('SORTED SCHEMES:',gSchemes)

@@ -126,7 +126,7 @@ def effsstsPlot(prefix, plotall, schemes, minsstype, maxsstype, ssofftypes, usta
 	i = 1
 	for ischeme in schemes:
 		ifile = prefix+"/"+str(minsstype)+"-"+str(maxsstype)+"/"+str(ssofftypes)+"/"+ischeme+ str(numberoftasks) +".npy"
-		data = np.load(ifile)
+		data = np.load(ifile, allow_pickle=True)
 		x = data[0][0::1]
 		y = data[1][0::1]
 		print(x)
