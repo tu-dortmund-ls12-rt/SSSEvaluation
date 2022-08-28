@@ -358,8 +358,6 @@ class Ui_MainWindow(object):
 		self.pathpbminddndg.setObjectName("pathpbminddndg")
 		self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.pathpbminddndg)
 
-
-
 		self.scrollArea_3 = QtWidgets.QScrollArea(self.tabs)   # Segmented
 		self.scrollArea_3.setWidgetResizable(True)
 		self.scrollArea_3.setGeometry(QtCore.QRect(0, 0, 999, 208))
@@ -836,12 +834,8 @@ class Ui_MainWindow(object):
 			global gExEnd	
 			global gEx_SusEnd
 
-			# gSchemes = []  # initialize
-
 			drs_schemes()
 			
-			#drs_task()
-
 			print(gSchemes)
 
 
@@ -944,13 +938,6 @@ class Ui_MainWindow(object):
 			###SCHEDULABILITY TESTS###
 
 
-			#gSchemes = [UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, SUSPBLOCK, IDV-BURST-RM, SUSPOBL, SUSPJIT]	
-			# if 'SUSPOBL','SUSPJIT' in gSchemes:
-			# 	gSchemes
-
-			#gSchemes = list(set(gSchemes))
-			# print('SORTED SCHEMES:',gSchemes)
-
 			gSchemes = []
 
 			if self.passopa.isChecked():
@@ -993,10 +980,6 @@ class Ui_MainWindow(object):
 				gSchemes.append('IDV-BURST-RM')
 			if self.uppaal.isChecked():
 				gSchemes.append('UPPAAL')
-			# else: # TODO what is this??
-			# 	gSchemes.append('SRSR')
-
-			#gSchemes = np.unique(gSchemes)
 
 			# gSchemes = list(set(gSchemes))		## Removes Duplicates
 
@@ -1032,8 +1015,6 @@ class Ui_MainWindow(object):
 					try:
 						effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gEx, gExEnd, gGran, gNumberOfTasksPerSet)
 
-						#same changes done as above
-
 
 					except Exception as e:
 						MainWindow.statusBar().showMessage(str(e))
@@ -1056,10 +1037,10 @@ def drs_task():
 	global gEx_SusEnd
 
 
-	tasksets_drs = []
+	tasksets_drs = []	
 
 	i = 0
-	while 1:  # TODO use np.linspace with gExStart, gExEnd, gGran AND same with suspension
+	while 1: # TODO use np.linspace with gExStart, gExEnd, gGran AND same with suspension
 		tasksets_for_config = []
 		for _ in range(0, gNumberOfTaskSets):
 			tasks = drstask.taskGeneration_drs(gNumberOfTasksPerSet, gEx_Sus, gEx, Pmin=100, numLog=1)
@@ -1070,39 +1051,26 @@ def drs_task():
 		gEx += gStep_ex
 		gEx_Sus += gStep_ex_sus
 		i += 1
-		if i == gGran:
+		if i == gGran:		
 			break
 
-
-	#print(tasksets_drs)
 	random.seed(gSeed)
-	#print(tasksets_drs)
 	return tasksets_drs
+
 
 def schedulabilityTest(Tasksets_util):
 	pool = Pool(gthread)
-	#sspropotions = ['10']
-	#periodlogs = ['2']
 
-	# sorted_gSchemes = np.unique(gSchemes)
-	# print('SORTED SCHEMES:',sorted_gSchemes)
-	
 	for ischeme in gSchemes:
-		#print("--->",ischeme)
 		x = np.linspace(gExStart, gExEnd, num=gGran)  # TODO probably need to adjust here as well
-		# x = np.arange(gExStart, gExEnd, (gExEnd - gExStart)/gGran)
-		print('gEx', gExStart, 'gExEnd', gExEnd)
-		#y = np.zeros(int(100 / gUStep) + 1)
 		y = np.zeros(int(gGran))  # TODO probably need to adjust here as well
 		print(y)
 		ifskip = False
 		for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
 			print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gEx + u * gUStep, "Granularity:", gGran)
 
-			#use of gUStep.. will it be 
-
 			# TODO still to be adjusted
-			if u == 0:
+			if u == 0:	
 				y[u] = 1
 				continue
 			if u * gUStep == 100:
@@ -1135,10 +1103,7 @@ def schedulabilityTest(Tasksets_util):
 
 		print(x, y)
 		
-		# gSchemes = np.unique(gSchemes)
-		# print('SORTED SCHEMES:',gSchemes)
-
-
+	
 def switchTest(tasksets,ischeme,i):
 	counter = 0
 	for tasks in tasksets:
