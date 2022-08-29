@@ -1040,6 +1040,7 @@ def drs_task():
 	tasksets_drs = []	
 
 	i = 0
+	# Something like this?: for gEx, gEx_Sus in zip(np.linspace(gEx_Start, gEx_End, num=gGran), np.linspace(gEx_Sus_Start, gEx_Sus_End, num=gGran):
 	while 1: # TODO use np.linspace with gExStart, gExEnd, gGran AND same with suspension
 		tasksets_for_config = []
 		for _ in range(0, gNumberOfTaskSets):
