@@ -981,9 +981,6 @@ class Ui_MainWindow(object):
 			if self.uppaal.isChecked():
 				gSchemes.append('UPPAAL')
 
-			# gSchemes = list(set(gSchemes))		## Removes Duplicates
-
-
 			if gRuntest:
 				
 				if len(gSchemes) != 0:
@@ -1000,11 +997,7 @@ class Ui_MainWindow(object):
 			if gPlotdata:
 				if len(gSchemes) != 0:
 					try:
-						effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gGran,
-												gEx, gExEnd, gGran, gNumberOfTasksPerSet)
-
-						#gStep is replaced with gGran (needs to be discussed)
-						#gNumberofSegs is also replaced with gGran (needs to be discussed as well)
+						effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gGran, gEx, gExEnd, gGran, gNumberOfTasksPerSet)
 
 					except Exception as e:
 						MainWindow.statusBar().showMessage(str(e))
@@ -1014,7 +1007,6 @@ class Ui_MainWindow(object):
 				if len(gSchemes) != 0:
 					try:
 						effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gEx, gExEnd, gGran, gNumberOfTasksPerSet)
-
 
 					except Exception as e:
 						MainWindow.statusBar().showMessage(str(e))
@@ -1040,8 +1032,7 @@ def drs_task():
 	tasksets_drs = []	
 
 	i = 0
-	# Something like this?: for gEx, gEx_Sus in zip(np.linspace(gEx_Start, gEx_End, num=gGran), np.linspace(gEx_Sus_Start, gEx_Sus_End, num=gGran):
-	while 1: # TODO use np.linspace with gExStart, gExEnd, gGran AND same with suspension
+	for gEx, gEx_Sus in zip(np.linspace(gExStart, gExEnd, num=gGran), np.linspace(gEx_Sus, gEx_SusEnd, num=gGran)):
 		tasksets_for_config = []
 		for _ in range(0, gNumberOfTaskSets):
 			tasks = drstask.taskGeneration_drs(gNumberOfTasksPerSet, gEx_Sus, gEx, Pmin=100, numLog=1)
@@ -1063,8 +1054,8 @@ def schedulabilityTest(Tasksets_util):
 	pool = Pool(gthread)
 
 	for ischeme in gSchemes:
-		x = np.linspace(gExStart, gExEnd, num=gGran)  # TODO probably need to adjust here as well
-		y = np.zeros(int(gGran))  # TODO probably need to adjust here as well
+		x = np.linspace(gExStart, gExEnd, num=gGran)
+		y = np.zeros(int(gGran))
 		print(y)
 		ifskip = False
 		for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
