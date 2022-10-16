@@ -26,7 +26,7 @@ gUStart = 0
 gUEnd = 100
 gUStep = 5
 gNumberOfSegs = 2
-gGran = 21
+gGran = 10
 gSchemes = []
 gSLenMinValue = 0.01
 gSLenMaxValue = 0.1
@@ -165,7 +165,7 @@ class Ui_MainWindow(object):
 
 		self.granularity = QtWidgets.QSpinBox(self.groupbox_configurations)
 		self.granularity.setGeometry(QtCore.QRect(660, 58, 55, 25))
-		self.granularity.setProperty("value", 10)
+		self.granularity.setProperty("value", 21)
 		self.granularity.setObjectName("granularity")
 
 
@@ -1061,17 +1061,17 @@ def schedulabilityTest(Tasksets_util):
 		for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
 			print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gEx + u * gUStep, "Granularity:", gGran)
 
-			# TODO still to be adjusted
-			if u == 0:	
-				y[u] = 1
-				continue
-			if u * gUStep == 100:
-				y[u] = 0
-				continue
-			if ifskip == True:
-				print("acceptanceRatio:", 0)
-				y[u] = 0
-				continue
+			# # TODO still to be adjusted (will share my understanding during the meeting)
+			# if u == 0:	
+			# 	y[u] = 1
+			# 	continue
+			# if u * gUStep == 100:
+			# 	y[u] = 0
+			# 	continue
+			# if ifskip == True:
+			# 	print("acceptanceRatio:", 0)
+			# 	y[u] = 0
+			# 	continue
 
 			numfail = 0
 			splitTasks = np.array_split(tasksets,gthread)
