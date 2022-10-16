@@ -5,7 +5,7 @@ import sys
 import numpy as np
 from schedTest import drstask, Burst_RM, tgPath, SCEDF, SCRM, EDA, PROPORTIONAL, NC, SEIFDA, pass_opa, rad, PATH, mipx, scair_rm
 from schedTest import RSS, UDLEDF, WLAEDF, RTEDF, UNIFRAMEWORK, FixedPriority, GMFPA, SRSR, milp_response, UPPAAL, Burst_RM
-from effsstsPlot import effsstsPlot
+from effsstsPlot import effsstsPlot_DRS
 import os
 import datetime
 import pickle
@@ -26,7 +26,7 @@ gUStart = 0
 gUEnd = 100
 gUStep = 5
 gNumberOfSegs = 2
-gGran = 10
+gGran = 21
 gSchemes = []
 gSLenMinValue = 0.01
 gSLenMaxValue = 0.1
@@ -997,7 +997,7 @@ class Ui_MainWindow(object):
 			if gPlotdata:
 				if len(gSchemes) != 0:
 					try:
-						effsstsPlot.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gGran, gEx, gExEnd, gGran, gNumberOfTasksPerSet)
+						effsstsPlot_DRS.effsstsPlotAll(gPrefixdata, gPlotall, gSchemes, gSLenMinValue, gSLenMaxValue, gGran, gEx, gExEnd, gGran, gNumberOfTasksPerSet, gNumberOfTaskSets)
 
 					except Exception as e:
 						MainWindow.statusBar().showMessage(str(e))
@@ -1006,7 +1006,7 @@ class Ui_MainWindow(object):
 			if gmpCheck:
 				if len(gSchemes) != 0:
 					try:
-						effsstsPlot.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gEx, gExEnd, gGran, gNumberOfTasksPerSet)
+						effsstsPlot_DRS.effsstsPlotAllmulti(gPrefixdata, gPlotall, gmultiplot, garwrap, gSchemes, gSLenMinValue, gSLenMaxValue, gNumberOfSegs, gEx, gExEnd, gGran, gNumberOfTasksPerSet,gNumberOfTaskSets)
 
 					except Exception as e:
 						MainWindow.statusBar().showMessage(str(e))
@@ -1054,7 +1054,7 @@ def schedulabilityTest(Tasksets_util):
 	pool = Pool(gthread)
 
 	for ischeme in gSchemes:
-		x = np.linspace(gExStart, gExEnd, num=gGran)
+		x = np.linspace(0, gExEnd, num=gGran)
 		y = np.zeros(int(gGran))
 		print(y)
 		ifskip = False
