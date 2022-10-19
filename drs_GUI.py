@@ -1054,26 +1054,13 @@ def schedulabilityTest(Tasksets_util):
 	pool = Pool(gthread)
 
 	for ischeme in gSchemes:
-		x = np.linspace(0, gExEnd, num=gGran)
+		x = np.linspace(gExStart, gExEnd, num=gGran)
 		y = np.zeros(int(gGran))
 		print(y)
 		ifskip = False
 		for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
 			print("Scheme:", ischeme, "Task-sets:", gNumberOfTaskSets, "Tasks per Set:", gNumberOfTasksPerSet, "U:", gEx + u * gUStep, "Granularity:", gGran)
 
-			# # TODO still to be adjusted (will share my understanding during the meeting)
-			# if u == 0:	
-			# 	y[u] = 1
-			# 	continue
-			# if u * gUStep == 100:
-			# 	y[u] = 0
-			# 	continue
-			# if ifskip == True:
-			# 	print("acceptanceRatio:", 0)
-			# 	y[u] = 0
-			# 	continue
-
-			numfail = 0
 			splitTasks = np.array_split(tasksets,gthread)
 			results = [pool.apply_async(switchTest, args=(splitTasks[i],ischeme,i,)) for i in range(len(splitTasks))]
 			output = [p.get() for p in results]
@@ -1082,8 +1069,6 @@ def schedulabilityTest(Tasksets_util):
 			acceptanceRatio = 1 - (numfail / gNumberOfTaskSets)
 			print("acceptanceRatio:", acceptanceRatio)
 			y[u] = acceptanceRatio
-			if acceptanceRatio == 0:
-				ifskip = True
 
 		plotPath = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(gGran) + '/'
 		plotfile = gPrefixdata + '/' + str(gSLenMinValue) + '-' + str(gSLenMaxValue) + '/' + str(
