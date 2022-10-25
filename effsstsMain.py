@@ -1299,10 +1299,9 @@ def tasksetConfiguration():
 	if gTaskChoice == 'Generate Tasksets' or gTaskChoice == 'Generate and Save Tasksets':
 		random.seed(gSeed)
 		for u in range(gUStart, gUEnd+gUStep, gUStep):
-			# TODO enter here
 			tasksets = []
 			for _ in range(0, gNumberOfTaskSets):
-				percentageU = u * gUStep / 100  # TODO fix
+				# percentageU = u * gUStep / 100
 				percentageU = u / 100
 				tasks = tgPath.taskGeneration_p(gNumberOfTasksPerSet, percentageU, gSLenMinValue, gSLenMaxValue, vRatio=1,
 												seed=gSeed, numLog=int(2), numsegs=gNumberOfSegs)
