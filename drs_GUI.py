@@ -421,6 +421,11 @@ class Ui_MainWindow(object):
 		self.srsr.setToolTip('Schedulability Analysis with synchronous release sequence refinement')
 		self.formLayout_3.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.srsr)
 
+		self.uppaal = QtWidgets.QCheckBox(self.formLayoutWidget_3)
+		self.uppaal.setObjectName("uppaal")
+		self.uppaal.setText("UPPAAL")
+		self.uppaal.setToolTip('Exact Schedulability Test for Non-Preemptive Self-Suspending Real-Time Tasks with UPPAAL model checker')
+		self.formLayout_3.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.uppaal)
 
 
 		self.scrollArea_4 = QtWidgets.QScrollArea(self.tabs)   # Dynamic
@@ -503,13 +508,6 @@ class Ui_MainWindow(object):
 		self.burstrm.setText("Idv-Burst-RM")
 		self.burstrm.setToolTip('Rate monotonic priority assignment with burst schedulability evaluation')
 		self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.burstrm)
-
-		self.uppaal = QtWidgets.QCheckBox(self.formLayoutWidget_4)
-		self.uppaal.setObjectName("uppaal")
-		self.uppaal.setText("UPPAAL")
-		self.uppaal.setToolTip('Exact Schedulability Test for Non-Preemptive Self-Suspending Real-Time Tasks with UPPAAL model checker')
-		self.formLayout_4.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.uppaal)
-
 
 		self.scrollArea_5 = QtWidgets.QScrollArea(self.tabs)   # General
 		self.scrollArea_5.setWidgetResizable(True)

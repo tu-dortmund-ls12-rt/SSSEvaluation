@@ -32,9 +32,14 @@ def Period_generate(Pmin, numLog, val_ex, val_sus):
         pair['period'] = p
         pair['execution'] = i*p
         pair['sslength'] = p*val_sus[temp]
+        # pair['cseg'] = value_csegements
+        # pair['sseg'] = value_suspsegments
         Task.append(pair)
         temp = temp + 1
         j = j+1
+
+        # pair['cseg'] = value_csegements
+        # pair['sseg'] = value_suspsegments    
 
     return Task
 
@@ -80,6 +85,18 @@ def DRS_ex(n, util_Ex, ubound_exe_sus):
         return drs(n, util_Ex, ubound_exe_sus)
 
 
+def execution_segments(n, ExUtil):
+
+    return drs(n, ExUtil)
+
+
+def suspension_segments(n, SusUtil):
+    
+    tasks = n-1
+
+    return drs(tasks, SusUtil)
+
+
 def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
                        uTotal_Exe, Pmin=100, numLog=1):
     """ Generates and returns the tasksets
@@ -102,11 +119,18 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
     for item1, item2 in sus_object:
         val_sus.append(item1 - item2)
 
+    val_c_segments = execution_segments(NumberOfTasksPerSet, uTotal_Exe)
+    val_sus_segments = suspension_segments(NumberOfTasksPerSet, uTotal_Exe_Sus)
+    
     Task_set = Period_generate(Pmin, numLog, val_ex, val_sus)
 
     Task_set = implicit_deadline(Task_set)
 
+    Task_set = segments(val_c_segments, val_sus_segments, Task_set)
+
+
     return Task_set
+
 
 def implicit_deadline(ts):
     for tsk in ts:
@@ -114,11 +138,24 @@ def implicit_deadline(ts):
     return ts
 
 
+def segments(val_c_segments, val_sus_segments, ts):
+    
+    task = ts
+    c_segments = val_c_segments
+    sus_segments = val_sus_segments
+
+
+    task = [d | {"Cseg": segment1, "Sseg": segment2} for d, segment1, segment2 in zip(task, c_segments, sus_segments)]
+
+    return task
+
+
+
 if __name__ == '__main__':
     # DEBUG
     print('Randomly generating tasks ...')
 
-    ts = taskGeneration_drs(10, 1, 0)
+    ts = taskGeneration_drs(3, 1, 1)
 
     print('')
     print(ts)
