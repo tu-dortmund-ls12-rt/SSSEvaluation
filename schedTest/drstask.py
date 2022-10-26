@@ -98,7 +98,7 @@ def suspension_segments(n, SusUtil):
 
 
 def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
-                       uTotal_Exe, Pmin=100, numLog=1):
+                       uTotal_Exe, Pmin=100, numLog=1, number_segments=2):
     """ Generates and returns the tasksets
 
     Args:
@@ -118,15 +118,12 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
     sus_object = zip(val_exe_sus, val_ex)
     for item1, item2 in sus_object:
         val_sus.append(item1 - item2)
-
-    val_c_segments = execution_segments(NumberOfTasksPerSet, uTotal_Exe)
-    val_sus_segments = suspension_segments(NumberOfTasksPerSet, uTotal_Exe_Sus)
     
     Task_set = Period_generate(Pmin, numLog, val_ex, val_sus)
 
     Task_set = implicit_deadline(Task_set)
 
-    Task_set = segments(val_c_segments, val_sus_segments, Task_set)
+    Task_set = segments(Task_set, number_segments)
 
 
     return Task_set
@@ -138,16 +135,13 @@ def implicit_deadline(ts):
     return ts
 
 
-def segments(val_c_segments, val_sus_segments, ts):
-    
-    task = ts
-    c_segments = val_c_segments
-    sus_segments = val_sus_segments
+def segments(ts, number_segments):
 
+    modify_list = [(task, execution_segments(number_segments, task['execution']), suspension_segments(number_segments, task['sslength'])) for task in ts]
 
-    task = [d | {"Cseg": segment1, "Sseg": segment2} for d, segment1, segment2 in zip(task, c_segments, sus_segments)]
+    ts = [d | {"Cseg": exec_segments, "Sseg": sus_segments} for d, exec_segments, sus_segments in modify_list]
 
-    return task
+    return ts
 
 
 
@@ -155,7 +149,7 @@ if __name__ == '__main__':
     # DEBUG
     print('Randomly generating tasks ...')
 
-    ts = taskGeneration_drs(3, 1, 1)
+    ts = taskGeneration_drs(10, 2, 1 )
 
     print('')
     print(ts)
