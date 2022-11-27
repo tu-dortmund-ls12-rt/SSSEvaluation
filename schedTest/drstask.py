@@ -132,6 +132,7 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
 def implicit_deadline(ts):
     for tsk in ts:
         tsk['deadline'] = tsk['period']
+        tsk['minSr'] = tsk['period']
     return ts
 
 

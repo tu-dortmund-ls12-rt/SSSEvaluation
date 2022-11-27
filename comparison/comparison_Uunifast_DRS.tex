@@ -53,6 +53,19 @@ The three different setups for DRS used here:
 {\raggedleft
 Here, we are taking three different setups each with different execution + suspension time but same execution time.
 }
+
+
+% ======================
+	\clearpage
+
+\section*{Setup:}    
+
+{
+\raggedleft \newline
+ 
+All the scheduling algorithms are bench marked using test sets which are created using UUniFast and DRS. The task sets generated using DRS or UUniFast had different parameters in place but few selected parameters were kept constant for all the scheduling algorithms whereas other parameters varied based on the task set. Parameters such as Execution time, Suspension time, Suspension length and other changed depending on the setup used but parameters like Tasks per set and Task sets per configuration remained constant at 10 and 100 respectively for all the setups used.
+}
+
 % ======================
 	\clearpage
 
@@ -521,11 +534,112 @@ Here, we are taking three different setups each with different execution + suspe
 		Third DRS setup.
 		\vspace{0.3cm}
 	\end{minipage}
+% ======================
+        \clearpage
 
-        \section{Evaluation:}
+        \section{SCEDF}
+{
+\raggedleft We are comparing the all the different schedulability tests for both DRS and UUnifast for each of the setups \newline
+}
+
+	\begin{minipage}[t]{0.48\linewidth}
+		\centering
+		\textbf{(UUnifast)}
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCEDF[2][0.0-0.02][10].pdf}
+		First UUnifast setup.
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCEDF[2][0.02-0.04][10].pdf}
+		Second UUnifast setup.
+		\vspace{0.3cm}
+		
+            \includegraphics[width=\linewidth]{SCEDF[2][0.04-0.06][10].pdf}
+		Third UUnifast setup.
+		\vspace{0.3cm}
+		
+	\end{minipage}\hfill
+	\begin{minipage}[t]{0.48\linewidth}
+		\centering
+		\textbf{(DRS)}
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCEDF_1st Setup.pdf}
+		First DRS setup.
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCEDF_2nd Setup.pdf}
+		Second DRS setup.
+		\vspace{0.3cm}
+
+            \includegraphics[width=\linewidth]{SCEDF_3rd Setup.pdf}
+		Third DRS setup.
+		\vspace{0.3cm}
+
+
+                   
+
+	\end{minipage}
+
+% ======================
+        \clearpage
+
+        \section{SCRM}
+{
+\raggedleft We are comparing the all the different schedulability tests for both DRS and UUnifast for each of the setups \newline
+}
+
+	\begin{minipage}[t]{0.48\linewidth}
+		\centering
+		\textbf{(UUnifast)}
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCRM[2][0.0-0.02][10].pdf}
+		First UUnifast setup.
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCRM[2][0.02-0.04][10].pdf}
+		Second UUnifast setup.
+		\vspace{0.3cm}
+		
+            \includegraphics[width=\linewidth]{SCRM[2][0.04-0.06][10].pdf}
+		Third UUnifast setup.
+		\vspace{0.3cm}
+		
+	\end{minipage}\hfill
+	\begin{minipage}[t]{0.48\linewidth}
+		\centering
+		\textbf{(DRS)}
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCRM_1st Setup.pdf}
+		First DRS setup.
+		\vspace{0.3cm}
+		
+		\includegraphics[width=\linewidth]{SCRM_2nd Setup.pdf}
+		Second DRS setup.
+		\vspace{0.3cm}
+
+            \includegraphics[width=\linewidth]{SCRM_3rd Setup.pdf}
+		Third DRS setup.
+		\vspace{0.3cm}
+
+
+                   
+
+	\end{minipage}
+
+        
+        
+
+        
+\section*{Evaluation:}      
 
 {
-\raggedleft So, the parameter we use to compare is \textbf{Acceptance Ratio} with respect to the execution time i.e the percentage of tasksets that got accepted for a particular execution time. We are generating 100 task sets per configuration with 10 tasks per set with a suspension values ranging between 0,0 - 0,6. \newline
+\raggedleft \newline
+
+So, the parameter we use to compare is \textbf{Acceptance Ratio} with respect to the execution time i.e the percentage of tasksets that got accepted for a particular execution time. We are generating 100 task sets per configuration with 10 tasks per set with a suspension values ranging between 0,0 - 0,6. \newline
 }
 
 \end{document}

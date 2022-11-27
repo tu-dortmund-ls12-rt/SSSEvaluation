@@ -125,7 +125,7 @@ class Ui_MainWindow(object):
 
 		self.exstart = QtWidgets.QLineEdit(self.groupbox_configurations)
 		self.exstart.setGeometry(QtCore.QRect(210, 25, 55, 25))
-		self.exstart.setText("0.1")
+		self.exstart.setText("0.0")
 		self.exstart.setObjectName("exstart")
 
 		self.label_exend = QtWidgets.QLabel(self.groupbox_configurations)
