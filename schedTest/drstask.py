@@ -7,9 +7,8 @@ import datetime
 from drs import drs
 
 
-
 def Period_generate(Pmin, numLog, val_ex, val_sus):
-    """ Generates the Period values and returns the final Taskset
+    """Generates the Period values and returns the final Taskset
 
     Args:
         Pmin (int) : Takes a set value of 100
@@ -27,25 +26,26 @@ def Period_generate(Pmin, numLog, val_ex, val_sus):
     for i in val_ex:
 
         thN = j % numLog
-        p = random.uniform(Pmin*math.pow(10, thN), Pmin*math.pow(10, thN+1))
+        p = random.uniform(Pmin * math.pow(10, thN), Pmin * math.pow(10, thN + 1))
         pair = {}
-        pair['period'] = p
-        pair['execution'] = i*p
-        pair['sslength'] = p*val_sus[temp]
+        pair["period"] = p
+        pair["execution"] = i * p
+        pair["utilization"] = i
+        pair["sslength"] = p * val_sus[temp]
         # pair['cseg'] = value_csegements
         # pair['sseg'] = value_suspsegments
         Task.append(pair)
         temp = temp + 1
-        j = j+1
+        j = j + 1
 
         # pair['cseg'] = value_csegements
-        # pair['sseg'] = value_suspsegments    
+        # pair['sseg'] = value_suspsegments
 
     return Task
 
 
 def DRS_ex_sus(n, util_ex_Sus):
-    """ Generates and returns the Utilization vector for execution and suspension time combined
+    """Generates and returns the Utilization vector for execution and suspension time combined
 
     Args:
         n (int) : Number of tasks
@@ -60,7 +60,7 @@ def DRS_ex_sus(n, util_ex_Sus):
 
 
 def DRS_ex(n, util_Ex, ubound_exe_sus):
-    """ Generates and returns the Utilization vector for execution
+    """Generates and returns the Utilization vector for execution
 
     Args:
         n (int) : Number of tasks
@@ -72,7 +72,7 @@ def DRS_ex(n, util_Ex, ubound_exe_sus):
         drs (list): Returns a vector of n number of utilization values for exeecution time
         NB: Keeping util_Ex as 0 will produce an array of 0s of size 'n'
     """
-   
+
     if util_Ex == 0:
         exception = []
         for i in range(n):
@@ -91,15 +91,21 @@ def execution_segments(n, ExUtil):
 
 
 def suspension_segments(n, SusUtil):
-    
-    tasks = n-1
+
+    tasks = n - 1
 
     return drs(tasks, SusUtil)
 
 
-def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
-                       uTotal_Exe, Pmin=100, numLog=1, number_segments=2):
-    """ Generates and returns the tasksets
+def taskGeneration_drs(
+    NumberOfTasksPerSet,
+    uTotal_Exe_Sus,
+    uTotal_Exe,
+    Pmin=100,
+    numLog=1,
+    number_segments=2,
+):
+    """Generates and returns the tasksets
 
     Args:
         NumberOfTasksPerSet (int) : Total number of tasks
@@ -112,50 +118,76 @@ def taskGeneration_drs(NumberOfTasksPerSet, uTotal_Exe_Sus,
     """
 
     val_exe_sus = DRS_ex_sus(NumberOfTasksPerSet, uTotal_Exe_Sus)
-    #print(val_exe_sus)
+    # print(val_exe_sus)
     val_ex = DRS_ex(NumberOfTasksPerSet, uTotal_Exe, val_exe_sus)
     val_sus = []
     sus_object = zip(val_exe_sus, val_ex)
     for item1, item2 in sus_object:
         val_sus.append(item1 - item2)
-    
+
     Task_set = Period_generate(Pmin, numLog, val_ex, val_sus)
 
     Task_set = implicit_deadline(Task_set)
 
     Task_set = segments(Task_set, number_segments)
 
+    Task_set = paths_trivial(Task_set)
+
+    Task_set = other_variables_trivial(Task_set)
 
     return Task_set
 
 
 def implicit_deadline(ts):
     for tsk in ts:
-        tsk['deadline'] = tsk['period']
+        tsk["deadline"] = tsk["period"]
+    return ts
+
+
+def paths_trivial(ts):
+    """Just one path (the task itself). Used to make tests like PASS-OPA work."""
+    for tsk in ts:
+        tsk["paths"] = [tsk.copy()]
+    return ts
+
+
+def other_variables_trivial(ts):
+    """Put trivisl values for properties to make schedulability tests work."""
+    for tsk in ts:
+        tsk["minSr"] = 1
     return ts
 
 
 def segments(ts, number_segments):
 
-    modify_list = [(task, execution_segments(number_segments, task['execution']), suspension_segments(number_segments, task['sslength'])) for task in ts]
+    modify_list = [
+        (
+            task,
+            execution_segments(number_segments, task["execution"]),
+            suspension_segments(number_segments, task["sslength"]),
+        )
+        for task in ts
+    ]
 
-    ts = [d | {"Cseg": exec_segments, "Sseg": sus_segments} for d, exec_segments, sus_segments in modify_list]
+    ts = [
+        d | {"Cseg": exec_segments, "Sseg": sus_segments}
+        for d, exec_segments, sus_segments in modify_list
+    ]
 
     return ts
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     # DEBUG
-    print('Randomly generating tasks ...')
+    print("Randomly generating tasks ...")
 
-    ts = taskGeneration_drs(10, 2, 1 )
+    ts = taskGeneration_drs(10, 2, 1)
 
-    print('')
+    print("")
     print(ts)
-    print('')
+    print("")
     # print('number of tasks:', len(ts))
     # print('the first task:', ts[1])
     # print('the last task:', ts[-1])
- 
+
     breakpoint()
