@@ -65,6 +65,7 @@ gmpCheck = False
 
 
 class Ui_MainWindow(object):
+<<<<<<< HEAD
     def setupUi(self, MainWindow):
         choice_list = [
             "Generate Tasksets",
