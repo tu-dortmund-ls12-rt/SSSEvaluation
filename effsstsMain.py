@@ -116,163 +116,94 @@ class Ui_MainWindow(object):
 		self.groupbox_configurations.setObjectName("groupbox_configurations")
 		self.groupbox_configurations.setTitle("Task Sets")
 
-		self.radiobutton_text = QtWidgets.QLabel(self.groupbox_configurations)
-		self.radiobutton_text.setGeometry(QtCore.QRect(12, 25, 198, 25))
-		self.radiobutton_text.setObjectName("label_radiobutton")
-		self.radiobutton_text.setText("Util Values Generation Method:")
-
-		self.radiobutton_utilvalues_ufast = QtWidgets.QRadioButton(self.groupbox_configurations)
-		self.radiobutton_utilvalues_ufast.setGeometry(QtCore.QRect(500, 25, 198, 25))
-		self.radiobutton_utilvalues_ufast.setObjectName("rbutton_ufast") 							# UUniFast Radio Button
-		self.radiobutton_utilvalues_ufast.setText("UUniFast")
-				
-		self.radiobutton_utilvalues_drs = QtWidgets.QRadioButton(self.groupbox_configurations)
-		self.radiobutton_utilvalues_drs.setGeometry(QtCore.QRect(275, 25, 198, 25))
-		self.radiobutton_utilvalues_drs.setObjectName("rbutton_drs") 								# DRS Radio Button
-		self.radiobutton_utilvalues_drs.setText("DRS")
-		self.radiobutton_utilvalues_drs.toggled.connect(self.trigger)
-
-		self.label_exstart = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_exstart.setGeometry(QtCore.QRect(12, 58, 198, 25))
-		self.label_exstart.setObjectName("label_exstart") 		
-		self.label_exstart.setText("Execution Start:")
-
-		self.exstart = QtWidgets.QLineEdit(self.groupbox_configurations)
-		self.exstart.setGeometry(QtCore.QRect(210, 58, 55, 25))
-		#self.exstart.setMaximum(1000)
-		self.exstart.setProperty("value", 0)
-		self.exstart.setObjectName("exstart")
-
-		self.label_exend = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_exend.setGeometry(QtCore.QRect(275, 58, 198, 25))
-		self.label_exend.setObjectName("label_exend") 		
-		self.label_exend.setText("Execution End:")
-
-		self.exend = QtWidgets.QLineEdit(self.groupbox_configurations)
-		self.exend.setGeometry(QtCore.QRect(435, 58, 55, 25))
-		#self.exend.setMaximum(1000)
-		self.exend.setProperty("value", 10)
-		self.exend.setObjectName("exend")
-
-		self.label_exsus_start = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_exsus_start.setGeometry(QtCore.QRect(500, 58, 198, 25))
-		self.label_exsus_start.setObjectName("label_exsus_start") 		
-		self.label_exsus_start.setText("Ex + Sus Start:")
-
-		self.exsus_start = QtWidgets.QLineEdit(self.groupbox_configurations)
-		self.exsus_start.setGeometry(QtCore.QRect(660, 58, 55, 25))
-		#self.exsus_start.setMaximum(1000)
-		self.exsus_start.setProperty("value", 0)
-		self.exsus_start.setObjectName("exsus_start")
-
-		self.label_exsus_end = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_exsus_end.setGeometry(QtCore.QRect(725, 58, 198, 25))
-		self.label_exsus_end.setObjectName("label_exsus_end") 		
-		self.label_exsus_end.setText("Ex + Sus End:")
-
-		self.exsus_end = QtWidgets.QLineEdit(self.groupbox_configurations)
-		self.exsus_end.setGeometry(QtCore.QRect(935, 58, 55, 25))
-		#self.exsus_end.setMaximum(1000)
-		self.exsus_end.setProperty("value", 20)
-		self.exsus_end.setObjectName("exsus_end")													
-
-		self.label_granularity = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_granularity.setGeometry(QtCore.QRect(725, 25, 198, 25))
-		self.label_granularity.setObjectName("label_granularity") 		
-		self.label_granularity.setText("Granularity:")
-
-		self.granularity = QtWidgets.QSpinBox(self.groupbox_configurations)
-		self.granularity.setGeometry(QtCore.QRect(935, 25, 55, 25))
-		#self.granularity.setMaximum(1000)
-		self.granularity.setProperty("value", 10)
-		self.granularity.setObjectName("granularity")
+		
 
 
 		self.label_tasksetsperconfiguration = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_tasksetsperconfiguration.setGeometry(QtCore.QRect(12, 91, 198, 25))
+		self.label_tasksetsperconfiguration.setGeometry(QtCore.QRect(12, 32, 198, 25))
 		self.label_tasksetsperconfiguration.setObjectName("label_tasksetsperconfiguration") 		# task sets per configuration
 		self.label_tasksetsperconfiguration.setText("Task Sets per Configuration:")
 
 		self.tasksetsperconfig = QtWidgets.QSpinBox(self.groupbox_configurations)
-		self.tasksetsperconfig.setGeometry(QtCore.QRect(210, 91, 55, 25))
+		self.tasksetsperconfig.setGeometry(QtCore.QRect(210, 32, 55, 25))
 		self.tasksetsperconfig.setMaximum(1000)
 		self.tasksetsperconfig.setProperty("value", 100)
 		self.tasksetsperconfig.setObjectName("tasksetsperconfig")
 
 		self.label_taskperset = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_taskperset.setGeometry(QtCore.QRect(12, 124, 198, 25))
+		self.label_taskperset.setGeometry(QtCore.QRect(12, 65, 198, 25))
 		self.label_taskperset.setObjectName("label_taskperset") # tasks per set
 		self.label_taskperset.setText("Tasks per Set:")
 
 		self.tasksperset = QtWidgets.QSpinBox(self.groupbox_configurations)
-		self.tasksperset.setGeometry(QtCore.QRect(210, 124, 55, 25))
+		self.tasksperset.setGeometry(QtCore.QRect(210, 65, 55, 25))
 		self.tasksperset.setMaximum(100)
 		self.tasksperset.setProperty("value", 10)
 		self.tasksperset.setObjectName("tasksperset")
 
 		self.label_utilizationstartvalue = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_utilizationstartvalue.setGeometry(QtCore.QRect(275, 91, 155, 25))
+		self.label_utilizationstartvalue.setGeometry(QtCore.QRect(275, 32, 155, 25))
 		self.label_utilizationstartvalue.setObjectName("label_utilizationstartvalue")			 # utilization start value
 		self.label_utilizationstartvalue.setText("Utilization Start Value:")
 
 		self.utilstart = QtWidgets.QSpinBox(self.groupbox_configurations)
-		self.utilstart.setGeometry(QtCore.QRect(435, 91, 55, 25))
+		self.utilstart.setGeometry(QtCore.QRect(435, 32, 55, 25))
 		self.utilstart.setMaximum(100)
 		self.utilstart.setProperty("value", 0)
 		self.utilstart.setObjectName("utilstart")
 
 		self.label_utilizationendvalue = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_utilizationendvalue.setGeometry(QtCore.QRect(275, 124, 155, 25))
+		self.label_utilizationendvalue.setGeometry(QtCore.QRect(275, 65, 155, 25))
 		self.label_utilizationendvalue.setObjectName("label_utilizationendvalue") 				# utilization end value
 		self.label_utilizationendvalue.setText("Utilization End Value:")
 
 		self.utilend = QtWidgets.QSpinBox(self.groupbox_configurations)
-		self.utilend.setGeometry(QtCore.QRect(435, 124, 55, 25)) #util end value
+		self.utilend.setGeometry(QtCore.QRect(435, 65, 55, 25)) #util end value
 		self.utilend.setMaximum(100)
 		self.utilend.setProperty("value", 100)
 		self.utilend.setObjectName("utilend")
 
 		self.label_utilizationstep = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_utilizationstep.setGeometry(QtCore.QRect(500, 91, 160, 25))
+		self.label_utilizationstep.setGeometry(QtCore.QRect(500, 32, 160, 25))
 		self.label_utilizationstep.setObjectName("label_utilizationstep") # utilization step
 		self.label_utilizationstep.setText("Utilization Step:")
 
 		self.utilstep = QtWidgets.QSpinBox(self.groupbox_configurations)
-		self.utilstep.setGeometry(QtCore.QRect(660, 91, 55, 25))
+		self.utilstep.setGeometry(QtCore.QRect(660, 32, 55, 25))
 		self.utilstep.setMaximum(100)
 		self.utilstep.setProperty("value", 5)
 		self.utilstep.setObjectName("utilstep")
 
 		self.label_numberofsegments = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_numberofsegments.setGeometry(QtCore.QRect(500, 124, 155, 25))
+		self.label_numberofsegments.setGeometry(QtCore.QRect(500, 65, 155, 25))
 		self.label_numberofsegments.setObjectName("label_numberofsegments") # num_of_segment
 		self.label_numberofsegments.setText("Number of Segments:")
 
 		self.numberofsegs = QtWidgets.QSpinBox(self.groupbox_configurations)
-		self.numberofsegs.setGeometry(QtCore.QRect(660, 124, 55, 25))
+		self.numberofsegs.setGeometry(QtCore.QRect(660, 65, 55, 25))
 		self.numberofsegs.setMaximum(100)
 		self.numberofsegs.setProperty("value", 2)
 		self.numberofsegs.setObjectName("numberofsegs")
 
 		self.label_suspensionminvalue = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_suspensionminvalue.setGeometry(QtCore.QRect(725, 91, 210, 25))
+		self.label_suspensionminvalue.setGeometry(QtCore.QRect(725, 32, 210, 25))
 		self.label_suspensionminvalue.setObjectName("label_suspensionminvalue") # suspension length min value
 		self.label_suspensionminvalue.setText("Suspension Length Min Value:")
 
 		self.slengthminvalue = QtWidgets.QDoubleSpinBox(self.groupbox_configurations)
-		self.slengthminvalue.setGeometry(QtCore.QRect(935, 91, 55, 25))
+		self.slengthminvalue.setGeometry(QtCore.QRect(935, 32, 55, 25))
 		self.slengthminvalue.setMaximum(1.0)
 		self.slengthminvalue.setSingleStep(0.01)
 		self.slengthminvalue.setProperty("value", 0.01)
 		self.slengthminvalue.setObjectName("slengthminvalue")
 
 		self.label_suspensionmaxvalue = QtWidgets.QLabel(self.groupbox_configurations)
-		self.label_suspensionmaxvalue.setGeometry(QtCore.QRect(725, 124, 210, 25))
+		self.label_suspensionmaxvalue.setGeometry(QtCore.QRect(725, 65, 210, 25))
 		self.label_suspensionmaxvalue.setObjectName("label_suspensionmaxvalue") # suspension length max
 		self.label_suspensionmaxvalue.setText("Suspension Length Max Value:")
 
 		self.slengthmaxvalue = QtWidgets.QDoubleSpinBox(self.groupbox_configurations)
-		self.slengthmaxvalue.setGeometry(QtCore.QRect(935, 124, 55, 25))
+		self.slengthmaxvalue.setGeometry(QtCore.QRect(935, 65, 55, 25))
 		self.slengthmaxvalue.setMaximum(1.0)
 		self.slengthmaxvalue.setSingleStep(0.01)
 		self.slengthmaxvalue.setProperty("value", 0.1)
@@ -280,7 +211,7 @@ class Ui_MainWindow(object):
 
 
 		self.groupbox_schedulability_tests = QtWidgets.QGroupBox(self.centralwidget) #Schedulability tests
-		self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 305, 1000, 228))
+		self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 232, 1000, 228))
 		self.groupbox_schedulability_tests.setObjectName("groupbox_schedulability_tests")
 		self.groupbox_schedulability_tests.setTitle("Schedulability Tests")
 
@@ -636,7 +567,7 @@ class Ui_MainWindow(object):
 
 
 		self.groupbox_plots = QtWidgets.QGroupBox(self.centralwidget)  # multi plot
-		self.groupbox_plots.setGeometry(QtCore.QRect(12, 543, 1000, 97))
+		self.groupbox_plots.setGeometry(QtCore.QRect(12, 470, 1000, 97))
 		self.groupbox_plots.setObjectName("groupbox_plots")
 		self.groupbox_plots.setTitle("Plots")
 
@@ -808,14 +739,7 @@ class Ui_MainWindow(object):
 		self.exit.setObjectName("exit")
 		self.exit.setText("Exit")
 
-		self.gen = QtWidgets.QPushButton(self.centralwidget)
-		self.gen.setToolTip('Button to Generate the Tasksets')
-		self.gen.setGeometry(QtCore.QRect(400, 650, 200, 25))
-		self.gen.setObjectName("gen")
-		self.gen.setText("Generate (DRS)")
-		#self.gen.resize(60, 30)
-
-
+	
 
 		MainWindow.setCentralWidget(self.centralwidget)
 		self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -953,14 +877,10 @@ class Ui_MainWindow(object):
 			setSchemes()
 
 
-
 			print(gSchemes)
 
 		def clickGenerate(self):
 			drs_task()
-
-
-
 
 
 		def clickexit(self):
@@ -968,7 +888,6 @@ class Ui_MainWindow(object):
 
 		self.run.clicked.connect(clickMethod)
 		self.exit.clicked.connect(clickexit)
-		self.gen.clicked.connect(clickGenerate)
 
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

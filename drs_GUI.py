@@ -65,13 +65,12 @@ gmpCheck = False
 
 
 class Ui_MainWindow(object):
-<<<<<<< HEAD
     def setupUi(self, MainWindow):
         choice_list = [
             "Generate Tasksets",
             "Generate and Save Tasksets",
             "Load Tasksets",
-        ]
+            ]
         choice_plot = ["Tasks per Set", "Number of Segments", "Suspension Length"]
 
         VerticalSize = 1024
@@ -104,9 +103,7 @@ class Ui_MainWindow(object):
         self.combobox_input.setGeometry(QtCore.QRect(110, 32, 225, 25))
         self.combobox_input.setObjectName("combobox_input")
         self.combobox_input.addItems(choice_list)
-        self.combobox_input.currentIndexChanged.connect(
-            lambda: selectionchange(self.combobox_input)
-        )
+        self.combobox_input.currentIndexChanged.connect(lambda: selectionchange(self.combobox_input))
 
         self.loadtasks_title = QtWidgets.QLabel(self.groupBox_general)
         self.loadtasks_title.setGeometry(QtCore.QRect(345, 32, 90, 25))
@@ -161,7 +158,7 @@ class Ui_MainWindow(object):
 
         self.exstart = QtWidgets.QLineEdit(self.groupbox_configurations)
         self.exstart.setGeometry(QtCore.QRect(210, 25, 55, 25))
-        self.exstart.setText("0.1")
+        self.exstart.setText("0.0")
         self.exstart.setObjectName("exstart")
 
         self.label_exend = QtWidgets.QLabel(self.groupbox_configurations)
@@ -181,7 +178,7 @@ class Ui_MainWindow(object):
 
         self.exsus_start = QtWidgets.QLineEdit(self.groupbox_configurations)
         self.exsus_start.setGeometry(QtCore.QRect(660, 25, 55, 25))
-        self.exsus_start.setText("0.2")
+        self.exsus_start.setText("0.1")
         self.exsus_start.setObjectName("exsus_start")
 
         self.label_exsus_end = QtWidgets.QLabel(self.groupbox_configurations)
@@ -191,7 +188,7 @@ class Ui_MainWindow(object):
 
         self.exsus_end = QtWidgets.QLineEdit(self.groupbox_configurations)
         self.exsus_end.setGeometry(QtCore.QRect(935, 25, 55, 25))
-        self.exsus_end.setText("2")
+        self.exsus_end.setText("1")
         self.exsus_end.setObjectName("exsus_end")
 
         self.label_granularity = QtWidgets.QLabel(self.groupbox_configurations)
@@ -204,19 +201,15 @@ class Ui_MainWindow(object):
         self.granularity.setProperty("value", 21)
         self.granularity.setObjectName("granularity")
 
-        self.label_tasksetsperconfiguration = QtWidgets.QLabel(
-            self.groupbox_configurations
-        )
+        self.label_tasksetsperconfiguration = QtWidgets.QLabel(self.groupbox_configurations)
         self.label_tasksetsperconfiguration.setGeometry(QtCore.QRect(12, 58, 198, 25))
-        self.label_tasksetsperconfiguration.setObjectName(
-            "label_tasksetsperconfiguration"
-        )  # task sets per configuration
+        self.label_tasksetsperconfiguration.setObjectName("label_tasksetsperconfiguration")  # task sets per configuration
         self.label_tasksetsperconfiguration.setText("Task Sets per Configuration:")
 
         self.tasksetsperconfig = QtWidgets.QSpinBox(self.groupbox_configurations)
         self.tasksetsperconfig.setGeometry(QtCore.QRect(210, 58, 55, 25))
         self.tasksetsperconfig.setMaximum(1000)
-        self.tasksetsperconfig.setProperty("value", 10)
+        self.tasksetsperconfig.setProperty("value", 100)
         self.tasksetsperconfig.setObjectName("tasksetsperconfig")
 
         self.label_taskperset = QtWidgets.QLabel(self.groupbox_configurations)
@@ -230,13 +223,9 @@ class Ui_MainWindow(object):
         self.tasksperset.setProperty("value", 10)
         self.tasksperset.setObjectName("tasksperset")
 
-        self.groupbox_schedulability_tests = QtWidgets.QGroupBox(
-            self.centralwidget
-        )  # Schedulability tests
+        self.groupbox_schedulability_tests = QtWidgets.QGroupBox(self.centralwidget)  # Schedulability tests
         self.groupbox_schedulability_tests.setGeometry(QtCore.QRect(12, 239, 1000, 228))
-        self.groupbox_schedulability_tests.setObjectName(
-            "groupbox_schedulability_tests"
-        )
+        self.groupbox_schedulability_tests.setObjectName("groupbox_schedulability_tests")
         self.groupbox_schedulability_tests.setTitle("Schedulability Tests")
 
         self.tabs = QtWidgets.QTabWidget(self.groupbox_schedulability_tests)
@@ -267,52 +256,38 @@ class Ui_MainWindow(object):
         self.seifdamind = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamind.setObjectName("seifdamind")
         self.seifdamind.setText("SEIFDA-minD-")
-        self.seifdamind.setToolTip(
-            "Shortest Execution Interval First Deadline Assignment - Picks the minimum x"
-        )
+        self.seifdamind.setToolTip("Shortest Execution Interval First Deadline Assignment - Picks the minimum x")
         self.formLayout_1.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.seifdamind)
 
         self.seifdamindg = QtWidgets.QSpinBox(self.formLayoutWidget_1)
         self.seifdamindg.setMaximum(5)
         self.seifdamindg.setProperty("value", 1)
         self.seifdamindg.setObjectName("seifdamindg")
-        self.formLayout_1.setWidget(
-            1, QtWidgets.QFormLayout.FieldRole, self.seifdamindg
-        )
+        self.formLayout_1.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.seifdamindg)
 
         self.seifdamaxd = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdamaxd.setObjectName("seifdamaxd")
         self.seifdamaxd.setText("SEIFDA-maxD-")
-        self.seifdamaxd.setToolTip(
-            "Shortest Execution Interval First Deadline Assignment - Picks the maximum x"
-        )
+        self.seifdamaxd.setToolTip("Shortest Execution Interval First Deadline Assignment - Picks the maximum x")
         self.formLayout_1.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.seifdamaxd)
 
         self.seifdamaxdg = QtWidgets.QSpinBox(self.formLayoutWidget_1)
         self.seifdamaxdg.setMaximum(5)
         self.seifdamaxdg.setProperty("value", 1)
         self.seifdamaxdg.setObjectName("seifdamaxdg")
-        self.formLayout_1.setWidget(
-            2, QtWidgets.QFormLayout.FieldRole, self.seifdamaxdg
-        )
+        self.formLayout_1.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.seifdamaxdg)
 
         self.seifdapbmind = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.seifdapbmind.setObjectName("seifdapbmind")
         self.seifdapbmind.setText("SEIFDA-PBminD-")
-        self.seifdapbmind.setToolTip(
-            "Shortest Execution Interval First Deadline Assignment - Proportionally-Bounded-Min x"
-        )
-        self.formLayout_1.setWidget(
-            3, QtWidgets.QFormLayout.LabelRole, self.seifdapbmind
-        )
+        self.seifdapbmind.setToolTip("Shortest Execution Interval First Deadline Assignment - Proportionally-Bounded-Min x")
+        self.formLayout_1.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.seifdapbmind)
 
         self.seifdapbmindg = QtWidgets.QSpinBox(self.formLayoutWidget_1)
         self.seifdapbmindg.setMaximum(5)
         self.seifdapbmindg.setProperty("value", 1)
         self.seifdapbmindg.setObjectName("seifdapbmindg")
-        self.formLayout_1.setWidget(
-            3, QtWidgets.QFormLayout.FieldRole, self.seifdapbmindg
-        )
+        self.formLayout_1.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.seifdapbmindg)
 
         self.eda = QtWidgets.QCheckBox(self.formLayoutWidget_1)
         self.eda.setObjectName("eda")
@@ -1084,6 +1059,11 @@ class Ui_MainWindow(object):
                 gSchemes.append("IDV-BURST-RM")
             if self.uppaal.isChecked():
                 gSchemes.append("UPPAAL")
+            if self.srsr.isChecked():
+                gSchemes.append("`")
+            if self.milpreleasejitter.isChecked():
+                gSchemes.append("MILP-ReleaseJitter")    
+
 
             if gRuntest:
 
