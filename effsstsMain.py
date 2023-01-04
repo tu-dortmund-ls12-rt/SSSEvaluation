@@ -923,7 +923,7 @@ class Ui_MainWindow(object):
 			tasksets_drs = []
 
 			i = 0
-			while 1:
+			while 1: 	
 				for _ in range(0, gNumberOfTaskSets):
 					tasks = drstask.taskGeneration_drs(gNumberOfTasksPerSet, gEx_Sus, gEx, Pmin=100, numLog=1)
 					#print(tasks)

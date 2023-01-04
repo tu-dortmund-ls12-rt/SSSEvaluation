@@ -18,6 +18,7 @@ The DRS method: (more info on this link: https://pypi.org/project/drs/#:~:text=T
 
 - Unlike UUniFast for DRS we introduced 'Granularity' which produces a set number of points in x and y coordinate in the Acceptance ratio vs Execution graph. 
 
+- We created a seperate GUI to perform the DRS tasks as the existing GUI could only perform UUniFast tasks but due to the change in input variables we had to create a seperate GUI to carry out DRS tasks. The DRS GUI takes 'Granularity' instead of 'segment' and 'utilization step' in UUniFast. Also, the DRS GUI is incapble to run the FRD Segmented and FRD Hybrid algorithms yet.
 
 
 Problems we faced and are :
