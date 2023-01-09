@@ -121,6 +121,8 @@ Name | Paper | File name | Method name
 ---|---|---|---
 EDAGMF-OPA | https://ieeexplore.ieee.org/document/7459469 | pass_opa.py | PASS_OPA
 MILP-ReleaseJitter| https://ieeexplore.ieee.org/document/7176028 | milp_response.py | Milpreleasejitter 
+SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
+SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | pass_opa.py | PASS_OPA
 
 #### Arbitrary-Deadline
 
@@ -147,8 +149,6 @@ SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | 
 
 Name | Paper | File name | Method name
 ---|---|---|---
-SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
-SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | pass_opa.py | PASS_OPA
 PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | pass_opa.py | PASS_OPA
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
