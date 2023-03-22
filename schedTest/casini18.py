@@ -125,21 +125,70 @@ def _respB(taskset, idxtask, idxseg, Rbar):
     return result
 
 
-def wcrt(taskset):
+def sched_test(taskset):
     """Worst-case response time analysis for a taskset.
+    (Algorithm 1)
     Assumptions:
         - Segmented self suspension
         - Non-preemptive FP scheduling (tasks ordered by priority)
     """
-    # TODO: Implement
+    # Initialize Rbar, RA, RB and R
+    Rbar = []
+    RAi = []
+    RBij = []
+    Rij = []
+    for idxtsk, tsk in enumerate(taskset):
+        Rbar.append([])
+        RAi.append(None)
+        RBij.append([])
+        Rij.append([])
+        for idxseg in range(len(tsk["Cseg"])):
+            Rbar[idxtsk].append(
+                tsk["deadline"]
+                - sum(tsk["Cseg"][idxseg + 1 :])
+                - sum(tsk["Sseg"][idxseg:])
+            )
+            RBij[idxtsk].append(None)
+            Rij[idxtsk].append(None)
+
+    atLeastOneUpdate = True
+
+    while atLeastOneUpdate:
+        atLeastOneUpdate = False
+        for idxtsk in range(len(taskset)):
+            RAi[idxtsk] = _respA(taskset, idxtsk, Rbar)
+            for idxseg in range(len(taskset[idxtsk]["Cseg"])):
+                RBij[idxtsk][idxseg] = _respB(taskset, idxtsk, idxseg, Rbar)
+                Rij[idxtsk][idxseg] = min(
+                    RBij[idxtsk][idxseg],
+                    RAi[idxtsk]
+                    - sum(taskset[idxtsk]["Cseg"][idxseg + 1 :])
+                    - sum(taskset[idxtsk]["Sseg"][idxseg:]),
+                )
+                if Rij[idxtsk][idxseg] < Rbar[idxtsk][idxseg]:
+                    atLeastOneUpdate = True
+
+        # Check Deadlines
+        if all(
+            Rij[idxtsk][-1] <= taskset[idxtsk]["deadline"]
+            for idxtsk in range(len(taskset))
+        ):
+            return True
+
+        # Update Rbar
+        for idxtsk in range(len(taskset)):
+            for idxseg in range(len(taskset[idxtsk]["Cseg"])):
+                Rbar[idxtsk][idxseg] = min(Rbar[idxtsk][idxseg], Rij[idxtsk][idxseg])
+
+    return False
 
 
 if __name__ == "__main__":
     # DEBUG
     debug_taskset = [
-        {"period": 100, "Sseg": [2], "Cseg": [5, 10]},
-        {"period": 500, "Sseg": [1, 2], "Cseg": [7, 1, 3]},
-        {"period": 1000, "Sseg": [1, 2, 3], "Cseg": [2, 2, 5, 2]},
+        {"period": 100, "deadline": 24, "Sseg": [2], "Cseg": [5, 10]},
+        {"period": 500, "deadline": 500, "Sseg": [1, 2], "Cseg": [7, 10, 3]},
+        {"period": 1000, "deadline": 1000, "Sseg": [1, 2, 3], "Cseg": [2, 2, 5, 2]},
     ]
     debug_Rbar = [[10, 10], [50, 50, 50, 50], [100, 100, 100, 100]]
     print(_multisetB(debug_taskset, 0, 50, 200, debug_Rbar))
@@ -152,3 +201,5 @@ if __name__ == "__main__":
     print(_respB(debug_taskset, 0, len(debug_taskset[0]["Cseg"]) - 1, debug_Rbar))
     print(_respB(debug_taskset, 1, len(debug_taskset[1]["Cseg"]) - 1, debug_Rbar))
     print(_respB(debug_taskset, 2, len(debug_taskset[2]["Cseg"]) - 1, debug_Rbar))
+    print("")
+    print(sched_test(debug_taskset))
