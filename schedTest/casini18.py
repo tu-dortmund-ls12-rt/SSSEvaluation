@@ -9,7 +9,7 @@
 import math
 
 
-def _respA_B(taskset, i, k, t, Rbar):
+def _multisetB(taskset, i, k, t, Rbar):
     """Multiset that includes the k largest elements of C_i(t, Rbar) padded with zeros if C_i(t, Rbar) shorter than k elements. (Used in Lemma 2 and Theorem 1)"""
     # Define C_i(t, Rbar) (Equation 1)
     C = []
@@ -31,7 +31,7 @@ def _respA_B(taskset, i, k, t, Rbar):
     return C
 
 
-def _respA_I(taskset, i, t, Rbar):
+def _interference_I(taskset, i, t, Rbar):
     """Higher priority interference (Equation 2)"""
     # First part of minimum
     val1 = 0
@@ -60,16 +60,19 @@ def _respA_I(taskset, i, t, Rbar):
 
 
 def _respA_rec(prev_res, taskset, idxtask: int, Rbar):
+    """Recursive definition of R'_i from Equation 4."""
     task_under_analysis = taskset[idxtask]
     result = 0
     result += sum(task_under_analysis["Sseg"])
     result += sum(task_under_analysis["Cseg"][:-1])
 
-    multiset = _respA_B(taskset, idxtask, len(taskset[idxtask]["Cseg"]), prev_res, Rbar)
+    multiset = _multisetB(
+        taskset, idxtask, len(taskset[idxtask]["Cseg"]), prev_res, Rbar
+    )
     for b in multiset:
         result += b
 
-    result += _respA_I(taskset, idxtask, prev_res, Rbar)
+    result += _interference_I(taskset, idxtask, prev_res, Rbar)
 
     return result
 
@@ -84,6 +87,42 @@ def _respA(taskset, idxtask: int, Rbar):
         res = _respA_rec(prev_res, taskset, idxtask, Rbar)
 
     return res + taskset[idxtask]["Cseg"][-1]
+
+
+def _rik(i, k, Rbar, taskset):
+    """r_{i,k} from Lemma 4."""
+    if k == 0:
+        return 0
+    else:
+        return Rbar[i][k - 1] + taskset[i]["Sseg"][k - 1]
+
+
+def _respB_rec_Delta(taskset, prev_res, i, b, Rbar):
+    """Recurse definition of Delta_i from Equation 6."""
+    return b + _interference_I(taskset, i, prev_res, Rbar)
+
+
+def _respB(taskset, idxtask, idxseg, Rbar):
+    """Theorem 2"""
+    result = 0
+    for iseg in range(idxseg + 1):  # Computation segments
+        result += taskset[idxtask]["Cseg"][iseg]
+    for iseg in range(idxseg):  # Suspension segments
+        result += taskset[idxtask]["Sseg"][iseg]
+
+    rik = _rik(idxtask, idxseg, Rbar, taskset)
+    multiset = _multisetB(taskset, idxtask, idxseg, rik, Rbar)
+
+    for b in multiset:
+        # solve recursive Delta_i
+        prev_res = -1
+        res = 0
+        while prev_res < res:
+            prev_res = res
+            res = _respB_rec_Delta(taskset, prev_res, idxtask, b, Rbar)
+        result += res
+
+    return result
 
 
 def wcrt(taskset):
@@ -103,8 +142,13 @@ if __name__ == "__main__":
         {"period": 1000, "Sseg": [1, 2, 3], "Cseg": [2, 2, 5, 2]},
     ]
     debug_Rbar = [[10, 10], [50, 50, 50, 50], [100, 100, 100, 100]]
-    print(_respA_B(debug_taskset, 0, 50, 200, debug_Rbar))
-    print(_respA_I(debug_taskset, 2, 100, debug_Rbar))
+    print(_multisetB(debug_taskset, 0, 50, 200, debug_Rbar))
+    print(_interference_I(debug_taskset, 2, 100, debug_Rbar))
+    print("")
     print(_respA(debug_taskset, 0, debug_Rbar))
     print(_respA(debug_taskset, 1, debug_Rbar))
     print(_respA(debug_taskset, 2, debug_Rbar))
+    print("")
+    print(_respB(debug_taskset, 0, len(debug_taskset[0]["Cseg"]) - 1, debug_Rbar))
+    print(_respB(debug_taskset, 1, len(debug_taskset[1]["Cseg"]) - 1, debug_Rbar))
+    print(_respB(debug_taskset, 2, len(debug_taskset[2]["Cseg"]) - 1, debug_Rbar))
