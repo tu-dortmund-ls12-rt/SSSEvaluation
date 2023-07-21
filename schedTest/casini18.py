@@ -7,6 +7,7 @@
 
 
 import math
+import signal
 
 
 def _multisetB(taskset, i, k, t, Rbar):
@@ -125,7 +126,11 @@ def _respB(taskset, idxtask, idxseg, Rbar):
     return result
 
 
-def sched_test(taskset):
+def timeout_handler(signum, frame):
+    raise TimeoutError
+
+
+def sched_test(taskset, timeout=0):
     """Worst-case response time analysis for a taskset.
     (Algorithm 1)
     Assumptions:
@@ -133,52 +138,61 @@ def sched_test(taskset):
         - Non-preemptive FP scheduling (tasks ordered by priority)
     """
     # Initialize Rbar, RA, RB and R
-    Rbar = []
-    RAi = []
-    RBij = []
-    Rij = []
-    for idxtsk, tsk in enumerate(taskset):
-        Rbar.append([])
-        RAi.append(None)
-        RBij.append([])
-        Rij.append([])
-        for idxseg in range(len(tsk["Cseg"])):
-            Rbar[idxtsk].append(
-                tsk["deadline"]
-                - sum(tsk["Cseg"][idxseg + 1 :])
-                - sum(tsk["Sseg"][idxseg:])
-            )
-            RBij[idxtsk].append(None)
-            Rij[idxtsk].append(None)
+    signal.signal(signal.SIGALRM, timeout_handler)
+    try:
+        signal.alarm(timeout)
 
-    atLeastOneUpdate = True
-
-    while atLeastOneUpdate:
-        atLeastOneUpdate = False
-        for idxtsk in range(len(taskset)):
-            RAi[idxtsk] = _respA(taskset, idxtsk, Rbar)
-            for idxseg in range(len(taskset[idxtsk]["Cseg"])):
-                RBij[idxtsk][idxseg] = _respB(taskset, idxtsk, idxseg, Rbar)
-                Rij[idxtsk][idxseg] = min(
-                    RBij[idxtsk][idxseg],
-                    RAi[idxtsk]
-                    - sum(taskset[idxtsk]["Cseg"][idxseg + 1 :])
-                    - sum(taskset[idxtsk]["Sseg"][idxseg:]),
+        Rbar = []
+        RAi = []
+        RBij = []
+        Rij = []
+        for idxtsk, tsk in enumerate(taskset):
+            Rbar.append([])
+            RAi.append(None)
+            RBij.append([])
+            Rij.append([])
+            for idxseg in range(len(tsk["Cseg"])):
+                Rbar[idxtsk].append(
+                    tsk["deadline"]
+                    - sum(tsk["Cseg"][idxseg + 1 :])
+                    - sum(tsk["Sseg"][idxseg:])
                 )
-                if Rij[idxtsk][idxseg] < Rbar[idxtsk][idxseg]:
-                    atLeastOneUpdate = True
+                RBij[idxtsk].append(None)
+                Rij[idxtsk].append(None)
 
-        # Check Deadlines
-        if all(
-            Rij[idxtsk][-1] <= taskset[idxtsk]["deadline"]
-            for idxtsk in range(len(taskset))
-        ):
-            return True
+        atLeastOneUpdate = True
 
-        # Update Rbar
-        for idxtsk in range(len(taskset)):
-            for idxseg in range(len(taskset[idxtsk]["Cseg"])):
-                Rbar[idxtsk][idxseg] = min(Rbar[idxtsk][idxseg], Rij[idxtsk][idxseg])
+        while atLeastOneUpdate:
+            atLeastOneUpdate = False
+            for idxtsk in range(len(taskset)):
+                RAi[idxtsk] = _respA(taskset, idxtsk, Rbar)
+                for idxseg in range(len(taskset[idxtsk]["Cseg"])):
+                    RBij[idxtsk][idxseg] = _respB(taskset, idxtsk, idxseg, Rbar)
+                    Rij[idxtsk][idxseg] = min(
+                        RBij[idxtsk][idxseg],
+                        RAi[idxtsk]
+                        - sum(taskset[idxtsk]["Cseg"][idxseg + 1 :])
+                        - sum(taskset[idxtsk]["Sseg"][idxseg:]),
+                    )
+                    if Rij[idxtsk][idxseg] < Rbar[idxtsk][idxseg]:
+                        atLeastOneUpdate = True
+
+            # Check Deadlines
+            if all(
+                Rij[idxtsk][-1] <= taskset[idxtsk]["deadline"]
+                for idxtsk in range(len(taskset))
+            ):
+                return True
+
+            # Update Rbar
+            for idxtsk in range(len(taskset)):
+                for idxseg in range(len(taskset[idxtsk]["Cseg"])):
+                    Rbar[idxtsk][idxseg] = min(
+                        Rbar[idxtsk][idxseg], Rij[idxtsk][idxseg]
+                    )
+        signal.alarm(timeout)  # remove timeout
+    except TimeoutError:
+        return False
 
     return False
 
