@@ -123,6 +123,7 @@ EDAGMF-OPA | https://ieeexplore.ieee.org/document/7459469 | pass_opa.py | PASS_O
 MILP-ReleaseJitter| https://ieeexplore.ieee.org/document/7176028 | milp_response.py | Milpreleasejitter 
 SCAIR-RM | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | rad.py | scair_dm
 SCAIR-OPA | https://www.semanticscholar.org/paper/Schedulability-and-Priority-Assignment-for-Tasks-Huang-Chen/d2b0871a6826957d75b1473690ec8eaa6ea05d86 | pass_opa.py | PASS_OPA
+Casini18 | https://ieeexplore.ieee.org/abstract/document/8603232 | casini18.py | Casini18
 
 #### Arbitrary-Deadline
 
