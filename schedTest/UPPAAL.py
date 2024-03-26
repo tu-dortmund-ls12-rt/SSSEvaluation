@@ -31,7 +31,7 @@ def UPPAAL(tasks, i, n_cores=1):
 				else:
 					writer.writerow(['V', i+1, j+1, tasks[i]['Sseg_min'][j-1], tasks[i]['Sseg'][j-1], tasks[i]['Cseg_min'][j], tasks[i]['Cseg'][j]])
 	
-	schedulability_result = uppaal_schedulability(file_name)
+	schedulability_result = uppaal_schedulability(file_name, len_tasks, n_cores)
 	os.system("rm " + file_name)
 	
 
