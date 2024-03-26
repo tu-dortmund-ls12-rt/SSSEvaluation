@@ -641,7 +641,7 @@ class Ui_MainWindow(object):
         self.uppaal.setObjectName("uppaal")
         self.uppaal.setText("UPPAAL")
         self.uppaal.setToolTip(
-            "Exact Schedulability Test for Non-Preemptive Self-Suspending Real-Time Tasks with UPPAAL model checker"
+            "Exact Schedulability Test for Non-Preemptive Periodic Self-Suspending Real-Time Tasks with UPPAAL model checker"
         )
         self.formLayout_4.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.uppaal)
 
