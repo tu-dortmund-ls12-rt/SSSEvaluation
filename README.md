@@ -37,6 +37,9 @@ pip install PyQt5 numpy mip gurobipy matplotlib scipy
 ```
 To activate the full feature set of the framework, you also need to install the Gurobi Optimizer, found at https://www.gurobi.com/. For research purposes you can obtain an academic license, which is used for some of the scheduling algorithms. You can request a license at https://www.gurobi.com/academia/academic-program-and-licenses/. The installation guide can be found at https://www.gurobi.com/documentation/9.1/quickstart_linux/software_installation_guid.html.
 
+Some methods might use the ```timeout``` method. 
+Under MacOS, this needs to be installed (e.g., via ```brew install coreutils```).
+
 ### How to use?
 
 Move into the end-to-end folder and start the framework with python:
@@ -113,7 +116,9 @@ SEIFDA-MILP | https://dl.acm.org/doi/10.1145/2997465.2997497 | mipx.py | mip
 NC | https://dl.acm.org/doi/10.1145/2997465.2997497 | NC.py | NC
 PROPORTIONAL | https://ieeexplore.ieee.org/document/6881366 | PROPORTIONAL.py | PROPORTIONAL
 SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
-UPPAAL | https://ieeexplore.ieee.org/document/8715111 | Uppaal.py | UPPAAL
+UPPAAL | https://ieeexplore.ieee.org/document/8715111 <sup>1</sup>| Uppaal.py | UPPAAL
+
+[1]: (The implementation can only be used under Linux currently due to limitations of the ```schedTest/verifyta``` file.)
 
 #### Constrained-Deadline
 
@@ -139,12 +144,12 @@ Name | Paper | File name | Method name
 ---|---|---|---
 Idv-Burst-RM | https://ieeexplore.ieee.org/document/7010485 | Burst_RM.py | BURST_RM 
 RSS | https://ieeexplore.ieee.org/document/9211430 Section V | RSS.py | RSS
-UDLEDF | http://zheng.eng.wayne.edu/_resources/pdfs/HRT.pdf <sup>1</sup> | UDLEDF.py | UDLEDF
-WLAEDF | https://www.cs.unc.edu/~anderson/papers/ecrts13e_erratum.pdf <sup>1</sup>  | WLAEDF.py | WLAEDF
+UDLEDF | http://zheng.eng.wayne.edu/_resources/pdfs/HRT.pdf <sup>2</sup> | UDLEDF.py | UDLEDF
+WLAEDF | https://www.cs.unc.edu/~anderson/papers/ecrts13e_erratum.pdf <sup>2</sup>  | WLAEDF.py | WLAEDF
 RTEDF  | https://ieeexplore.ieee.org/document/9211430 Algorithm 1 | RTEDF.py | RTEDF
 SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspBlock
 
-[1]: (Uniprocessor version presented in https://ieeexplore.ieee.org/document/9211430 Section III)
+[2]: (Uniprocessor version presented in https://ieeexplore.ieee.org/document/9211430 Section III)
 
 #### Constrained-Deadline
 
@@ -209,6 +214,15 @@ You can extend the framework with other scheduling algorithms written in Python 
     3.  Each selected test adds a scheme to a list, which includes all tests that will be executed. In case your schedulability test gets selected, you need to add your scheme, so that the algorithm is later called.
     4.  Add an additional case to the switchTest method, which will select and execute your schedulability test, if you added your scheme correctly.
 * In order to make the implementation easier, you can search for an existing implementation, for example 'RSS' and copy each step to implement your own algorithm. 
+
+## ToDo
+The following algorithms are not implemented yet:
+* Sporadic version of UPPAAL: The test integrated in the framework is the PERIODIC version. A SPORADIC version exists and could also be added to the framework
+
+Possible advancements in the future:
+* Include tasks with release jitter
+* Use DRS for task generation
+* Multicore
 
 ## Acknowledgements
 

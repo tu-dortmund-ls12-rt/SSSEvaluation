@@ -25,11 +25,12 @@ def UPPAAL(tasks, i, n_cores=1):
 		for i in range(len_tasks):
 			writer.writerow(['T', i+1, tasks[i]['period'], tasks[i]['deadline']])
 			n_segments = len(tasks[i]['Cseg'])
+
 			for j in range(n_segments):
 				if j == 0:
-					writer.writerow(['V', i+1, 1, 0, tasks[i]['jitter'], tasks[i]['Cseg_min'][j], tasks[i]['Cseg'][j]])
+					writer.writerow(['V', i+1, 1, 0, tasks[i].get('jitter', 0), tasks[i].get('Cseg_min', [0]*n_segments)[j], tasks[i]['Cseg'][j]])
 				else:
-					writer.writerow(['V', i+1, j+1, tasks[i]['Sseg_min'][j-1], tasks[i]['Sseg'][j-1], tasks[i]['Cseg_min'][j], tasks[i]['Cseg'][j]])
+					writer.writerow(['V', i+1, j+1, tasks[i].get('Sseg_min', [0]*n_segments)[j-1], tasks[i]['Sseg'][j-1], tasks[i].get('Cseg_min', [0]*n_segments)[j], tasks[i]['Cseg'][j]])
 	
 	schedulability_result = uppaal_schedulability(file_name, len_tasks, n_cores)
 	os.system("rm " + file_name)
