@@ -39,7 +39,8 @@ import pickle
 from multiprocessing import Pool
 from pathlib import Path
 
-gSeed = datetime.datetime.now()
+# gSeed = datetime.datetime.now()
+gSeed = None
 gPrefixdata = ""
 gTasksetpath = ""
 gRuntest = True
@@ -1022,7 +1023,7 @@ class Ui_MainWindow(object):
             if self.seed.text() != "":
                 gSeed = self.seed.text()
             else:
-                gSeed = datetime.datetime.now()
+                gSeed = None  #datetime.datetime.now()
             if self.threadcount.text() != "":
                 gthread = int(self.threadcount.text())
             else:
