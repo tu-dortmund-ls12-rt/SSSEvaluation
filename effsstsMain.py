@@ -1529,6 +1529,7 @@ def evaluate_single_taskset_single_scheme(taskset, ischeme):
     return result
 
 
+# Run with GUI
 if __name__ == "__main__":
     import sys
 
@@ -1543,10 +1544,12 @@ if __name__ == "__main__":
     sys.exit(app.exec_())
 
 
-# # Debugging without GUI
+# # Run without GUI
 # if __name__ == "__main__":
 #     gTaskChoice = "Generate Tasksets"
 #     gPrefixdata = 'testdata'
+#     gNumberOfTaskSets = 100
+#     gNumberOfTasksPerSet = 10
 #     tss = tasksetConfiguration()  # Generate Tasksets
 #     gSchemes = ['SUSPOBL',]  # Tests to be tested
 #     # gSchemes = ['UPPAAL',]  # Tests to be tested
