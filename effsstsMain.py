@@ -1357,21 +1357,27 @@ def schedulabilityTest(Tasksets_util):
                 y[u] = 0
                 continue
 
-            numfail = 0
-            splitTasks = np.array_split(tasksets, gthread)
-            results = [
-                pool.apply_async(
-                    switchTest,
-                    args=(
-                        splitTasks[i],
-                        ischeme,
-                        i,
-                    ),
-                )
-                for i in range(len(splitTasks))
-            ]
-            output = [p.get() for p in results]
-            numfail = sum(output)
+            if gthread <= 1:  # no concurrency 
+                numfail = 0
+                for idx, ts in enumerate(tasksets):
+                    numfail += switchTest([ts], ischeme, idx)
+            
+            else:  # concurrency
+                numfail = 0
+                splitTasks = np.array_split(tasksets, gthread)
+                results = [
+                    pool.apply_async(
+                        switchTest,
+                        args=(
+                            splitTasks[i],
+                            ischeme,
+                            i,
+                        ),
+                    )
+                    for i in range(len(splitTasks))
+                ]
+                output = [p.get() for p in results]
+                numfail = sum(output)
 
             acceptanceRatio = 1 - (numfail / gNumberOfTaskSets)
             print("acceptanceRatio:", acceptanceRatio)
@@ -1535,3 +1541,15 @@ if __name__ == "__main__":
     MainWindow.statusBar().showMessage("Ready")
     MainWindow.show()
     sys.exit(app.exec_())
+
+
+# # Debugging without GUI
+# if __name__ == "__main__":
+#     gTaskChoice = "Generate Tasksets"
+#     gPrefixdata = 'testdata'
+#     tss = tasksetConfiguration()  # Generate Tasksets
+#     gSchemes = ['SUSPOBL',]  # Tests to be tested
+#     # gSchemes = ['UPPAAL',]  # Tests to be tested
+
+#     schedulabilityTest(tss)
+#     breakpoint()
