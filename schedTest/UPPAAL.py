@@ -33,7 +33,7 @@ def UPPAAL(tasks, i, n_cores=1):
 					writer.writerow(['V', i+1, j+1, tasks[i].get('Sseg_min', [0]*n_segments)[j-1], tasks[i]['Sseg'][j-1], tasks[i].get('Cseg_min', [0]*n_segments)[j], tasks[i]['Cseg'][j]])
 	
 	schedulability_result = uppaal_schedulability(file_name, len_tasks, n_cores)
-	os.system("rm " + file_name)
+	os.system(f"rm '{file_name}'")
 	
 
 	return schedulability_result
@@ -130,6 +130,9 @@ def verify_xml_file(N, xml_file_name , q_file_name, min_period, max_period, numb
 	#     resident_memory = output[13].split(" ")[-2]
 	#     output_line = csv_file_name + ", " + Result + ", " + number_of_jobs + ", " + states_explored + ", " + time + ", " + virtual_memory + ", " + resident_memory + ", " + min_period + ", " + max_period
 	#print(output_line)
-	os.system("rm " + xml_file_name)
-	os.system("rm " + q_file_name)
+	os.system(f"rm {xml_file_name}")
+	os.system(f"rm {q_file_name}")
 	return Result
+
+# if __name__=='__main__':
+# 	uppaal_schedulability(os.getcwd()+'/schedTest/inputs/test.csv',2,1)
