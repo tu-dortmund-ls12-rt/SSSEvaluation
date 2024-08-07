@@ -118,7 +118,7 @@ PROPORTIONAL | https://ieeexplore.ieee.org/document/6881366 | PROPORTIONAL.py | 
 SRSR | https://dl.acm.org/doi/abs/10.1145/2997465.2997485 | SRSR.py | SRSR
 UPPAAL | https://ieeexplore.ieee.org/document/8715111 <sup>1</sup>| Uppaal.py | UPPAAL
 
-[1]: (The implementation can only be used under Linux currently due to limitations of the ```schedTest/verifyta``` file. We noticed that UPPAAL runs very slow in our framework. Try reduing the timeout within ```UPPAAL.py``` and using the non-GUI version in ```effsstsMain.py```.)
+[1]: (The implementation can only be used under Linux currently due to limitations of the ```schedTest/verifyta``` file. We noticed that UPPAAL runs very slow in our framework which looks like non-responsive behavior. Try reduing the timeout within ```UPPAAL.py``` and using the non-GUI version in ```effsstsMain.py```.)
 
 #### Constrained-Deadline
 

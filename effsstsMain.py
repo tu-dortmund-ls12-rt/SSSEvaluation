@@ -1551,8 +1551,7 @@ if __name__ == "__main__":
 #     gNumberOfTaskSets = 100
 #     gNumberOfTasksPerSet = 10
 #     tss = tasksetConfiguration()  # Generate Tasksets
-#     gSchemes = ['SUSPOBL',]  # Tests to be tested
-#     # gSchemes = ['UPPAAL',]  # Tests to be tested
-
+#     # gSchemes = ['SUSPOBL',]  # Tests to be tested
+#     gSchemes = ['UPPAAL',]  # Tests to be tested
 #     schedulabilityTest(tss)
 #     breakpoint()
