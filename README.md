@@ -220,6 +220,7 @@ The following algorithms are not implemented yet:
 * Sporadic version of UPPAAL: The test integrated in the framework is the PERIODIC version. A SPORADIC version exists and could also be added to the framework
 * Sus-Aware FP with arbitrary deadlines and arrival curves: https://ieeexplore.ieee.org/abstract/document/9622374
 * EDF-Like Analysis: https://ieeexplore.ieee.org/abstract/document/9984793
+* EDF Analysis constrained deadline: https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13
 
 Possible advancements in the future:
 * Include tasks with release jitter
