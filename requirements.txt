@@ -17,3 +17,7 @@ PyQt5_sip==12.15.0
 python-dateutil==2.9.0.post0
 scipy==1.14.0
 six==1.16.0
+
+##Befehl zum starten
+C:\Users\xenon\AppData\Local\Programs\Python\Python310\python.exe effsstsMain.py
+

@@ -18,6 +18,7 @@ from schedTest import (
     mipx,
     scair_rm,
     casini18,
+    sus_aware_fp_config,
 )
 from schedTest import (
     RSS,
@@ -646,6 +647,11 @@ class Ui_MainWindow(object):
             "Rate monotonic priority assignment with burst schedulability evaluation"
         )
         self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.burstrm)
+        
+        self.sus_aware_fp = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.sus_aware_fp.setObjectName("sus_aware_fp")
+        self.sus_aware_fp.setText("SUS-AWARE-FP")
+        self.formLayout_4.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.sus_aware_fp)
 
         self.scrollArea_5 = QtWidgets.QScrollArea(self.tabs)  # General
         self.scrollArea_5.setWidgetResizable(True)
@@ -1157,6 +1163,8 @@ class Ui_MainWindow(object):
                 gSchemes.append("SUSPBLOCK")
             if self.burstrm.isChecked():
                 gSchemes.append("IDV-BURST-RM")
+            if self.sus_aware_fp.isChecked():
+                gSchemes.append("SUS-AWARE-FP")    
             if self.uppaal.isChecked():
                 gSchemes.append("UPPAAL")
             if self.gmfpa.isChecked():
@@ -1491,6 +1499,10 @@ def switchTest(tasksets, ischeme, i):
         elif ischeme == "IDV-BURST-RM":
             if Burst_RM.BURST_RM(tasks) == False:
                 counter += 1
+        elif ischeme == "SUS-AWARE-FP":
+            configered_tasks = sus_aware_fp_config.config_created_tasks(tasks)
+            if sus_aware_fp_config._test_scheme(configered_tasks) == False:
+                counter += 1 
         elif ischeme == "UPPAAL":
             if UPPAAL.UPPAAL(tasks, i) == False:
                 counter += 1
