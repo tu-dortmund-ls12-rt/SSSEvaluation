@@ -87,8 +87,8 @@ def sched_test(
             #     xveclist = Gen_xvec.all_one(len(taskset))
             # elif choose_xvec in [3, 'SleqC']:
             #     xveclist = Gen_xvec.heuristic1(taskset)
-            # elif choose_xvec in [4, 'lin']:
-            #     xveclist = Gen_xvec.heuristic2(taskset, wcrtlist)
+            elif choose_xvec in [4, 'lin']:
+                xveclist = Gen_xvec.heuristic2(taskset, wcrtlist)
             # elif choose_xvec in [5, 'comb3']:
             #     xveclist = (Gen_xvec.all_zero(len(taskset))
             #                 + Gen_xvec.all_one(len(taskset))
@@ -153,28 +153,28 @@ class Gen_xvec:
     #             vec.append(0)
     #     return [vec]
 
-    # def heuristic2(taskset, wcrts):
-    #     '''Linear approximation from the end of the technical report of 
-    #     "A Unifying Response Time Analysis Framework for DynamicSelf-Suspending
-    #     Tasks" by Chen, Nelissen, Huang in 20116'''
+    def heuristic2(taskset, wcrts):
+        '''Linear approximation from the end of the technical report of 
+        "A Unifying Response Time Analysis Framework for DynamicSelf-Suspending
+        Tasks" by Chen, Nelissen, Huang in 20116'''
 
-    #     vec_x = []
-    #     sumU = 0
+        vec_x = []
+        sumU = 0
 
-    #     for tsk, wcrt in zip(taskset, wcrts):
-    #         indU = tsk['execution'] / tsk['period']  # compute util of task
-    #         sumU += indU  # total util
+        for tsk, wcrt in zip(taskset, wcrts):
+            indU = tsk['execution'] / tsk['period']  # compute util of task
+            sumU += indU  # total util
 
-    #         # lhs and rhs of eq 27
-    #         lhs = indU * (wcrt - tsk['execution'])
-    #         rhs = tsk['sslength'] * sumU
+            # lhs and rhs of eq 27
+            lhs = indU * (wcrt - tsk['execution'])
+            rhs = tsk['sslength'] * sumU
 
-    #         if lhs > rhs:
-    #             vec_x.append(1)
-    #         else:
-    #             vec_x.append(0)
+            if lhs > rhs:
+                vec_x.append(1)
+            else:
+                vec_x.append(0)
 
-    #     return [vec_x]
+        return [vec_x]
 
 
 def _compute_qvec(HPTasks, xvec):

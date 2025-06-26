@@ -652,6 +652,11 @@ class Ui_MainWindow(object):
         self.sus_aware_fp.setObjectName("sus_aware_fp")
         self.sus_aware_fp.setText("SUS-AWARE-FP")
         self.formLayout_4.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.sus_aware_fp)
+        
+        self.sus_aware_fp_heuristic = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.sus_aware_fp_heuristic.setObjectName("sus_aware_fp_heuristic")
+        self.sus_aware_fp_heuristic.setText("SUS-AWARE-FP-HEURISTIC")
+        self.formLayout_4.setWidget(12, QtWidgets.QFormLayout.LabelRole, self.sus_aware_fp_heuristic)
 
         self.scrollArea_5 = QtWidgets.QScrollArea(self.tabs)  # General
         self.scrollArea_5.setWidgetResizable(True)
@@ -1165,6 +1170,8 @@ class Ui_MainWindow(object):
                 gSchemes.append("IDV-BURST-RM")
             if self.sus_aware_fp.isChecked():
                 gSchemes.append("SUS-AWARE-FP")    
+            if self.sus_aware_fp_heuristic.isChecked():
+                gSchemes.append("SUS-AWARE-FP-HEURISTIC")
             if self.uppaal.isChecked():
                 gSchemes.append("UPPAAL")
             if self.gmfpa.isChecked():
@@ -1501,8 +1508,12 @@ def switchTest(tasksets, ischeme, i):
                 counter += 1
         elif ischeme == "SUS-AWARE-FP":
             configered_tasks = sus_aware_fp_config.config_created_tasks(tasks)
-            if sus_aware_fp_config._test_scheme(configered_tasks) == False:
-                counter += 1 
+            if sus_aware_fp_config._test_scheme(configered_tasks, "exh") == False:
+                counter += 1
+        elif ischeme == "SUS-AWARE-FP-HEURISTIC":
+            configered_tasks = sus_aware_fp_config.config_created_tasks(tasks)
+            if sus_aware_fp_config._test_scheme(configered_tasks, "heuristic") == False:
+                counter += 1          
         elif ischeme == "UPPAAL":
             if UPPAAL.UPPAAL(tasks, i) == False:
                 counter += 1

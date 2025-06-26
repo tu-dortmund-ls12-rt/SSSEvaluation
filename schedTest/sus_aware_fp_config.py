@@ -39,11 +39,18 @@ def config_created_tasks(taskset):
     taskset.sort(key=lambda x: x['deadline'])
     return taskset
 
-def _test_scheme(taskset):
-    # make arrival curve
-    arr_curves = [our.arr_sporadic(task['period']) for task in taskset]
-    # do sched test
-    return our.sched_test(taskset, arr_curves, choose_xvec='exh')
+def _test_scheme(taskset, gScheme):
+    if gScheme == "exh":
+        # make arrival curve
+        arr_curves = [our.arr_sporadic(task['period']) for task in taskset]
+        # do sched test
+        return our.sched_test(taskset, arr_curves, choose_xvec='exh')
+    
+    elif gScheme == "heuristic":
+        # make arrival curve
+        arr_curves = [our.arr_sporadic(task['period']) for task in taskset]
+        # do sched test
+        return our.sched_test(taskset, arr_curves, choose_xvec='lin')
      
 
 # def test_scheme(gScheme, tasksets, multiproc=0):
