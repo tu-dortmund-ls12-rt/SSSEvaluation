@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Our schedulability test."""
+"""
+Schedulability test from the paper:EDF-Like Scheduling for Self-Suspending Real-Time Tasks.
+Mario Günzel,Georg von der Brüggen, Kuan-Hsun Chen, and Jian-Jia Chen
+https://ieeexplore.ieee.org/document/9984793 by:
+"""
 
 from math import ceil  # ceiling function
 
