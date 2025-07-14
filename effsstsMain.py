@@ -19,7 +19,8 @@ from schedTest import (
     scair_rm,
     casini18,
     sus_aware_fp_config,
-    EL_Config
+    EL_Config,
+    edf_rta
 )
 from schedTest import (
     RSS,
@@ -752,6 +753,14 @@ class Ui_MainWindow(object):
         )
         self.formLayout_4.setWidget(23, QtWidgets.QFormLayout.LabelRole, self.saedf_lam_range)
 
+        self.edf_rta = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.edf_rta.setObjectName("edf_rta")
+        self.edf_rta.setText("EDF-RTA")
+        self.edf_rta.setToolTip(
+            "EDF with Responsetime schedulability evaluation."
+        )
+        self.formLayout_4.setWidget(24, QtWidgets.QFormLayout.LabelRole, self.edf_rta)
+
         self.scrollArea_5 = QtWidgets.QScrollArea(self.tabs)  # General
         self.scrollArea_5.setWidgetResizable(True)
         self.scrollArea_5.setGeometry(QtCore.QRect(0, 0, 999, 208))
@@ -1288,6 +1297,8 @@ class Ui_MainWindow(object):
                 gSchemes.append("EL-SAEDF-lam=+1")
             if self.saedf_lam_range.isChecked():
                 gSchemes.append("EL-SAEDF-any-lam-in-[-10,10]")
+            if self.edf_rta.isChecked():
+                gSchemes.append("EDF-RTA")
             if self.uppaal.isChecked():
                 gSchemes.append("UPPAAL")
             if self.gmfpa.isChecked():
@@ -1660,6 +1671,9 @@ def switchTest(tasksets, ischeme, i):
                 counter += 1
         elif ischeme == "EL-SAEDF-any-lam-in-[-10,10]":
             if EL_Config.check("EL-SAEDF-any-lam-in-[-10,10]", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EDF-RTA":
+            if edf_rta.RTA(tasks) == False:
                 counter += 1
         elif ischeme == "UPPAAL":
             if UPPAAL.UPPAAL(tasks, i) == False:
