@@ -1642,7 +1642,7 @@ def switchTest(tasksets, ischeme, i):
             configered_tasks = sus_aware_fp_config.config_created_tasks(tasks)
             if sus_aware_fp_config._test_scheme(configered_tasks, "heuristic") == False:
                 counter += 1          
-        elif ischeme == "EL EDF":
+        elif ischeme == "EL-EDF":
             if EL_Config.check("EL-EDF", tasks, elDepth) == False:
                 counter += 1
         elif ischeme == "EL-DM":
