@@ -28,17 +28,13 @@ CPP_DIR = Path(__file__).parent.resolve()
 EXE_NAME = "edf_sched_test"
 BINARY = CPP_DIR / EXE_NAME
 
-# Nur diese C++-Quellen werden gebraucht
+# only those files are needed for this analysis in the framework
 SOURCE_FILES = [
     "models.cpp",
     "rta.cpp",
     "dss_rta.cpp",
     "edf_sched_test.cpp",
 ]
-
-# Compiler und Flags
-CXX = "g++"
-CXX_FLAGS = ["-std=c++11", "-O2"]
 
 def RTA(tasks):
 
