@@ -1,0 +1,5 @@
+All the files in this folder(edf_rta) are taken from the implementation code of the paper:
+Response-Time Analysis for Self-Suspending Tasks Under EDF Scheduling.
+https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13
+
+Only the file edf_sched_test.cpp is written to parse the created tasks from the framework to the code of this paper‚.

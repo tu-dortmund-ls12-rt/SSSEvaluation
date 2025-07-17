@@ -1,0 +1,168 @@
+"""
+Schedulability test from the paper: Response-Time Analysis for Self-Suspending Tasks
+Under EDF Scheduling. Federico Aromolo, Alessandro Biondi, Geoffrey Nelissen
+https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13
+"""
+import shutil
+import sys
+
+"""
+-------------------------------------------------
+ Framework >>>   (rta)
+ execution       wcet
+ sslenght        suspension
+ period          period
+ deadline        deadline
+                 wcrt_ub=0
+"""
+
+import os
+import csv
+from pathlib import Path
+import subprocess
+import platform
+
+# Path of c++ files.
+CPP_DIR = Path(__file__).parent.resolve()
+
+EXE_NAME = "edf_sched_test"
+BINARY = CPP_DIR / EXE_NAME
+
+# Nur diese C++-Quellen werden gebraucht
+SOURCE_FILES = [
+    "models.cpp",
+    "rta.cpp",
+    "dss_rta.cpp",
+    "edf_sched_test.cpp",
+]
+
+# Compiler und Flags
+CXX = "g++"
+CXX_FLAGS = ["-std=c++11", "-O2"]
+
+def RTA(tasks):
+
+   compile_if_needed()
+   #Write the tasks to csv file to be parsed in th rta project.
+   csv_file_name = write_task_to_csv_file(tasks)
+
+   result = rta_schedulability(csv_file_name)
+
+   os.system(f"rm '{csv_file_name}'")
+
+   return result
+
+def write_task_to_csv_file(tasks):
+    """
+    create csv file in this fromat:
+    wcet | suspension | period | deadline
+    value| value     | value   | value
+    value| value     | value   | value
+    """
+
+    #if there is no directory for inputs, crate one
+    inputs_dir = Path(os.getcwd()) /"schedTest" / "inputs"
+    inputs_dir.mkdir(parents=True, exist_ok=True)
+
+    file_name = inputs_dir / f"edf_rta_N={len(tasks)}.csv"
+    with open(file_name, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['wcet', 'suspension', 'period', 'deadline'])
+
+        for task in tasks:
+            wcet = task['execution']
+            suspension = task['sslength']
+            period = task['period']
+            deadline = task['deadline']
+            writer.writerow([wcet, suspension, period, deadline])
+
+    return file_name
+
+def rta_schedulability(file_name):
+    """
+    run the compiled c++ file with csv file as argument.
+    """
+
+    raw = os.popen(f"{BINARY} {file_name}").read()
+    output = raw.strip()
+    #print(output)
+    if output == 'false':
+        return False
+    else:
+        return True
+
+def compile_if_needed():
+    """
+    Compile edf_sched_test if it is not already present.
+    """
+    compiler = find_compiler()
+    if compiler is None:
+        sys.exit("No C++ compiler found. Install Install C++ Compiler and start the framework again.")
+
+    # choose flags per‐compiler
+    if compiler.lower().endswith("cl.exe"):
+        flags = ["/EHsc", "/O2"]
+        out_flag = ["/Fe" + EXE_NAME + ".exe"]
+    else:#for other compilers
+        flags = ["-std=c++11", "-O2"]
+        out_flag = ["-o", EXE_NAME]
+
+    exe_path = CPP_DIR / EXE_NAME
+    if platform.system() == "Windows":
+        exe_path = exe_path.with_suffix(".exe")
+
+    if exe_path.exists() and os.access(str(exe_path), os.X_OK):
+        print("edf_sched_test is already compiled")
+        return
+        #return exe_path
+
+    print(f"build {EXE_NAME} not found – compiling starts..")
+    old_cwd = os.getcwd()
+    os.chdir(CPP_DIR)
+    try:
+        cmd = [compiler, *flags, *out_flag, *SOURCE_FILES]
+        print("build Command:", " ".join(cmd))
+        subprocess.check_call(cmd)
+        if platform.system() != "Windows":
+            exe_path.chmod(0o755)
+    finally:
+        os.chdir(old_cwd)
+
+    if not exe_path.exists():
+        raise RuntimeError("Compilation failed: executable not created.")
+    return exe_path
+
+
+def find_compiler():
+    """
+    determine if the user have compiler or not and which.
+    """
+    WINDOWS_COMPILERS = ["g++.exe", "clang.exe", "cl.exe", "icl.exe"]
+    operating_system_and_compiler = {
+        "Windows": WINDOWS_COMPILERS,
+        "Linux":  ["g++", "clang++"],
+        "Darwin": ["g++", "clang++"],
+    }.get(platform.system(), [])
+    for compiler in operating_system_and_compiler:
+        if shutil.which(compiler):
+            return compiler
+    #when the user doesn´t have compiler
+    return None
+
+def print_tasks(tasks):
+    for task in tasks:
+        print(f"""
+        ------------------------------
+        wcet       : {task['execution']}
+        suspension : {task['sslength']}
+        period     : {task['period']}
+        deadline   : {task['deadline']}
+        ------------------------------
+        """)
+
+
+if __name__ == "__main__":
+    print("main")
+    system = platform.system()
+    cmd = shutil.which("clang++")
+    print(cmd)
