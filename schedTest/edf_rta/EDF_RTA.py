@@ -2,9 +2,9 @@
 Schedulability test from the paper: Response-Time Analysis for Self-Suspending Tasks
 Under EDF Scheduling. Federico Aromolo, Alessandro Biondi, Geoffrey Nelissen
 https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13
+
+The files will be downloaded and compiled.
 """
-import shutil
-import sys
 
 """
 -------------------------------------------------
@@ -16,11 +16,16 @@ import sys
                  wcrt_ub=0
 """
 
+import shutil
+import sys
 import os
 import csv
 from pathlib import Path
 import subprocess
 import platform
+import requests
+import zipfile
+from io import BytesIO
 
 # Path of c++ files.
 CPP_DIR = Path(__file__).parent.resolve()
@@ -38,6 +43,8 @@ SOURCE_FILES = [
 
 def RTA(tasks):
 
+   download_zip_file()
+
    compile_if_needed()
    #Write the tasks to csv file to be parsed in th rta project.
    csv_file_name = write_task_to_csv_file(tasks)
@@ -47,6 +54,39 @@ def RTA(tasks):
    os.system(f"rm '{csv_file_name}'")
 
    return result
+
+def download_zip_file():
+    """
+    Download the zip file and unzip it
+
+    NOTE: If `url` fails (404 or network error) for any reason, go to
+    and search under “Supplementary Material” for
+    correct link
+    """
+    RTA_URL = "https://drops.dagstuhl.de/storage/artifacts/darts-vol008/darts-vol008-issue001_ecrts2022/16554/DARTS-8-1-5-artifact-84adbd6adb19a7638bc7fe9dd523735f.zip"
+
+    if all((CPP_DIR / fname).exists() for fname in SOURCE_FILES):
+        #all needed files are available.
+        return
+    try:
+        r = requests.get(RTA_URL)
+        r.raise_for_status()
+
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Error downloading '{RTA_URL}'") from e
+
+    with zipfile.ZipFile(BytesIO(r.content)) as zip_file:
+        zip_file.extractall(CPP_DIR)# or wherever you want
+
+    rta_files = ["models.cpp", "models.h",
+    "rta.cpp", "rta.h",
+    "dss_rta.cpp", "dss_rta.h"]
+
+    folder = [f for f in CPP_DIR.iterdir() if f.is_dir()]
+    unziped_folder  = folder[1] #it expected to be "artifact"
+    #copy the rta_files to the folder edf_rta to be available to the compiling process
+    for rta_file in rta_files:
+        shutil.move(CPP_DIR/unziped_folder/rta_file, CPP_DIR)
 
 def write_task_to_csv_file(tasks):
     """
@@ -108,16 +148,16 @@ def compile_if_needed():
         exe_path = exe_path.with_suffix(".exe")
 
     if exe_path.exists() and os.access(str(exe_path), os.X_OK):
-        print("edf_sched_test is already compiled")
+        #print("edf_sched_test is already compiled")
         return
         #return exe_path
 
-    print(f"build {EXE_NAME} not found – compiling starts..")
+    #print(f"build {EXE_NAME} not found – compiling starts..")
     old_cwd = os.getcwd()
     os.chdir(CPP_DIR)
     try:
         cmd = [compiler, *flags, *out_flag, *SOURCE_FILES]
-        print("build Command:", " ".join(cmd))
+        #print("build Command:", " ".join(cmd))
         subprocess.check_call(cmd)
         if platform.system() != "Windows":
             exe_path.chmod(0o755)
@@ -158,6 +198,7 @@ def print_tasks(tasks):
 
 
 if __name__ == "__main__":
+    #download_zip_file()
     print("main")
     system = platform.system()
     cmd = shutil.which("clang++")
