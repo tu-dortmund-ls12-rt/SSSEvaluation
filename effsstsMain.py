@@ -20,7 +20,6 @@ from schedTest import (
     casini18,
     sus_aware_fp_config,
     EL_Config,
-    edf_rta
 )
 from schedTest import (
     RSS,
@@ -35,6 +34,7 @@ from schedTest import (
     UPPAAL,
     Burst_RM,
 )
+from schedTest.edf_rta import EDF_RTA
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -1673,7 +1673,7 @@ def switchTest(tasksets, ischeme, i):
             if EL_Config.check("EL-SAEDF-any-lam-in-[-10,10]", tasks, elDepth) == False:
                 counter += 1
         elif ischeme == "EDF-RTA":
-            if edf_rta.RTA(tasks) == False:
+            if EDF_RTA.RTA(tasks) == False:
                 counter += 1
         elif ischeme == "UPPAAL":
             if UPPAAL.UPPAAL(tasks, i) == False:
