@@ -11,7 +11,7 @@ def pickColor(ischeme):
 		'EDA','PROPORTIONAL','SEIFDA-MILP',
 		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','EDAGMF-OPA','MILP-ReleaseJitter','SRSR',
 		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK','BURST-RM','UPPAAL'
-		'NC']
+		'NC','EDF-RTA']
 	colors = [
 		'#0ff1ce','#696969','#bada55',
 		'#7fe5f0','#ff0000','#ff80ed','#407294','#c39797','#420420','#133337',
@@ -52,7 +52,7 @@ def pickMarker(ischeme):
 		'EDA','PROPORTIONAL','SEIFDA-MILP',
 		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','EDAGMF-OPA','MILP-ReleaseJitter','SRSR',
 		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK',
-		'NC']
+		'NC','EDF-RTA']
 	markers = [
 		".",",","o",
 		"v","^","<",">","1","2","3",
