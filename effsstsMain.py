@@ -671,8 +671,6 @@ class Ui_MainWindow(object):
         label_depth = QtWidgets.QLabel("EL_depth:", self.formLayoutWidget_4)
         self.formLayout_4.setWidget(13, QtWidgets.QFormLayout.FieldRole, label_depth)
 
-        elDepth = self.el_depth.value()
-
         self.el_edf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
         self.el_edf.setObjectName("el_edf")
         self.el_edf.setText("EL_EDF")
@@ -1115,6 +1113,7 @@ class Ui_MainWindow(object):
 
             global gmultiplot
             global gmpCheck
+            global elDepth
 
             ###GENERAL###
             gRuntest = self.runtests.isChecked()
@@ -1134,6 +1133,8 @@ class Ui_MainWindow(object):
             gNumberOfSegs = self.numberofsegs.value()
             gSLenMinValue = self.slengthminvalue.value()
             gSLenMaxValue = self.slengthmaxvalue.value()
+
+            elDepth = self.el_depth.value()
             if self.seed.text() != "":
                 gSeed = self.seed.text()
             else:
@@ -1643,9 +1644,11 @@ def switchTest(tasksets, ischeme, i):
             if sus_aware_fp_config._test_scheme(configered_tasks, "heuristic") == False:
                 counter += 1          
         elif ischeme == "EL-EDF":
+            print("elDepth: ", elDepth)
             if EL_Config.check("EL-EDF", tasks, elDepth) == False:
                 counter += 1
         elif ischeme == "EL-DM":
+            print("elDepth: ", elDepth)
             if EL_Config.check("EL-DM", tasks, elDepth) == False:
                 counter += 1
         elif ischeme == "EL-EQDF-lam=-1":
