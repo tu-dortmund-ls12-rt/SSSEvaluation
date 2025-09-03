@@ -1,10 +1,6 @@
 """
 This is as a part of bachelor thesis of Zakaria Al-Jumaei.
-Developing necessary test for fixed-priority scheduling algorithm,
-in order to evaluate the gap between this test and the sufficient test of paper:
-Suspension-Aware Fixed-Priority Schedulability Test
-with Arbitrary Deadlines and Arrival Curves" Mario Günzel, Niklas Ueter, Jian-Jia Chen 2021.
-https://ieeexplore.ieee.org/abstract/document/9622374
+Developing necessary test for fixed-priority scheduling algorithm.
 """
 import math
 
