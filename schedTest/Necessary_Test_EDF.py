@@ -1,10 +1,6 @@
 """
 This is as a part of bachelor thesis of Zakaria Al-Jumaei.
-Developing necessary test for EDF scheduling algorithm,
-in order to evaluate the gab between this test and the sufficient test that provided by paper:
-Response-Time Analysis for Self-Suspending Tasks
-Under EDF Scheduling. Federico Aromolo, Alessandro Biondi, Geoffrey Nelissen
-https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13
+Developing necessary test for EDF scheduling algorithm.
 """
 from math import floor
 import copy
