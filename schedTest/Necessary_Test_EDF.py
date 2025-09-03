@@ -3,7 +3,6 @@ This is as a part of bachelor thesis of Zakaria Al-Jumaei.
 Developing necessary test for EDF scheduling algorithm.
 """
 from math import floor
-import copy
 
 
 def necessary_test_edf(tasks):
@@ -13,26 +12,12 @@ def necessary_test_edf(tasks):
     """
     for index, task in enumerate(tasks):
 
-        task_set_new = align_deadline(tasks, index, task)
-
-        interferences = count_interference(task_set_new, task['deadline'])
+        interferences = count_interference(tasks, task['deadline'])
 
         if (task['execution'] + task['sslength'] + interferences) > task['deadline']:
             return False
 
     return True
-
-def align_deadline(tasks, index, task_k):
-    """
-    align deadline of other task with deadline of task under analysis.
-    Input: taskset
-    Output: taskset after aligning deadline
-    """
-    others = [copy.copy(t) for i, t in enumerate(tasks) if i != index]
-
-    for task_i in others:
-        task_i['deadline'] = task_k['deadline']
-    return others
 
 def count_interference(tasks, deadline):
     """
