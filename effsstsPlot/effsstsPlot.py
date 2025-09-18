@@ -10,10 +10,10 @@ def pickColor(ischeme):
 	schemes = [
 		'EDA','PROPORTIONAL','SEIFDA-MILP',
 		'SCEDF','SCRM','SCAIR-RM','SCAIR-OPA','EDAGMF-OPA','MILP-ReleaseJitter','SRSR',
-		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK','BURST-RM','UPPAAL'
+		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK','BURST-RM','UPPAAL',
 		'NC','SUS-AWARE-FP','SUS-AWARE-FP-HEURISTIC','EDF-RTA','EL-DM', 'EL-EDF', 'EL-EQDF-lam=0',
 		'EL-EQDF-lam=-1', 'EL-EQDF-lam=+1', 'EL-EQDF-any-lam-in-[-10,10]', 'EL-SAEDF-lam=0',
-		'EL-SAEDF-lam=-1', 'EL-SAEDF-lam=+1', 'EL-SAEDF-any-lam-in-[-10,10]', 'EDF-Necessary-Test']
+		'EL-SAEDF-lam=-1', 'EL-SAEDF-lam=+1', 'EL-SAEDF-any-lam-in-[-10,10]', 'FP-Necessary-Test']
 	colors = [
 		'#0ff1ce','#696969','#bada55',
 		'#7fe5f0','#ff0000','#ff80ed','#407294','#c39797','#420420','#133337',
@@ -56,17 +56,15 @@ def pickMarker(ischeme):
 		'PASS-OPA','RSS','UDLEDF','WLAEDF','RTEDF','UNIFRAMEWORK','SUSPOBL','SUSPJIT','SUSPBLOCK',
 		'NC','SUS-AWARE-FP','SUS-AWARE-FP-HEURISTIC','EDF-RTA','EL-DM', 'EL-EDF', 'EL-EQDF-lam=0',
 		'EL-EQDF-lam=-1', 'EL-EQDF-lam=+1', 'EL-EQDF-any-lam-in-[-10,10]', 'EL-SAEDF-lam=0',
-		'EL-SAEDF-lam=-1', 'EL-SAEDF-lam=+1', 'EL-SAEDF-any-lam-in-[-10,10]', 'EDF-Necessary-Test']
+		'EL-SAEDF-lam=-1', 'EL-SAEDF-lam=+1', 'EL-SAEDF-any-lam-in-[-10,10]', 'FP-Necessary-Test']
 	markers = [
 		".",",","o",
 		"v","^","<",">","1","2","3",
 		"4","8","s","p","P","*","h","H","+",
 		"x",
-		"X","D","d","|","_",".",
-		"X", "D", "d", "|", "_", ".", ",", "o",
-		"v", "^", "<", ">", "1", "2", "3",
-		"4", "8",
-	]
+		"X","D","d","|","_",".",",","o",
+		"v","^","<",">","1","2","3",
+		"4","8",]
 
 	if ischeme in schemes:
 		index = schemes.index(ischeme)
