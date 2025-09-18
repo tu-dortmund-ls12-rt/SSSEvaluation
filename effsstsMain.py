@@ -20,7 +20,8 @@ from schedTest import (
     casini18,
     sus_aware_fp_config,
     EL_Config,
-    Necessary_Test_FP as NCT_FP
+    Necessary_Test_FP as NCT_FP,
+    Necessary_Test_EDF as NCT_EDF
 )
 from schedTest import (
     RSS,
@@ -768,6 +769,13 @@ class Ui_MainWindow(object):
         )
         self.formLayout_4.setWidget(25, QtWidgets.QFormLayout.LabelRole, self.fp_necessary_test)
 
+        self.edf_necessary_test = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.edf_necessary_test.setObjectName("edf_necessary_test")
+        self.edf_necessary_test.setText("EDF-Necessary-Test")
+        self.edf_necessary_test.setToolTip(
+            "EDF-Necessary test schedulability evaluation."
+        )
+        self.formLayout_4.setWidget(26, QtWidgets.QFormLayout.LabelRole, self.edf_necessary_test)
         self.scrollArea_5 = QtWidgets.QScrollArea(self.tabs)  # General
         self.scrollArea_5.setWidgetResizable(True)
         self.scrollArea_5.setGeometry(QtCore.QRect(0, 0, 999, 208))
@@ -1311,6 +1319,8 @@ class Ui_MainWindow(object):
                 gSchemes.append("EDF-RTA")
             if self.fp_necessary_test.isChecked():
                 gSchemes.append("FP-Necessary-Test")
+            if self.edf_necessary_test.isChecked():
+                gSchemes.append("EDF-Necessary-Test")
             if self.uppaal.isChecked():
                 gSchemes.append("UPPAAL")
             if self.gmfpa.isChecked():
@@ -1689,6 +1699,9 @@ def switchTest(tasksets, ischeme, i):
                 counter += 1
         elif ischeme == "FP-Necessary-Test":
             if NCT_FP.necessary_test_fp(tasks) == False:
+                counter += 1
+        elif ischeme == "EDF-Necessary-Test":
+            if NCT_EDF.necessary_test_edf(tasks) == False:
                 counter += 1
         elif ischeme == "UPPAAL":
             if UPPAAL.UPPAAL(tasks, i) == False:

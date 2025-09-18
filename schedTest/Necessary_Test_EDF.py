@@ -12,21 +12,24 @@ def necessary_test_edf(tasks):
     """
     for index, task in enumerate(tasks):
 
-        interferences = count_interference(tasks, task['deadline'])
+        interferences = count_interference(index, tasks, task['deadline'])
 
         if (task['execution'] + task['sslength'] + interferences) > task['deadline']:
             return False
 
     return True
 
-def count_interference(tasks, deadline):
+def count_interference(index, tasks, deadline):
     """
     count the number of interference of other tasks than task under analysis
-    Input: task set after aligning deadline and without task under analysis
+    Input: index of task under analysis, task set, deadline of task under analysis
     Output: number of interference
     """
     interferences = 0
-    for task in tasks:
-        interferences += floor((deadline + task['sslength']) / task['period']) * task['execution']
+    for index_i, task in enumerate(tasks):
+        if index_i == index:
+            continue
+        interferences += floor((deadline + task['sslength'] + (task['period'] - task['deadline']))
+                               / task['period']) * task['execution']
 
     return interferences
