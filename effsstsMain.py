@@ -1489,9 +1489,9 @@ def schedulabilityTest(Tasksets_util):
     # sspropotions = ['10']
     # periodlogs = ['2']
     for ischeme in gSchemes:
-        x = np.arange(gUStart, gUEnd + gUStep, gUStep)
+        x = np.arange(gUStart, gUEnd + gUStep, gUStep) # Utilazation points
         # y = np.zeros(int(100 / gUStep) + 1)
-        y = np.zeros(int((gUEnd - gUStart) / gUStep) + 1)
+        y = np.zeros(int((gUEnd - gUStart) / gUStep) + 1) #here the ratios will be stored
         print(y)
         ifskip = False
         for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
@@ -1657,12 +1657,10 @@ def switchTest(tasksets, ischeme, i):
             if Burst_RM.BURST_RM(tasks) == False:
                 counter += 1
         elif ischeme == "SUS-AWARE-FP":
-            configered_tasks = sus_aware_fp_config.config_created_tasks(tasks)
-            if sus_aware_fp_config._test_scheme(configered_tasks, "exh") == False:
+            if sus_aware_fp_config._test_scheme(tasks, "exh") == False:
                 counter += 1
         elif ischeme == "SUS-AWARE-FP-HEURISTIC":
-            configered_tasks = sus_aware_fp_config.config_created_tasks(tasks)
-            if sus_aware_fp_config._test_scheme(configered_tasks, "heuristic") == False:
+            if sus_aware_fp_config._test_scheme(tasks, "heuristic") == False:
                 counter += 1          
         elif ischeme == "EL-EDF":
             if EL_Config.check("EL-EDF", tasks, elDepth) == False:
