@@ -1488,22 +1488,13 @@ def schedulabilityTest(Tasksets_util):
     pool = Pool(gthread)
     # sspropotions = ['10']
     # periodlogs = ['2']
-    all_results = {}
-    x_utilization_levels = np.arange(gUStart, gUEnd + gUStep, gUStep)
-    summaries = {}
     for ischeme in gSchemes:
-        start_time = time.time()
         x = np.arange(gUStart, gUEnd + gUStep, gUStep) # Utilazation points
         # y = np.zeros(int(100 / gUStep) + 1)
         y = np.zeros(int((gUEnd - gUStart) / gUStep) + 1) #here the ratios will be stored
         print(y)
         ifskip = False
-
-        scheme_numfail_total = 0  # wie viele Tasksets insgesamt "failed" für dieses scheme
-        scheme_total_tasksets = 0  # wie viele Tasksets wurden insgesamt geprüft
-
         for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
-
             print(
                 "Scheme:",
                 ischeme,
@@ -1533,7 +1524,6 @@ def schedulabilityTest(Tasksets_util):
 
             if gthread <= 1:  # no concurrency 
                 numfail = 0
-                scheme_total_tasksets += len(tasksets)
                 for idx, ts in enumerate(tasksets):
                     numfail += switchTest([ts], ischeme, idx)
             
@@ -1559,8 +1549,6 @@ def schedulabilityTest(Tasksets_util):
             y[u] = acceptanceRatio
             if acceptanceRatio == 0:
                 ifskip = True
-            # ADDED: update global counters for this scheme
-            scheme_numfail_total += int(numfail)  # numfail ist Anzahl failed tasksets in diesem Bin
 
         plotPath = (
             gPrefixdata
