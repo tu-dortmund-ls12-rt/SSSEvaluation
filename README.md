@@ -153,13 +153,13 @@ SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | 
 
 #### Constrained-Deadline
 
-Name | Paper                                                                                | File name            | Method name
----|--------------------------------------------------------------------------------------|----------------------|---
-PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340                     | pass_opa.py          | PASS_OPA
-UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V                      | UNIFRAMEWORK.py      | UniFramework
-SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III                    | FixedPriority.py     | SuspJit
-EDF-RTA | https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13             | EDF_RTA.py| RTA
-EDF-Necessary-Test| https://ieeexplore.ieee.org/document/7010483 introduced in Zakaria Bachelor's Thesis | Necessary_Test_EDF.py |necessary_test_edf
+Name | Paper                                                                    | File name            | Method name
+---|--------------------------------------------------------------------------|----------------------|---
+PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340         | pass_opa.py          | PASS_OPA
+UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V          | UNIFRAMEWORK.py      | UniFramework
+SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III        | FixedPriority.py     | SuspJit
+EDF-RTA | https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13 | EDF_RTA.py| RTA
+EDF-Necessary-Test| https://ieeexplore.ieee.org/document/7010483 & Zakaria Bachelor's Thesis | Necessary_Test_EDF.py |necessary_test_edf
 
 #### Arbitrary-Deadline
 
