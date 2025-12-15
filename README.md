@@ -153,16 +153,31 @@ SUSPBLOCK | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | 
 
 #### Constrained-Deadline
 
-Name | Paper | File name | Method name
----|---|---|---
-PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340 | pass_opa.py | PASS_OPA
-UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V | UNIFRAMEWORK.py | UniFramework
-SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III | FixedPriority.py | SuspJit
+Name | Paper                                                                    | File name            | Method name
+---|--------------------------------------------------------------------------|----------------------|---
+PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340         | pass_opa.py          | PASS_OPA
+UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V          | UNIFRAMEWORK.py      | UniFramework
+SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III        | FixedPriority.py     | SuspJit
+EDF-RTA | https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13 | EDF_RTA.py| RTA
+EDF-Necessary-Test| https://ieeexplore.ieee.org/document/7010483 & Zakaria Bachelor's Thesis | Necessary_Test_EDF.py |necessary_test_edf
 
 #### Arbitrary-Deadline
 
-Name | Paper | File name | Method name
----|---|---|---
+Name | Paper | File name   | Method name
+---|---|-------------|---
+SUS-AWARE-FP|https://ieeexplore.ieee.org/document/9622374| sus_aware_fp_config.py |_test_scheme
+SUS-AWARE-FP-HEURISTIC|https://ieeexplore.ieee.org/document/9622374| sus_aware_fp_config.py |_test_scheme
+EL-EDF|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-DM|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-EQDF-lam=-1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-EQDF-lam=0|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-EQDF-lam=+1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-EQDF-any-lam-in-[-10,10]|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-SAEDF-lam=-1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-SAEDF-lam=0|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-SAEDF-lam=+1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-SAEDF-any-lam-in-[-10,10]|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+FP-Necessary-Test|Zakaria Bachelor's Thesis| Necessary_Test_FP.py |necessary_test_fp
 
 ### Hybrid Suspension
 
