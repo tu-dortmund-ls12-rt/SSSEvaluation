@@ -18,6 +18,10 @@ from schedTest import (
     mipx,
     scair_rm,
     casini18,
+    sus_aware_fp_config,
+    EL_Config,
+    Necessary_Test_FP as NCT_FP,
+    Necessary_Test_EDF as NCT_EDF
 )
 from schedTest import (
     RSS,
@@ -32,6 +36,7 @@ from schedTest import (
     UPPAAL,
     Burst_RM,
 )
+from schedTest.edf_rta import EDF_RTA
 from effsstsPlot import effsstsPlot
 import os
 import datetime
@@ -61,6 +66,7 @@ gthread = 1
 
 gmultiplot = ""
 gmpCheck = False
+elDepth = 0
 
 
 class Ui_MainWindow(object):
@@ -646,7 +652,130 @@ class Ui_MainWindow(object):
             "Rate monotonic priority assignment with burst schedulability evaluation"
         )
         self.formLayout_4.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.burstrm)
+        
+        self.sus_aware_fp = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.sus_aware_fp.setObjectName("sus_aware_fp")
+        self.sus_aware_fp.setText("SUS-AWARE-FP")
+        self.formLayout_4.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.sus_aware_fp)
+        
+        self.sus_aware_fp_heuristic = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.sus_aware_fp_heuristic.setObjectName("sus_aware_fp_heuristic")
+        self.sus_aware_fp_heuristic.setText("SUS-AWARE-FP-HEURISTIC")
+        self.formLayout_4.setWidget(12, QtWidgets.QFormLayout.LabelRole, self.sus_aware_fp_heuristic)
 
+        self.el_depth = QtWidgets.QSpinBox(self.formLayoutWidget_4)
+        self.el_depth.setObjectName("el_depth")
+        self.el_depth.setMinimum(0)
+        self.el_depth.setValue(5)  # Default
+        self.el_depth.setToolTip("Number of iteration (depth) for EL_fixed/EL_var")
+        self.formLayout_4.setWidget(13, QtWidgets.QFormLayout.LabelRole, self.el_depth)
+
+        label_depth = QtWidgets.QLabel("EL_depth:", self.formLayoutWidget_4)
+        self.formLayout_4.setWidget(13, QtWidgets.QFormLayout.FieldRole, label_depth)
+
+        self.el_edf = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.el_edf.setObjectName("el_edf")
+        self.el_edf.setText("EL_EDF")
+        self.el_edf.setToolTip(
+            "EDF Like schedulability evaluation"
+        )
+        self.formLayout_4.setWidget(14, QtWidgets.QFormLayout.LabelRole, self.el_edf)
+
+        self.el_dm = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.el_dm.setObjectName("el_dm")
+        self.el_dm.setText("EL_DM")
+        self.el_dm.setToolTip(
+            "DM schedulability evaluation"
+        )
+        self.formLayout_4.setWidget(15, QtWidgets.QFormLayout.LabelRole, self.el_dm)
+
+        self.eqdf_lam_minus1 = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.eqdf_lam_minus1.setObjectName("eqdf_lam_minus1")
+        self.eqdf_lam_minus1.setText("EL_EQDF λ = -1")
+        self.eqdf_lam_minus1.setToolTip(
+            "EQDF schedulability evaluation with λ = -1"
+        )
+        self.formLayout_4.setWidget(16, QtWidgets.QFormLayout.LabelRole, self.eqdf_lam_minus1)
+
+        self.eqdf_lam_0 = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.eqdf_lam_0.setObjectName("eqdf_lam_0")
+        self.eqdf_lam_0.setText("EL_EQDF λ =  0")
+        self.eqdf_lam_0.setToolTip(
+            "EQDF schedulability evaluation with λ = 0"
+        )
+        self.formLayout_4.setWidget(17, QtWidgets.QFormLayout.LabelRole, self.eqdf_lam_0)
+
+        self.eqdf_lam_plus1 = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.eqdf_lam_plus1.setObjectName("eqdf_lam_plus1")
+        self.eqdf_lam_plus1.setText("EL_EQDF λ = +1")
+        self.eqdf_lam_plus1.setToolTip(
+            "EQDF schedulability evaluation with λ = +1"
+        )
+        self.formLayout_4.setWidget(18, QtWidgets.QFormLayout.LabelRole, self.eqdf_lam_plus1)
+
+        self.eqdf_lam_range = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.eqdf_lam_range.setObjectName("eqdf_lam_range")
+        self.eqdf_lam_range.setText("EL_EQDF λ ∈ [-10, 10]")
+        self.eqdf_lam_range.setToolTip(
+            "EQDF schedulability evaluation with λ in range [-10,10]"
+        )
+        self.formLayout_4.setWidget(19, QtWidgets.QFormLayout.LabelRole, self.eqdf_lam_range)
+
+        self.saedf_lam_minus1 = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.saedf_lam_minus1.setObjectName("saedf_lam_minus1")
+        self.saedf_lam_minus1.setText("EL_SAEDF λ = -1")
+        self.saedf_lam_minus1.setToolTip(
+            "SAEDF schedulability evaluation with λ = -1"
+        )
+        self.formLayout_4.setWidget(20, QtWidgets.QFormLayout.LabelRole, self.saedf_lam_minus1)
+
+        self.saedf_lam_0 = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.saedf_lam_0.setObjectName("saedf_lam_0")
+        self.saedf_lam_0.setText("EL_SAEDF λ =  0")
+        self.saedf_lam_0.setToolTip(
+            "SAEDF schedulability evaluation with λ = 0"
+        )
+        self.formLayout_4.setWidget(21, QtWidgets.QFormLayout.LabelRole, self.saedf_lam_0)
+
+        self.saedf_lam_plus1 = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.saedf_lam_plus1.setObjectName("saedf_lam_plus1")
+        self.saedf_lam_plus1.setText("EL_SAEDF λ = +1")
+        self.saedf_lam_plus1.setToolTip(
+            "SAEDF schedulability evaluation with λ = +1"
+        )
+        self.formLayout_4.setWidget(22, QtWidgets.QFormLayout.LabelRole, self.saedf_lam_plus1)
+
+        self.saedf_lam_range = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.saedf_lam_range.setObjectName("saedf_lam_range")
+        self.saedf_lam_range.setText("EL_SAEDF λ ∈ [-10, 10]")
+        self.saedf_lam_range.setToolTip(
+            "SAEDF schedulability evaluation with λ in range [-10,10]"
+        )
+        self.formLayout_4.setWidget(23, QtWidgets.QFormLayout.LabelRole, self.saedf_lam_range)
+
+        self.edf_rta = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.edf_rta.setObjectName("edf_rta")
+        self.edf_rta.setText("EDF-RTA")
+        self.edf_rta.setToolTip(
+            "EDF with Responsetime schedulability evaluation."
+        )
+        self.formLayout_4.setWidget(24, QtWidgets.QFormLayout.LabelRole, self.edf_rta)
+
+        self.fp_necessary_test = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.fp_necessary_test.setObjectName("fp_necessary_test")
+        self.fp_necessary_test.setText("FP-Necessary-Test")
+        self.fp_necessary_test.setToolTip(
+            "FP-Necessary test schedulability evaluation."
+        )
+        self.formLayout_4.setWidget(25, QtWidgets.QFormLayout.LabelRole, self.fp_necessary_test)
+
+        self.edf_necessary_test = QtWidgets.QCheckBox(self.formLayoutWidget_4)
+        self.edf_necessary_test.setObjectName("edf_necessary_test")
+        self.edf_necessary_test.setText("EDF-Necessary-Test")
+        self.edf_necessary_test.setToolTip(
+            "EDF-Necessary test schedulability evaluation."
+        )
+        self.formLayout_4.setWidget(26, QtWidgets.QFormLayout.LabelRole, self.edf_necessary_test)
         self.scrollArea_5 = QtWidgets.QScrollArea(self.tabs)  # General
         self.scrollArea_5.setWidgetResizable(True)
         self.scrollArea_5.setGeometry(QtCore.QRect(0, 0, 999, 208))
@@ -1001,6 +1130,7 @@ class Ui_MainWindow(object):
 
             global gmultiplot
             global gmpCheck
+            global elDepth
 
             ###GENERAL###
             gRuntest = self.runtests.isChecked()
@@ -1020,6 +1150,8 @@ class Ui_MainWindow(object):
             gNumberOfSegs = self.numberofsegs.value()
             gSLenMinValue = self.slengthminvalue.value()
             gSLenMaxValue = self.slengthmaxvalue.value()
+
+            elDepth = self.el_depth.value()
             if self.seed.text() != "":
                 gSeed = self.seed.text()
             else:
@@ -1157,6 +1289,38 @@ class Ui_MainWindow(object):
                 gSchemes.append("SUSPBLOCK")
             if self.burstrm.isChecked():
                 gSchemes.append("IDV-BURST-RM")
+            if self.sus_aware_fp.isChecked():
+                gSchemes.append("SUS-AWARE-FP")    
+            if self.sus_aware_fp_heuristic.isChecked():
+                gSchemes.append("SUS-AWARE-FP-HEURISTIC")
+            if self.el_edf.isChecked():
+                gSchemes.append("EL-EDF")
+            if self.el_dm.isChecked():
+                gSchemes.append("EL-DM")
+            # EQDF
+            if self.eqdf_lam_minus1.isChecked():
+                gSchemes.append("EL-EQDF-lam=-1")
+            if self.eqdf_lam_0.isChecked():
+                gSchemes.append("EL-EQDF-lam=0")
+            if self.eqdf_lam_plus1.isChecked():
+                gSchemes.append("EL-EQDF-lam=+1")
+            if self.eqdf_lam_range.isChecked():
+                gSchemes.append("EL-EQDF-any-lam-in-[-10,10]")
+            # SAEDF
+            if self.saedf_lam_minus1.isChecked():
+                gSchemes.append("EL-SAEDF-lam=-1")
+            if self.saedf_lam_0.isChecked():
+                gSchemes.append("EL-SAEDF-lam=0")
+            if self.saedf_lam_plus1.isChecked():
+                gSchemes.append("EL-SAEDF-lam=+1")
+            if self.saedf_lam_range.isChecked():
+                gSchemes.append("EL-SAEDF-any-lam-in-[-10,10]")
+            if self.edf_rta.isChecked():
+                gSchemes.append("EDF-RTA")
+            if self.fp_necessary_test.isChecked():
+                gSchemes.append("FP-Necessary-Test")
+            if self.edf_necessary_test.isChecked():
+                gSchemes.append("EDF-Necessary-Test")
             if self.uppaal.isChecked():
                 gSchemes.append("UPPAAL")
             if self.gmfpa.isChecked():
@@ -1243,6 +1407,7 @@ def tasksetConfiguration():
     global gSLenMinValue
     global gNumberOfSegs
     global gSeed
+    global elDepth
 
     tasksets_difutil = []
 
@@ -1324,9 +1489,9 @@ def schedulabilityTest(Tasksets_util):
     # sspropotions = ['10']
     # periodlogs = ['2']
     for ischeme in gSchemes:
-        x = np.arange(gUStart, gUEnd + gUStep, gUStep)
+        x = np.arange(gUStart, gUEnd + gUStep, gUStep) # Utilazation points
         # y = np.zeros(int(100 / gUStep) + 1)
-        y = np.zeros(int((gUEnd - gUStart) / gUStep) + 1)
+        y = np.zeros(int((gUEnd - gUStart) / gUStep) + 1) #here the ratios will be stored
         print(y)
         ifskip = False
         for u, tasksets in enumerate(Tasksets_util, start=0):  # iterate through taskset
@@ -1490,6 +1655,51 @@ def switchTest(tasksets, ischeme, i):
                 counter += 1
         elif ischeme == "IDV-BURST-RM":
             if Burst_RM.BURST_RM(tasks) == False:
+                counter += 1
+        elif ischeme == "SUS-AWARE-FP":
+            if sus_aware_fp_config._test_scheme(tasks, "exh") == False:
+                counter += 1
+        elif ischeme == "SUS-AWARE-FP-HEURISTIC":
+            if sus_aware_fp_config._test_scheme(tasks, "heuristic") == False:
+                counter += 1          
+        elif ischeme == "EL-EDF":
+            if EL_Config.check("EL-EDF", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-DM":
+            if EL_Config.check("EL-DM", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-EQDF-lam=-1":
+            if EL_Config.check("EL-EQDF-lam=-1", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-EQDF-lam=0":
+            if EL_Config.check("EL-EQDF-lam=0", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-EQDF-lam=+1":
+            if EL_Config.check("EL-EQDF-lam=+1", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-EQDF-any-lam-in-[-10,10]":
+            if EL_Config.check("EL-EQDF-any-lam-in-[-10,10]", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-SAEDF-lam=-1":
+            if EL_Config.check("EL-SAEDF-lam=-1", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-SAEDF-lam=0":
+            if EL_Config.check("EL-SAEDF-lam=0", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-SAEDF-lam=+1":
+            if EL_Config.check("EL-SAEDF-lam=+1", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EL-SAEDF-any-lam-in-[-10,10]":
+            if EL_Config.check("EL-SAEDF-any-lam-in-[-10,10]", tasks, elDepth) == False:
+                counter += 1
+        elif ischeme == "EDF-RTA":
+            if EDF_RTA.RTA(tasks) == False:
+                counter += 1
+        elif ischeme == "FP-Necessary-Test":
+            if NCT_FP.necessary_test_fp(tasks) == False:
+                counter += 1
+        elif ischeme == "EDF-Necessary-Test":
+            if NCT_EDF.necessary_test_edf(tasks) == False:
                 counter += 1
         elif ischeme == "UPPAAL":
             if UPPAAL.UPPAAL(tasks, i) == False:
