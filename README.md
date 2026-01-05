@@ -159,7 +159,7 @@ PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340     
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V          | UNIFRAMEWORK.py      | UniFramework
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III        | FixedPriority.py     | SuspJit
 EDF-RTA | https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13 | EDF_RTA.py| RTA
-EDF-Necessary-Test| https://ieeexplore.ieee.org/document/7010483 & Zakaria Bachelor's Thesis | Necessary_Test_EDF.py |necessary_test_edf
+EDF-Necessary-Test| Zakaria Bachelor's Thesis | Necessary_Test_EDF.py |necessary_test_edf
 
 #### Arbitrary-Deadline
 
@@ -169,15 +169,9 @@ SUS-AWARE-FP|https://ieeexplore.ieee.org/document/9622374| sus_aware_fp_config.p
 SUS-AWARE-FP-HEURISTIC|https://ieeexplore.ieee.org/document/9622374| sus_aware_fp_config.py |_test_scheme
 EL-EDF|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
 EL-DM|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-EQDF-lam=-1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-EQDF-lam=0|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-EQDF-lam=+1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-EQDF-any-lam-in-[-10,10]|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-SAEDF-lam=-1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-SAEDF-lam=0|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-SAEDF-lam=+1|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-EL-SAEDF-any-lam-in-[-10,10]|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-FP-Necessary-Test|Zakaria Bachelor's Thesis| Necessary_Test_FP.py |necessary_test_fp
+EL-EQDF (multiple $\lambda$-variations)|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+EL-SAEDF (multiple $\lambda$-variations)|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
+FP-Necessary-Test| https://dl.acm.org/doi/abs/10.1145/2744769.2744891 (Theorem 3; limited to periodic, constrained-deadline) and  Zakaria Bachelor's Thesis| Necessary_Test_FP.py |necessary_test_fp
 
 ### Hybrid Suspension
 
@@ -234,8 +228,9 @@ You can extend the framework with other scheduling algorithms written in Python 
 The following algorithms are not implemented yet:
 * Sporadic version of UPPAAL: The test integrated in the framework is the PERIODIC version. A SPORADIC version exists and could also be added to the framework
 * Sus-Aware FP with arbitrary deadlines and arrival curves: https://ieeexplore.ieee.org/abstract/document/9622374
-* EDF-Like Analyses: https://ieeexplore.ieee.org/abstract/document/9984793 and https://ieeexplore.ieee.org/abstract/document/10949828
+* Two EDF-Like Analyses: https://ieeexplore.ieee.org/abstract/document/10949828
 * EDF Analysis constrained deadline: https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13
+* Requirement-based Analysis EDF: https://daes.cs.tu-dortmund.de/storages/daes-cs/r/publications/preprint_GuenzelABC25.pdf
 
 Possible advancements in the future:
 * Include tasks with release jitter

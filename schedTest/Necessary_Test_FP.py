@@ -1,6 +1,8 @@
 """
 This is as a part of bachelor thesis of Zakaria Al-Jumaei.
 Developing necessary test for fixed-priority scheduling algorithm.
+
+Coincides with https://dl.acm.org/doi/abs/10.1145/2744769.2744891 (Theorem 3), when limiting to periodic tasks with constrained deadlines.
 """
 import math
 
