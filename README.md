@@ -227,9 +227,7 @@ You can extend the framework with other scheduling algorithms written in Python 
 ## ToDo
 The following algorithms are not implemented yet:
 * Sporadic version of UPPAAL: The test integrated in the framework is the PERIODIC version. A SPORADIC version exists and could also be added to the framework
-* Sus-Aware FP with arbitrary deadlines and arrival curves: https://ieeexplore.ieee.org/abstract/document/9622374
 * Two EDF-Like Analyses: https://ieeexplore.ieee.org/abstract/document/10949828
-* EDF Analysis constrained deadline: https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13
 * Requirement-based Analysis EDF: https://daes.cs.tu-dortmund.de/storages/daes-cs/r/publications/preprint_GuenzelABC25.pdf
 
 Possible advancements in the future:
@@ -239,6 +237,6 @@ Possible advancements in the future:
 
 ## Acknowledgements
 
-We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng, Morteza Mohaqeqi, Alessandro Biondi and Beyazit Yalcinkaya for providing the source code and additonal information of their work.
+We would like to thank all the authors who helped to extend the framework. In particular, we would like to thank Bo Peng, Morteza Mohaqeqi, Alessandro Biondi and Beyazit Yalcinkaya for providing the source code and additional information of their work.
 
 This work has been supported by Deutsche Forschungsgemeinschaft (DFG), as part of Sus-Aware (Project No. 398602212), and by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – Projektnummer 124020371 – SFB 876.
