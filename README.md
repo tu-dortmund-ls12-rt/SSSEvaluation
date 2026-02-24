@@ -159,7 +159,7 @@ PASS-OPA | https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7167340     
 UNIFRAMEWORK | https://ieeexplore.ieee.org/abstract/document/7557869 Section V          | UNIFRAMEWORK.py      | UniFramework
 SUSPJIT | https://ieeexplore.ieee.org/abstract/document/7557869 Section III        | FixedPriority.py     | SuspJit
 EDF-RTA | https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECRTS.2022.13 | EDF_RTA.py| RTA
-EDF-Necessary-Test| Zakaria Bachelor's Thesis | Necessary_Test_EDF.py |necessary_test_edf
+EDF-Necessary-Test| Zakaria Bachelor's Thesis https://daes.cs.tu-dortmund.de/storages/daes-cs/r/Theses/2026_BA_Zakaria.pdf | Necessary_Test_EDF.py |necessary_test_edf
 
 #### Arbitrary-Deadline
 
@@ -171,7 +171,7 @@ EL-EDF|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
 EL-DM|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
 EL-EQDF (multiple $\lambda$-variations)|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
 EL-SAEDF (multiple $\lambda$-variations)|https://ieeexplore.ieee.org/document/9984793|EL_Config.py|check
-FP-Necessary-Test| https://dl.acm.org/doi/abs/10.1145/2744769.2744891 (Theorem 3; limited to periodic, constrained-deadline) and  Zakaria Bachelor's Thesis| Necessary_Test_FP.py |necessary_test_fp
+FP-Necessary-Test| https://dl.acm.org/doi/abs/10.1145/2744769.2744891 (Theorem 3; limited to periodic, constrained-deadline) and  Zakaria Bachelor's Thesis https://daes.cs.tu-dortmund.de/storages/daes-cs/r/Theses/2026_BA_Zakaria.pdf | Necessary_Test_FP.py |necessary_test_fp
 
 ### Hybrid Suspension
 
