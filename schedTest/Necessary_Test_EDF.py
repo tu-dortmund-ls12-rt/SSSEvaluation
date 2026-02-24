@@ -1,5 +1,6 @@
 """
 This is as a part of bachelor thesis of Zakaria Al-Jumaei.
+https://daes.cs.tu-dortmund.de/storages/daes-cs/r/Theses/2026_BA_Zakaria.pdf
 Developing necessary test for EDF scheduling algorithm.
 """
 from math import floor
