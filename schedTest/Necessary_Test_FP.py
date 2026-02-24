@@ -1,5 +1,6 @@
 """
 This is as a part of bachelor thesis of Zakaria Al-Jumaei.
+https://daes.cs.tu-dortmund.de/storages/daes-cs/r/Theses/2026_BA_Zakaria.pdf
 Developing necessary test for fixed-priority scheduling algorithm.
 
 Coincides with https://dl.acm.org/doi/abs/10.1145/2744769.2744891 (Theorem 3), when limiting to periodic tasks with constrained deadlines.
