@@ -2,7 +2,7 @@
 
 The provided Python framework evaluates scheduling algorithms and the related schedulability tests based on randomly generated implicit-deadline task sets. The evaluation setup can be configured using multiple parameters like the number of tasks, the utilization range that is considered, the relative length of the suspension interval, the number of sets per configuration, etc..
 
-An overview of the framework can be found in these papers:
+An overview of the framework can be found in the following papers. Please cite them when using the framework for academic purposes.
 
 [WATERS19](https://ls12-www.cs.tu-dortmund.de/daes/media/documents/publications/downloads/WATERS_2019_paper_8.pdf):
 >Georg von der Brüggen, Milad Nayebi, Junjie Shi, Kuan-Hsun Chen, and Jian-Jia Chen, Evaluation Framework for Self-Suspending Task Systems, 10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS 2019), July 2019 
